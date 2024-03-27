@@ -1,0 +1,7 @@
+{
+  "name": "BlockNest",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
