@@ -1,11 +1,16 @@
 import { defaults } from "chart.js";
 import React from "react";
 import PostCard from "./PostCard";
+import { IonGrid } from "@ionic/react";
 
 const Following: React.FC = () => {
   return (
     <>
-      <PostCard />
+      <IonGrid>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </IonGrid>
     </>
   );
 };

@@ -3,12 +3,13 @@ import "./../../../Global.css";
 import {
   IonContent,
   IonHeader,
+  IonLabel,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 
-const Profile: React.FC = () => {
+const Message: React.FC = () => {
   return (
     <>
       <IonPage id="main-content">
@@ -17,9 +18,10 @@ const Profile: React.FC = () => {
             <IonTitle className="ion-text-center">Blocknest</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <IonLabel>Ini Message</IonLabel>
       </IonPage>
     </>
   );
 };
 
-export default Profile;
+export default Message;

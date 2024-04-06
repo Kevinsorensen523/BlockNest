@@ -2,18 +2,23 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonLabel,
   IonMenu,
   IonMenuButton,
   IonPage,
-  IonSegment,
-  IonSegmentButton,
   IonTitle,
   IonToolbar,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonButton,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonMenuToggle,
+  IonRow,
 } from "@ionic/react";
 import React, { useState } from "react";
-import ExploreContainer from "../../../components/ExploreContainer";
-import "./Home.css";
+import { home, heartOutline } from "ionicons/icons";
 import Following from "./Following";
 import ForYou from "./ForYou";
 
@@ -22,23 +27,54 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <IonMenu>
+      <IonMenu side="start" contentId="main-content" menuId="first">
         <IonHeader>
           <IonToolbar>
             <IonTitle>BlockNest</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          This is the menu content.
+          <IonGrid>
+            <IonRow>
+              <IonCol size="12">
+                <IonMenuToggle auto-hide="false">
+                  <IonButton routerLink="/home" fill="clear">
+                    <IonIcon icon={home} slot="start" />
+                    Home
+                  </IonButton>
+                </IonMenuToggle>
+              </IonCol>
+              <IonCol size="12">
+                <IonMenuToggle auto-hide="false">
+                  <IonButton routerLink="/likes" fill="clear">
+                    <IonIcon icon={heartOutline} slot="start" />
+                    Like
+                  </IonButton>
+                </IonMenuToggle>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+          <IonGrid className="bottom-0">
+            <IonRow className="bg-blue-500 text-white text-center p-2">
+              <IonCol>
+                <IonLabel color="light">Untuk Profile</IonLabel>
+              </IonCol>
+            </IonRow>
+            <IonRow className="bg-green-500 text-white text-center p-2">
+              <IonCol>
+                <IonLabel color="light">Untuk Menu</IonLabel>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </IonContent>
       </IonMenu>
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
+              <IonMenuButton menu="first" autoHide={false}></IonMenuButton>
             </IonButtons>
-            <IonTitle className="ion-text-center mt-4">Blocknest</IonTitle>
+            <IonTitle className="ion-text-center">Blocknest</IonTitle>
           </IonToolbar>
           <IonToolbar>
             <IonSegment

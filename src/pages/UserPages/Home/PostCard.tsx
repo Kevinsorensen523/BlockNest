@@ -16,7 +16,7 @@ const PostCard: React.FC = () => {
   return (
     <>
       <IonRow>
-        <IonItem className="pt-1">
+        <IonItem style={{ "--background": "transparent" }} className="pt-1">
           <IonAvatar slot="start">
             <img
               alt="Silhouette of a person's head"
@@ -30,7 +30,7 @@ const PostCard: React.FC = () => {
             </IonCardHeader>
           </IonCol>
         </IonItem>
-        <IonLabel className="ml-24 pr-36">
+        <IonLabel className="ml-24 pr-24">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
           consectetur purus ipsum, in dapibus velit sagittis in. Sed sodales, mi
           accumsan finibus porttitor, est leo maximus velit, et vestibulum odio
