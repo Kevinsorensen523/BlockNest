@@ -53,7 +53,7 @@ const SideMenu: React.FC = () => {
             </IonRow>
             <IonRow className="bg-green-500 text-white text-center p-2">
               <IonCol>
-                <IonLabel color="light">Untuk Menu</IonLabel>
+                <IonLabel color="light">Dark Mode</IonLabel>
               </IonCol>
             </IonRow>
           </IonGrid>

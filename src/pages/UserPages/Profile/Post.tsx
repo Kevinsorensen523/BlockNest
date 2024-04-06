@@ -1,9 +1,8 @@
-import { defaults } from "chart.js";
+import { IonGrid, IonPage } from "@ionic/react";
 import React from "react";
 import PostCard from "../../../components/PostCard";
-import { IonGrid } from "@ionic/react";
 
-const Following: React.FC = () => {
+const Post: React.FC = () => {
   return (
     <>
       <IonGrid>
@@ -15,4 +14,4 @@ const Following: React.FC = () => {
   );
 };
 
-export default Following;
+export default Post;

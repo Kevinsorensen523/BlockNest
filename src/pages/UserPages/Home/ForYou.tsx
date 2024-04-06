@@ -1,6 +1,6 @@
 import { defaults } from "chart.js";
 import React from "react";
-import PostCard from "./PostCard";
+import PostCard from "../../../components/PostCard";
 import { IonGrid } from "@ionic/react";
 
 const ForYou: React.FC = () => {
