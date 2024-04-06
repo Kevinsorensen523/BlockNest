@@ -18,16 +18,15 @@ import {
   IonRow,
 } from "@ionic/react";
 import React, { useState } from "react";
+import SideMenu from "../../../components/SideMenu";
+import Header from "../../../components/Header";
 
 const Search: React.FC = () => {
   return (
     <>
+      <SideMenu />
       <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle className="ion-text-center">Blocknest</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <Header />
         <IonLabel>Ini Search</IonLabel>
       </IonPage>
     </>

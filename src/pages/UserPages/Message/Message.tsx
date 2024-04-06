@@ -8,16 +8,15 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import Header from "../../../components/Header";
+import SideMenu from "../../../components/SideMenu";
 
 const Message: React.FC = () => {
   return (
     <>
+      <SideMenu />
       <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle className="ion-text-center">Blocknest</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <Header />
         <IonLabel>Ini Message</IonLabel>
       </IonPage>
     </>
