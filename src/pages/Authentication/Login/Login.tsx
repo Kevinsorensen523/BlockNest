@@ -1,12 +1,14 @@
 import React from "react";
-import "./../../../Global.css";
-import { IonContent } from "@ionic/react";
+import { useAuth } from "./../../../components/context/AuthContext";
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+
   return (
-    <>
-      <IonContent></IonContent>
-    </>
+    <div>
+      <h1>Login</h1>
+      <button onClick={login}>Log In</button>
+    </div>
   );
 };
 

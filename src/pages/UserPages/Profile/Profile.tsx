@@ -11,8 +11,11 @@ import {
   IonCol,
   IonContent,
   IonHeader,
+  IonInput,
   IonItem,
   IonLabel,
+  IonList,
+  IonModal,
   IonNavLink,
   IonPage,
   IonRow,
@@ -27,6 +30,7 @@ import Home from "../Home/Home";
 
 const Profile: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState("Post");
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <>
@@ -51,7 +55,62 @@ const Profile: React.FC = () => {
                 <IonCardHeader>
                   <IonCardTitle>Raphael Hutapea</IonCardTitle>
                   <IonCardSubtitle>@hutapea</IonCardSubtitle>
-                  <IonButton className="max-w-28">Edit Profile</IonButton>
+                  <IonButton
+                    className="max-w-28"
+                    onClick={() => setIsEdit(true)}
+                  >
+                    Edit Profile
+                  </IonButton>
+                  <IonModal isOpen={isEdit} className="full-screen-modal">
+                    <IonHeader>
+                      <IonToolbar>
+                        <IonButtons slot="start">
+                          <IonButton onClick={() => setIsEdit(false)}>
+                            BACK
+                          </IonButton>
+                        </IonButtons>
+                      </IonToolbar>
+                    </IonHeader>
+                    <IonContent className="ion-padding">
+                      <IonAvatar>
+                        <img
+                          alt="Silhouette of a person's head"
+                          src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                        />
+                      </IonAvatar>
+                      <IonList>
+                        <IonItem>
+                          <IonInput
+                            label="Full Name :"
+                            value="Aleron Hizkia Pratama Sorensen"
+                          ></IonInput>
+                        </IonItem>
+
+                        <IonItem>
+                          <IonInput
+                            label="Username :"
+                            value="@aleronganteng123"
+                          ></IonInput>
+                        </IonItem>
+
+                        <IonItem>
+                          <IonInput
+                            label="Email :"
+                            value="aleron123@gmail.com"
+                            disabled={true}
+                          ></IonInput>
+                        </IonItem>
+
+                        <IonItem>
+                          <IonInput
+                            label="Password :"
+                            value="*****************"
+                            disabled={true}
+                          ></IonInput>
+                        </IonItem>
+                      </IonList>
+                    </IonContent>
+                  </IonModal>
                 </IonCardHeader>
               </IonCol>
             </IonItem>
@@ -75,7 +134,6 @@ const Profile: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
-
           <IonContent fullscreen>
             {selectedSegment === "Post" && <Post />}
             {selectedSegment === "Liked" && <Liked />}

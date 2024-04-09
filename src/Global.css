@@ -10,3 +10,10 @@ ion-button {
 ion-icon {
   --ion-color-base: white;
 }
+
+.full-screen-modal {
+  --width: 100vw;
+  --height: 100vh;
+  --max-width: 100vw;
+  --max-height: 100vh;
+}
