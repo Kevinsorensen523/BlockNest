@@ -33,6 +33,8 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import "./theme/variables.css";
+import ChangePassword from "./pages/Authentication/ChangePassword/ChangePassword";
+import Register from "./pages/Authentication/Register/Register";
 
 setupIonicReact();
 
@@ -54,6 +56,8 @@ const ProtectedRoutes: React.FC = () => {
   return (
     <Switch>
       <Route path="/login" component={Login} exact />
+      <Route path="/register" component={Register} exact />
+      <Route path="/changePassword" component={ChangePassword} exact />
       {isAuthenticated ? (
         <IonTabs>
           <IonRouterOutlet>

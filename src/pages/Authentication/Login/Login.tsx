@@ -56,7 +56,7 @@ const Login: React.FC = () => {
         <IonButton expand="block" fill="outline" routerLink="/register">
           Register
         </IonButton>
-        <IonButton expand="block" fill="outline" routerLink="/forgot-password">
+        <IonButton expand="block" fill="outline" routerLink="/changePassword">
           Forgot Password?
         </IonButton>
       </IonContent>
