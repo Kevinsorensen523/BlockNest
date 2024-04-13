@@ -2,7 +2,7 @@ import { IonGrid, IonPage } from "@ionic/react";
 import React from "react";
 import PostCard from "../../../components/PostCard";
 
-const Post: React.FC = () => {
+const Posted: React.FC = () => {
   return (
     <>
       <IonGrid>
@@ -14,4 +14,4 @@ const Post: React.FC = () => {
   );
 };
 
-export default Post;
+export default Posted;

@@ -24,12 +24,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import Post from "./Post";
+import Post from "./Posted";
 import Liked from "./Liked";
 import Home from "../Home/Home";
+import Posted from "./Posted";
 
 const Profile: React.FC = () => {
-  const [selectedSegment, setSelectedSegment] = useState("Post");
+  const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
 
   return (
@@ -126,8 +127,8 @@ const Profile: React.FC = () => {
               value={selectedSegment}
               onIonChange={(e) => setSelectedSegment(e.detail.value as string)}
             >
-              <IonSegmentButton value="Post">
-                <IonLabel>Post</IonLabel>
+              <IonSegmentButton value="Posted">
+                <IonLabel>Posted</IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="Liked">
                 <IonLabel>Liked</IonLabel>
@@ -135,7 +136,7 @@ const Profile: React.FC = () => {
             </IonSegment>
           </IonToolbar>
           <IonContent fullscreen>
-            {selectedSegment === "Post" && <Post />}
+            {selectedSegment === "Posted" && <Posted />}
             {selectedSegment === "Liked" && <Liked />}
           </IonContent>
         </IonHeader>
