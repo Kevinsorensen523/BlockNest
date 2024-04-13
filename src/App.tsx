@@ -38,66 +38,57 @@ setupIonicReact();
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <IonApp>
-        <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Switch>
-                <Route path="/login" render={() => <Login />} exact />
-                <PrivateRoute path="/home" component={Home} exact />
-                <PrivateRoute path="/likes" component={Likes} exact />
-                <PrivateRoute path="/search" component={Search} exact />
-                <PrivateRoute path="/community" component={Community} exact />
-                <PrivateRoute
-                  path="/notification"
-                  component={Notification}
-                  exact
-                />
-                <PrivateRoute path="/message" component={Message} exact />
-                <PrivateRoute path="/profile" component={Profile} exact />
-                <Route path="/" exact>
-                  <Redirect to="/home" />
-                </Route>
-                <Route path="*">
-                  <Redirect to="/home" />
-                </Route>
-              </Switch>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                <IonIcon icon={home} />
-              </IonTabButton>
-              <IonTabButton tab="search" href="/search">
-                <IonIcon icon={search} />
-              </IonTabButton>
-              <IonTabButton tab="community" href="/community">
-                <IonIcon icon={people} />
-              </IonTabButton>
-              <IonTabButton tab="notification" href="/notification">
-                <IonIcon icon={notifications} />
-              </IonTabButton>
-              <IonTabButton tab="message" href="/message">
-                <IonIcon icon={mail} />
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
-      </IonApp>
-    </AuthProvider>
+    <IonApp>
+      <IonReactRouter>
+        <AuthProvider>
+          <ProtectedRoutes />
+        </AuthProvider>
+      </IonReactRouter>
+    </IonApp>
   );
 };
 
-function PrivateRoute({ component: Component, ...rest }: any) {
+const ProtectedRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
+
   return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
-      }
-    />
+    <Switch>
+      <Route path="/login" component={Login} exact />
+      {isAuthenticated ? (
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/likes" component={Likes} />
+            <Route exact path="/search" component={Search} />
+            <Route exact path="/community" component={Community} />
+            <Route exact path="/notification" component={Notification} />
+            <Route exact path="/message" component={Message} />
+            <Route exact path="/profile" component={Profile} />
+            <Redirect exact from="/" to="/home" />
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={home} />
+            </IonTabButton>
+            <IonTabButton tab="search" href="/search">
+              <IonIcon icon={search} />
+            </IonTabButton>
+            <IonTabButton tab="community" href="/community">
+              <IonIcon icon={people} />
+            </IonTabButton>
+            <IonTabButton tab="notification" href="/notification">
+              <IonIcon icon={notifications} />
+            </IonTabButton>
+            <IonTabButton tab="message" href="/message">
+              <IonIcon icon={mail} />
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </Switch>
   );
-}
+};
 
 export default App;
