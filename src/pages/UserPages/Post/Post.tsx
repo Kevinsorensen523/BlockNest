@@ -13,9 +13,16 @@ import {
   IonIcon,
   IonImg,
   IonActionSheet,
+  IonAvatar,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonNavLink,
+  IonButtons,
+  IonBackButton,
 } from "@ionic/react";
 import { camera, images, close } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import Home from "../Home/Home";
 
 const Post: React.FC = () => {
   const [text, setText] = useState("");
@@ -57,24 +64,48 @@ const Post: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Create Post</IonTitle>
+          <IonNavLink routerDirection="forward" component={() => <Home />}>
+            <IonButtons>
+              <IonBackButton defaultHref="/home" />
+            </IonButtons>
+          </IonNavLink>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
+        <IonItem style={{ "--background": "transparent" }} className="pt-1">
+          <IonAvatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="./public/profilesq.jpg"
+            />
+          </IonAvatar>
+          <IonCardHeader>
+            <IonCardSubtitle>@leonardo1945</IonCardSubtitle>
+          </IonCardHeader>
+        </IonItem>
         <IonItem>
           <IonLabel position="stacked">Your post</IonLabel>
           <IonTextarea
             value={text}
             onIonChange={handleTextChange}
             placeholder="Write something..."
+            rows={6}
           />
         </IonItem>
-        <IonButton expand="block" onClick={() => setShowActionSheet(true)}>
+
+        <IonButton
+          className="mt-8 "
+          color="light"
+          expand="block" 
+          onClick={() => setShowActionSheet(true)}>
           <IonIcon icon={camera} slot="start" />
-          Add Photo
         </IonButton>
-        {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
-        <IonButton expand="block" onClick={handleSubmit}>
+          {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
+
+        <IonButton 
+        className="mt-16 max-w-28"
+        color="light"
+        expand="block" onClick={handleSubmit}>
           Post
         </IonButton>
         <IonActionSheet

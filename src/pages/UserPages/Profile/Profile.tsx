@@ -33,6 +33,13 @@ const Profile: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
 
+  const handleConfirm = () => {
+    // Lakukan apa yang diperlukan ketika tombol Confirm diklik
+    // Misalnya, simpan perubahan ke server atau lakukan validasi
+    // Kemudian, tutup modal
+    setIsEdit(false);
+  };
+
   return (
     <>
       <IonPage id="main-content">
@@ -48,21 +55,25 @@ const Profile: React.FC = () => {
             <IonItem style={{ "--background": "transparent" }} className="pt-1">
               <IonAvatar slot="start">
                 <img
+                  width={100}
+                  height={100}
                   alt="Silhouette of a person's head"
-                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                  src="./public/profilesq.jpg"
                 />
               </IonAvatar>
               <IonCol>
                 <IonCardHeader>
-                  <IonCardTitle>Raphael Hutapea</IonCardTitle>
-                  <IonCardSubtitle>@hutapea</IonCardSubtitle>
+                  <IonCardTitle>Leonardo</IonCardTitle>
+                  <IonCardSubtitle>@leonardo1945</IonCardSubtitle>
                   <IonButton
-                    className="max-w-28"
+                    className="max-w-28 oval-button"
                     onClick={() => setIsEdit(true)}
+                    color="light"
                   >
                     Edit Profile
                   </IonButton>
-                  <IonModal isOpen={isEdit} className="full-screen-modal">
+
+                  <IonModal isOpen={isEdit} className="full-screen-modal ion-padding" style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <IonHeader>
                       <IonToolbar>
                         <IonButtons slot="start">
@@ -72,32 +83,32 @@ const Profile: React.FC = () => {
                         </IonButtons>
                       </IonToolbar>
                     </IonHeader>
-                    <IonContent className="ion-padding">
+                    <IonContent className="ion-padding" style={{ textAlign: "center" }}>
                       <IonAvatar>
                         <img
                           alt="Silhouette of a person's head"
-                          src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                          src="/profilesq.jpg"
                         />
                       </IonAvatar>
                       <IonList>
                         <IonItem>
                           <IonInput
                             label="Full Name :"
-                            value="Aleron Hizkia Pratama Sorensen"
+                            value="Leonardo"
                           ></IonInput>
                         </IonItem>
 
                         <IonItem>
                           <IonInput
                             label="Username :"
-                            value="@aleronganteng123"
+                            value="@leonardo1945"
                           ></IonInput>
                         </IonItem>
 
                         <IonItem>
                           <IonInput
                             label="Email :"
-                            value="aleron123@gmail.com"
+                            value="leonardo@gmail.com"
                             disabled={true}
                           ></IonInput>
                         </IonItem>
@@ -110,6 +121,14 @@ const Profile: React.FC = () => {
                           ></IonInput>
                         </IonItem>
                       </IonList>
+                      <IonButton
+                        className="ion-margin-top max-w-28 oval-button"
+                        expand="block"
+                        color="light"
+                        onClick={() => handleConfirm()}
+                      >
+                        Confirm
+                      </IonButton>
                     </IonContent>
                   </IonModal>
                 </IonCardHeader>
@@ -117,9 +136,7 @@ const Profile: React.FC = () => {
             </IonItem>
             <IonRow className="ml-4 mb-4">
               <IonLabel>
-                Namaku Andi Aku adalah seorang trilliuner, saya mendapat cuan
-                hasil mining bitcoin sejak tahun 1945, saya menghold sebanyak
-                100juta bitcoin
+                Passionate about Web 3 and blockchain projects, I'm deeply intrigued by the transformative potential they hold for the future.
               </IonLabel>
             </IonRow>
             <IonSegment
