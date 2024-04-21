@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./../../../Global.css";
 import {
   IonAvatar,
@@ -28,10 +28,33 @@ import Post from "./Posted";
 import Liked from "./Liked";
 import Home from "../Home/Home";
 import Posted from "./Posted";
+import { AuthContext, useAuth } from "../../../components/context/AuthContext";
+import axios from "axios";
 
 const Profile: React.FC = () => {
+  const authCtx = useContext(AuthContext);
   const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
+
+  const [editUname, setEditUname] = useState<string>(authCtx?.uName as string);
+  const [editFName, setEditFName] = useState("");
+  const [editBio, setEditBio] = useState("");
+
+  const url = "http://localhost/blocknest/update_user.php";
+
+  const handleEditProfile = () => {
+    const formData = new FormData();
+    formData.append('user_id', authCtx?.user.id.toString() as string);
+    console.log(authCtx?.user.id.toString());
+    formData.append('username', editUname);
+    formData.append('full_name', editFName);
+    formData.append('bio', editBio);
+    axios.post(url, formData).then(res => {
+      console.log(res);
+    });
+    authCtx?.updateUser(editUname, editFName, editBio);
+    setIsEdit(false);
+  };
 
   return (
     <>
@@ -54,8 +77,8 @@ const Profile: React.FC = () => {
               </IonAvatar>
               <IonCol>
                 <IonCardHeader>
-                  <IonCardTitle>Raphael Hutapea</IonCardTitle>
-                  <IonCardSubtitle>@hutapea</IonCardSubtitle>
+                  <IonCardTitle>{authCtx?.user.real_name ? authCtx?.user.real_name : 'No Name'}</IonCardTitle>
+                  <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
                   <IonButton
                     className="max-w-28"
                     onClick={() => setIsEdit(true)}
@@ -83,21 +106,23 @@ const Profile: React.FC = () => {
                         <IonItem>
                           <IonInput
                             label="Full Name :"
-                            value="Aleron Hizkia Pratama Sorensen"
+                            value={editFName}
+                            onIonChange={(e) => setEditFName(e.detail.value!)}
                           ></IonInput>
                         </IonItem>
 
                         <IonItem>
                           <IonInput
                             label="Username :"
-                            value="@aleronganteng123"
+                            value={editUname}
+                            onIonChange={(e) => setEditUname(e.detail.value!)}
                           ></IonInput>
                         </IonItem>
 
                         <IonItem>
                           <IonInput
                             label="Email :"
-                            value="aleron123@gmail.com"
+                            value={authCtx?.user.email}
                             disabled={true}
                           ></IonInput>
                         </IonItem>
@@ -109,7 +134,16 @@ const Profile: React.FC = () => {
                             disabled={true}
                           ></IonInput>
                         </IonItem>
+
+                        <IonItem>
+                          <IonInput
+                            label="Bio :"
+                            value={editBio}
+                            onIonChange={(e) => setEditBio(e.detail.value!)}
+                          ></IonInput>
+                        </IonItem>
                       </IonList>
+                      <IonButton onClick={handleEditProfile}>Submit</IonButton>
                     </IonContent>
                   </IonModal>
                 </IonCardHeader>
@@ -117,9 +151,7 @@ const Profile: React.FC = () => {
             </IonItem>
             <IonRow className="ml-4 mb-4">
               <IonLabel>
-                Namaku Andi Aku adalah seorang trilliuner, saya mendapat cuan
-                hasil mining bitcoin sejak tahun 1945, saya menghold sebanyak
-                100juta bitcoin
+              {authCtx?.user.bio ? authCtx?.user.bio : 'About me...'}
               </IonLabel>
             </IonRow>
             <IonSegment

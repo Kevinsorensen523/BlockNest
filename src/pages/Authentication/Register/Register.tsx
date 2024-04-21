@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   IonPage,
   IonHeader,
@@ -13,6 +13,7 @@ import {
   IonBackButton,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -20,9 +21,21 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const history = useHistory();
 
+  const url = "http://localhost/blocknest/add_new_user.php";
+  const emailRef = useRef<HTMLIonInputElement>();
+  const unameRef = useRef<HTMLIonInputElement>();
+  const passRef = useRef<HTMLIonInputElement>();
+
   const handleRegister = () => {
     console.log("Register with:", email, username, password);
     // Add your registration logic here
+    const formdata = new FormData();
+    formdata.append('email', email);
+    formdata.append('username', username);
+    formdata.append('password', password);
+    axios.post(url, formdata).then(res => {
+      console.log(res);
+  });
   };
 
   return (
@@ -43,6 +56,7 @@ const Register: React.FC = () => {
           <IonInput
             value={email}
             onIonChange={(e) => setEmail(e.detail.value!)}
+            //ref={emailRef}
             clearInput
           />
         </IonItem>
