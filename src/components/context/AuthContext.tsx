@@ -12,13 +12,25 @@ export interface User {
   posts: number;
 }
 
+export interface PostObj {
+  id: number;
+  user_id: number;
+  content: string;
+  image: string;
+  category: string | null;
+  date_posted: string;
+  likes: number;
+  comments: number;
+  user: User
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
   uName: string;
   user: User;
   login: (userName: string, usr: User) => void;
   logout: () => void;
-  updateUser: (uName: string, fName: string, bio: string) => void;
+  updateUser: (uName: string, fName: string, bio: string, profPic: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -68,10 +80,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     history.push("/login");
   };
 
-  const updateUser = (uName: string, fName: string, bio: string) => {
+  const updateUser = (uName: string, fName: string, bio: string, profPic: string) => {
     user.username = uName;
     user.real_name = fName;
     user.bio = bio;
+    user.profile_pic = profPic;
   }
 
   return (

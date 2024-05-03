@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   IonHeader,
   IonToolbar,
@@ -15,7 +15,7 @@ import {
 } from "@ionic/react";
 import { personCircleOutline, logOutOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { useAuth } from "../components/context/AuthContext"; // Sesuaikan path jika perlu
+import { AuthContext, useAuth } from "../components/context/AuthContext"; // Sesuaikan path jika perlu
 
 const Header: React.FC = () => {
   const [showPopover, setShowPopover] = useState(false);
@@ -23,6 +23,7 @@ const Header: React.FC = () => {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); // State untuk konfirmasi logout
   const history = useHistory();
   const { logout } = useAuth(); // Pastikan fungsi ini tersedia dalam useAuth
+  const authCtx = useContext(AuthContext);
 
   const handlePopoverOpen = (event: React.MouseEvent) => {
     event.persist();
@@ -49,7 +50,7 @@ const Header: React.FC = () => {
         <IonButtons slot="end" onClick={handlePopoverOpen}>
           <IonAvatar>
             <img
-              src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+              src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
               alt="Profile"
               className="w-12 h-12 mt-2"
             />

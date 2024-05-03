@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./../../../Global.css";
 import {
   IonAvatar,
@@ -23,36 +23,76 @@ import {
   IonSegmentButton,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import Post from "./Posted";
 import Liked from "./Liked";
 import Home from "../Home/Home";
 import Posted from "./Posted";
-import { AuthContext, useAuth } from "../../../components/context/AuthContext";
-import axios from "axios";
+import { AuthContext, User, useAuth } from "../../../components/context/AuthContext";
+import axios, { AxiosResponse } from "axios";
+import { PostObj } from "../../../components/context/AuthContext";
 
 const Profile: React.FC = () => {
   const authCtx = useContext(AuthContext);
   const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
 
-  const [editUname, setEditUname] = useState<string>(authCtx?.uName as string);
-  const [editFName, setEditFName] = useState("");
-  const [editBio, setEditBio] = useState("");
+  const [editUname, setEditUname] = useState<string>(authCtx?.user.username as string);
+  const [editFName, setEditFName] = useState<string>(authCtx?.user.real_name as string);
+  const [editBio, setEditBio] = useState<string>(authCtx?.user.bio as string);
+
+  const [pData, setPData] = useState<AxiosResponse>();
+  const [posts, setPost] = useState<Array<PostObj>>([]);
+  const [miniU, setMiniU] = useState<User>({id: 0,
+    username: "ab",
+    email: "ab",
+    password: "ab",
+    real_name: null,
+    bio: null,
+    profile_pic: null,
+    posts: 0});
 
   const url = "http://localhost/blocknest/update_user.php";
+  const url2 = "http://localhost/blocknest/get_user_posts.php";
 
+  useEffect(() => {
+    getData();
+    console.log(authCtx?.user.profile_pic);
+  }, []);
+
+  useIonViewWillEnter(() => {
+    getData();
+  });
+
+  const getData = () => {
+    const formdata = new FormData();
+    const bla = authCtx?.user.id.toString()
+    formdata.append('user_id', bla as string);
+    axios.post(url2, formdata).then(res => {
+      console.log(res.data);
+      console.log(res.data.post);
+      setPData(res);
+      setPost(res.data.post);
+      setMiniU(res.data.user_mini[0]);
+    });
+  }
+
+  const [profPic, setProfPic] = useState<File>();
+  const changeProfilePic = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProfPic(event.target!.files![0]);
+  }
   const handleEditProfile = () => {
     const formData = new FormData();
     formData.append('user_id', authCtx?.user.id.toString() as string);
-    console.log(authCtx?.user.id.toString());
     formData.append('username', editUname);
     formData.append('full_name', editFName);
     formData.append('bio', editBio);
+    formData.append('foto', profPic as File);
     axios.post(url, formData).then(res => {
       console.log(res);
     });
-    authCtx?.updateUser(editUname, editFName, editBio);
+    authCtx?.updateUser(editUname, editFName, editBio, "uploads/profile_pics/" + profPic?.name!);
     setIsEdit(false);
   };
 
@@ -72,12 +112,12 @@ const Profile: React.FC = () => {
               <IonAvatar slot="start">
                 <img
                   alt="Silhouette of a person's head"
-                  src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                  src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
                 />
               </IonAvatar>
               <IonCol>
                 <IonCardHeader>
-                  <IonCardTitle>{authCtx?.user.real_name ? authCtx?.user.real_name : 'No Name'}</IonCardTitle>
+                  <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
                   <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
                   <IonButton
                     className="max-w-28"
@@ -99,7 +139,7 @@ const Profile: React.FC = () => {
                       <IonAvatar>
                         <img
                           alt="Silhouette of a person's head"
-                          src="https://ionicframework.com/docs/img/demos/avatar.svg"
+                          src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
                         />
                       </IonAvatar>
                       <IonList>
@@ -142,6 +182,11 @@ const Profile: React.FC = () => {
                             onIonChange={(e) => setEditBio(e.detail.value!)}
                           ></IonInput>
                         </IonItem>
+
+                        <IonItem>
+                          <IonLabel>Profile Picture:</IonLabel>
+                          <input type="file" onChange={changeProfilePic} />
+                        </IonItem>
                       </IonList>
                       <IonButton onClick={handleEditProfile}>Submit</IonButton>
                     </IonContent>
@@ -151,7 +196,7 @@ const Profile: React.FC = () => {
             </IonItem>
             <IonRow className="ml-4 mb-4">
               <IonLabel>
-              {authCtx?.user.bio ? authCtx?.user.bio : 'About me...'}
+              {authCtx?.user.bio}
               </IonLabel>
             </IonRow>
             <IonSegment
@@ -168,7 +213,7 @@ const Profile: React.FC = () => {
             </IonSegment>
           </IonToolbar>
           <IonContent fullscreen>
-            {selectedSegment === "Posted" && <Posted />}
+            {selectedSegment === "Posted" && <Posted posts={posts} user={miniU} />}
             {selectedSegment === "Liked" && <Liked />}
           </IonContent>
         </IonHeader>
