@@ -109,12 +109,12 @@ const Post: React.FC = () => {
         <IonItem style={{ "--background": "transparent" }} className="pt-1">
           <IonAvatar slot="start">
             <img
-              alt="Silhouette of a person's head"
-              src="./public/profilesq.jpg"
+              alt="Profile Picture"
+              src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
             />
           </IonAvatar>
           <IonCardHeader>
-            <IonCardSubtitle>@leonardo1945</IonCardSubtitle>
+            <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
           </IonCardHeader>
         </IonItem>
         <IonItem>
