@@ -10,9 +10,11 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonText,
 } from "@ionic/react";
 import { User, useAuth } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
+import { Link } from "react-router-dom";
 
 //interface User { id: string, email: string, username: string, password: string};
 
@@ -27,16 +29,20 @@ const Login: React.FC = () => {
 
   const handleLogin = () => {
     console.log("Login attempted with:", username, password);
-     // Asumsikan login akan diproses di sini
+    // Asumsikan login akan diproses di sini
     const formdata = new FormData();
-    formdata.append('username', username);
-    formdata.append('password', password);
-    axios.post(url, formdata).then(res => {
+    formdata.append("username", username);
+    formdata.append("password", password);
+    axios.post(url, formdata).then((res) => {
       console.log(res.data);
       setData(res);
       setUser(res.data.user[0]);
       console.log(res.data.user[0]);
-      console.log("Login attempted with:", res.data.user[0].username, res.data.user[0].password);
+      console.log(
+        "Login attempted with:",
+        res.data.user[0].username,
+        res.data.user[0].password
+      );
       const e = res.data.user[0].username;
       const f = res.data.user[0];
       console.log(e);
@@ -51,15 +57,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonList>
-          <IonItem>
+    <IonContent>
+      <div className="login-container p-10">
+        <div className="register-form">
+          <IonItem lines="inset">
             <IonLabel position="floating">Username</IonLabel>
             <IonInput
               value={username}
@@ -67,7 +68,7 @@ const Login: React.FC = () => {
               //clearInput
             ></IonInput>
           </IonItem>
-          <IonItem>
+          <IonItem lines="inset">
             <IonLabel position="floating">Password</IonLabel>
             <IonInput
               type="password"
@@ -76,18 +77,24 @@ const Login: React.FC = () => {
               //clearInput
             ></IonInput>
           </IonItem>
-        </IonList>
-        <IonButton expand="block" onClick={handleLogin}>
-          Log In
-        </IonButton>
-        <IonButton expand="block" fill="outline" routerLink="/register">
-          Register
-        </IonButton>
-        <IonButton expand="block" fill="outline" routerLink="/changePassword">
-          Forgot Password?
-        </IonButton>
-      </IonContent>
-    </IonPage>
+          <div style={{ margin: "10px auto", maxWidth: "300px" }}>
+            <IonButton expand="block" onClick={handleLogin}>
+              Log In
+            </IonButton>
+          </div>
+        </div>
+        <div className="mx-auto">
+          <IonText>
+            <Link to="/changePassword">Forgot Password</Link>
+          </IonText>
+          <IonText>
+            <p className="register-text">
+              Doesn't have an account? <Link to="/register">Register</Link>
+            </p>
+          </IonText>
+        </div>
+      </div>
+    </IonContent>
   );
 };
 
