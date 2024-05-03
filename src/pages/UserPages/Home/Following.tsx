@@ -14,13 +14,13 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
-  IonIcon
+  IonIcon,
 } from "@ionic/react";
-import { searchOutline, informationCircleOutline } from 'ionicons/icons'; 
+import { searchOutline, informationCircleOutline } from "ionicons/icons";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
 
-const Community: React.FC = () => {
+const Following: React.FC = () => {
   const data = [
     "Bitcoin Community",
     "Ethereum Community",
@@ -61,7 +61,10 @@ const Community: React.FC = () => {
                         <IonLabel>{result}</IonLabel>
                       </IonCol>
                       <IonCol size="4" className="ion-text-right">
-                        <IonButton onClick={() => handleDetail(result)} fill="clear">
+                        <IonButton
+                          onClick={() => handleDetail(result)}
+                          fill="clear"
+                        >
                           <IonIcon icon={informationCircleOutline} />
                         </IonButton>
                       </IonCol>
@@ -70,10 +73,11 @@ const Community: React.FC = () => {
                 </IonList>
               </IonCol>
             </IonRow>
-            <IonRow className="ion-align-items-center ion-justify-content-center"> 
-              <IonButton style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <span style={{ marginLeft: '5px' }}>Browse More</span> 
-               
+            <IonRow className="ion-align-items-center ion-justify-content-center">
+              <IonButton
+                style={{ display: "inline-flex", alignItems: "center" }}
+              >
+                <span style={{ marginLeft: "5px" }}>Browse More</span>
               </IonButton>
             </IonRow>
           </IonGrid>

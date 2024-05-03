@@ -1,0 +1,8 @@
+.roundedInput {
+  --border-radius: 30px;
+}
+
+/* Add this CSS to your stylesheet */
+ion-content {
+  --ion-background-color: black; /* Set the background color of ion-content to white */
+}

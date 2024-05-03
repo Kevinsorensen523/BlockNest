@@ -15,6 +15,7 @@ import {
 import { User, useAuth } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
+import "./Login.css";
 
 //interface User { id: string, email: string, username: string, password: string};
 
@@ -58,39 +59,44 @@ const Login: React.FC = () => {
 
   return (
     <IonContent>
-      <div className="login-container p-10">
-        <div className="register-form">
-          <IonItem lines="inset">
-            <IonLabel position="floating">Username</IonLabel>
+      <div className="login-container md:ion-padding p-10">
+        <div className="login-form md:px-40 md:py-20">
+          <IonLabel position="floating">Username</IonLabel>
+          <IonItem lines="inset" className="mt-4 roundedInput">
             <IonInput
               value={username}
               onIonChange={(e) => setUsername(e.detail.value!)}
+              placeholder="please insert your username"
+
               //clearInput
             ></IonInput>
           </IonItem>
-          <IonItem lines="inset">
+          <div className="mt-10">
             <IonLabel position="floating">Password</IonLabel>
-            <IonInput
-              type="password"
-              value={password}
-              onIonChange={(e) => setPassword(e.detail.value!)}
-              //clearInput
-            ></IonInput>
-          </IonItem>
-          <div style={{ margin: "10px auto", maxWidth: "300px" }}>
-            <IonButton expand="block" onClick={handleLogin}>
-              Log In
-            </IonButton>
+            <IonItem lines="inset" className="mt-4 roundedInput">
+              <IonInput
+                type="password"
+                value={password}
+                onIonChange={(e) => setPassword(e.detail.value!)}
+                placeholder="please insert your correct password"
+                //clearInput
+              ></IonInput>
+            </IonItem>
           </div>
+          <IonButton
+            shape="round"
+            className="md:mt-20 py-10 md:py-0 grid justify-items-center w-24 mx-auto"
+            onClick={handleLogin}
+          >
+            Log In
+          </IonButton>
         </div>
-        <div className="mx-auto">
+        <div className="mx-auto justify-items-center grid">
           <IonText>
             <Link to="/changePassword">Forgot Password</Link>
           </IonText>
-          <IonText>
-            <p className="register-text">
-              Doesn't have an account? <Link to="/register">Register</Link>
-            </p>
+          <IonText className="mt-4">
+            Doesn't have an account? <Link to="/register">Register</Link>
           </IonText>
         </div>
       </div>
