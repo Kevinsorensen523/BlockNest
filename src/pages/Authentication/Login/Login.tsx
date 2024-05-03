@@ -1,47 +1,41 @@
 import React, { useState } from "react";
 import {
-  IonPage,
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonButton,
   IonInput,
+  IonText,
   IonItem,
   IonLabel,
-  IonList,
 } from "@ionic/react";
 import { useAuth } from "../../../components/context/AuthContext";
+import { Link } from "react-router-dom";
+import "./../../../Global.css";
 
 const Login: React.FC = () => {
   const { login } = useAuth();
-  const [username, setUsername] = useState("");
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log("Login attempted with:", username, password);
-    login(); // Asumsikan login akan diproses di sini
+    console.log("Login attempted with:", emailOrUsername, password);
+    login();
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonList>
-          <IonItem>
-            <IonLabel position="floating">Username</IonLabel>
+    <IonContent>
+      <div className="floating-logo"></div>
+      <div className="login-container">
+        <div className="register-form">
+          <IonItem lines="inset"> 
+            <IonLabel>Email/Username:</IonLabel> 
             <IonInput
-              value={username}
-              onIonChange={(e) => setUsername(e.detail.value!)}
+              value={emailOrUsername}
+              onIonChange={(e) => setEmailOrUsername(e.detail.value!)}
               clearInput
             ></IonInput>
           </IonItem>
-          <IonItem>
-            <IonLabel position="floating">Password</IonLabel>
+          <IonItem lines="inset"> 
+            <IonLabel>Password:</IonLabel> 
             <IonInput
               type="password"
               value={password}
@@ -49,18 +43,22 @@ const Login: React.FC = () => {
               clearInput
             ></IonInput>
           </IonItem>
-        </IonList>
-        <IonButton expand="block" onClick={handleLogin}>
-          Log In
-        </IonButton>
-        <IonButton expand="block" fill="outline" routerLink="/register">
-          Register
-        </IonButton>
-        <IonButton expand="block" fill="outline" routerLink="/changePassword">
-          Forgot Password?
-        </IonButton>
-      </IonContent>
-    </IonPage>
+          <div style={{ margin: "10px auto", maxWidth: "300px" }}>
+            <IonButton className="login-button" onClick={handleLogin}>
+              Login
+            </IonButton>
+          </div>
+        </div>
+        <IonText>
+          <p className="forget-password">Forget Password</p>
+        </IonText>
+        <IonText>
+          <p className="register-text">
+            Doesn't have an account? <Link to="/register">Register</Link>
+          </p>
+        </IonText>
+      </div>
+    </IonContent>
   );
 };
 
