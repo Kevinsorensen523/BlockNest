@@ -29,7 +29,11 @@ import Post from "./Posted";
 import Liked from "./Liked";
 import Home from "../Home/Home";
 import Posted from "./Posted";
-import { AuthContext, User, useAuth } from "../../../components/context/AuthContext";
+import {
+  AuthContext,
+  User,
+  useAuth,
+} from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 import { PostObj } from "../../../components/context/AuthContext";
 
@@ -38,20 +42,26 @@ const Profile: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
 
-  const [editUname, setEditUname] = useState<string>(authCtx?.user.username as string);
-  const [editFName, setEditFName] = useState<string>(authCtx?.user.real_name as string);
+  const [editUname, setEditUname] = useState<string>(
+    authCtx?.user.username as string
+  );
+  const [editFName, setEditFName] = useState<string>(
+    authCtx?.user.real_name as string
+  );
   const [editBio, setEditBio] = useState<string>(authCtx?.user.bio as string);
 
   const [pData, setPData] = useState<AxiosResponse>();
   const [posts, setPost] = useState<Array<PostObj>>([]);
-  const [miniU, setMiniU] = useState<User>({id: 0,
+  const [miniU, setMiniU] = useState<User>({
+    id: 0,
     username: "ab",
     email: "ab",
     password: "ab",
     real_name: null,
     bio: null,
     profile_pic: null,
-    posts: 0});
+    posts: 0,
+  });
 
   const url = "http://localhost/blocknest/update_user.php";
   const url2 = "http://localhost/blocknest/get_user_posts.php";
@@ -67,32 +77,37 @@ const Profile: React.FC = () => {
 
   const getData = () => {
     const formdata = new FormData();
-    const bla = authCtx?.user.id.toString()
-    formdata.append('user_id', bla as string);
-    axios.post(url2, formdata).then(res => {
+    const bla = authCtx?.user.id.toString();
+    formdata.append("user_id", bla as string);
+    axios.post(url2, formdata).then((res) => {
       console.log(res.data);
       console.log(res.data.post);
       setPData(res);
       setPost(res.data.post);
       setMiniU(res.data.user_mini[0]);
     });
-  }
+  };
 
   const [profPic, setProfPic] = useState<File>();
   const changeProfilePic = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProfPic(event.target!.files![0]);
-  }
+  };
   const handleEditProfile = () => {
     const formData = new FormData();
-    formData.append('user_id', authCtx?.user.id.toString() as string);
-    formData.append('username', editUname);
-    formData.append('full_name', editFName);
-    formData.append('bio', editBio);
-    formData.append('foto', profPic as File);
-    axios.post(url, formData).then(res => {
+    formData.append("user_id", authCtx?.user.id.toString() as string);
+    formData.append("username", editUname);
+    formData.append("full_name", editFName);
+    formData.append("bio", editBio);
+    formData.append("foto", profPic as File);
+    axios.post(url, formData).then((res) => {
       console.log(res);
     });
-    authCtx?.updateUser(editUname, editFName, editBio, "uploads/profile_pics/" + profPic?.name!);
+    authCtx?.updateUser(
+      editUname,
+      editFName,
+      editBio,
+      "uploads/profile_pics/" + profPic?.name!
+    );
     setIsEdit(false);
   };
 
@@ -111,6 +126,8 @@ const Profile: React.FC = () => {
             <IonItem style={{ "--background": "transparent" }} className="pt-1">
               <IonAvatar slot="start">
                 <img
+                  width={100}
+                  height={100}
                   alt="Silhouette of a person's head"
                   src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
                 />
@@ -120,12 +137,22 @@ const Profile: React.FC = () => {
                   <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
                   <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
                   <IonButton
-                    className="max-w-28"
+                    className="max-w-28 oval-button"
                     onClick={() => setIsEdit(true)}
+                    color="light"
                   >
                     Edit Profile
                   </IonButton>
-                  <IonModal isOpen={isEdit} className="full-screen-modal">
+                  <IonModal
+                    isOpen={isEdit}
+                    className="full-screen-modal ion-padding"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
                     <IonHeader>
                       <IonToolbar>
                         <IonButtons slot="start">
@@ -135,10 +162,13 @@ const Profile: React.FC = () => {
                         </IonButtons>
                       </IonToolbar>
                     </IonHeader>
-                    <IonContent className="ion-padding">
+                    <IonContent
+                      className="ion-padding"
+                      style={{ textAlign: "center" }}
+                    >
                       <IonAvatar>
                         <img
-                          alt="Silhouette of a person's head"
+                          alt="Profile Picture"
                           src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
                         />
                       </IonAvatar>
@@ -188,16 +218,21 @@ const Profile: React.FC = () => {
                           <input type="file" onChange={changeProfilePic} />
                         </IonItem>
                       </IonList>
-                      <IonButton onClick={handleEditProfile}>Submit</IonButton>
+                      <IonButton
+                        className="ion-margin-top max-w-28 oval-button"
+                        expand="block"
+                        color="light"
+                        onClick={handleEditProfile}
+                      >
+                        Confirm
+                      </IonButton>
                     </IonContent>
                   </IonModal>
                 </IonCardHeader>
               </IonCol>
             </IonItem>
             <IonRow className="ml-4 mb-4">
-              <IonLabel>
-              {authCtx?.user.bio}
-              </IonLabel>
+              <IonLabel>{authCtx?.user.bio}</IonLabel>
             </IonRow>
             <IonSegment
               color="dark"
@@ -213,7 +248,9 @@ const Profile: React.FC = () => {
             </IonSegment>
           </IonToolbar>
           <IonContent fullscreen>
-            {selectedSegment === "Posted" && <Posted posts={posts} user={miniU} />}
+            {selectedSegment === "Posted" && (
+              <Posted posts={posts} user={miniU} />
+            )}
             {selectedSegment === "Liked" && <Liked />}
           </IonContent>
         </IonHeader>

@@ -13,14 +13,21 @@ import {
   IonIcon,
   IonImg,
   IonActionSheet,
+  IonBackButton,
+  IonButtons,
+  IonNavLink,
+  IonAvatar,
+  IonCardHeader,
+  IonCardSubtitle,
 } from "@ionic/react";
 import { camera, images, close } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import {base64FromPath} from "@ionic/react-hooks/filesystem";
+import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import { decode } from "base64-arraybuffer";
 import { AuthContext } from "../../../components/context/AuthContext";
 import axios from "axios";
 import { useHistory } from "react-router";
+import Home from "../Home/Home";
 
 const Post: React.FC = () => {
   const authCtx = useContext(AuthContext);
@@ -49,13 +56,13 @@ const Post: React.FC = () => {
 
   const savePhoto = async (webpath: string) => {
     const base64 = await base64FromPath(webpath);
-    const b64split = base64.split(';base64,');
+    const b64split = base64.split(";base64,");
     const blob = new Blob([new Uint8Array(decode(b64split[1]))], {
-        type: 'image/png',
+      type: "image/png",
     });
-    const fileName = new Date().getTime() + '.png';
+    const fileName = new Date().getTime() + ".png";
     const file = new File([blob], fileName, {
-        type: 'image/png',
+      type: "image/png",
     });
     setPhotoFile(file);
   };
@@ -65,7 +72,7 @@ const Post: React.FC = () => {
   const fileChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhotoFile(event.target!.files![0]);
     console.log(authCtx?.user.id);
-  }
+  };
 
   const choosePhotoFromGallery = async () => {
     inputPhoto.current?.click();
@@ -77,37 +84,63 @@ const Post: React.FC = () => {
     //console.log("Submitting Post:", text, photo);
     // Implement your submit logic here, e.g., form submission or API call
     const formData = new FormData();
-    formData.append('content', text as string);
-    formData.append('user_id', authCtx?.user.id.toString() as string);
-    formData.append('photo', photoFile as File);
+    formData.append("content", text as string);
+    formData.append("user_id", authCtx?.user.id.toString() as string);
+    formData.append("photo", photoFile as File);
     console.log(formData);
-      axios.post(url, formData).then(res => {
-        console.log(res.data);
+    axios.post(url, formData).then((res) => {
+      console.log(res.data);
     });
-    history.length > 0 ? history.goBack() : history.replace('/home');
+    history.length > 0 ? history.goBack() : history.replace("/home");
   };
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Create Post</IonTitle>
+          <IonNavLink routerDirection="forward" component={() => <Home />}>
+            <IonButtons>
+              <IonBackButton defaultHref="/home" />
+            </IonButtons>
+          </IonNavLink>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
+        <IonItem style={{ "--background": "transparent" }} className="pt-1">
+          <IonAvatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="./public/profilesq.jpg"
+            />
+          </IonAvatar>
+          <IonCardHeader>
+            <IonCardSubtitle>@leonardo1945</IonCardSubtitle>
+          </IonCardHeader>
+        </IonItem>
         <IonItem>
           <IonLabel position="stacked">Your post</IonLabel>
           <IonTextarea
             value={text}
             onIonChange={handleTextChange}
             placeholder="Write something..."
+            rows={6}
           />
         </IonItem>
-        <IonButton expand="block" onClick={() => setShowActionSheet(true)}>
+        <IonButton
+          className="mt-8 "
+          color="light"
+          expand="block"
+          onClick={() => setShowActionSheet(true)}
+        >
           <IonIcon icon={camera} slot="start" />
           Add Photo
         </IonButton>
-        <input type="file" onChange={fileChangeHandler} ref={inputPhoto} style={{display: "none"}}/>
+        <input
+          type="file"
+          onChange={fileChangeHandler}
+          ref={inputPhoto}
+          style={{ display: "none" }}
+        />
         {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
         <IonButton expand="block" onClick={handleSubmit}>
           Post
