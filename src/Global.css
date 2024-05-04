@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-ion-button {
-  --color: white;
-  --ion-color-base: transparent !important;
-}
-
 ion-icon {
   --ion-color-base: white;
 }

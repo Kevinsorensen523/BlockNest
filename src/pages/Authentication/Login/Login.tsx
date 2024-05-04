@@ -11,11 +11,13 @@ import {
   IonLabel,
   IonList,
   IonText,
+  IonAvatar,
 } from "@ionic/react";
 import { User, useAuth } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import "./Login.css";
+import Logo from "./../../../../public/BlockNest-logo.jpg";
 
 //interface User { id: string, email: string, username: string, password: string};
 
@@ -59,20 +61,25 @@ const Login: React.FC = () => {
 
   return (
     <IonContent>
-      <div className="login-container md:ion-padding p-10">
-        <div className="login-form md:px-40 md:py-20">
-          <IonLabel position="floating">Username</IonLabel>
-          <IonItem lines="inset" className="mt-4 roundedInput">
-            <IonInput
-              value={username}
-              onIonChange={(e) => setUsername(e.detail.value!)}
-              placeholder="please insert your username"
+      <div className="md:ion-padding p-10 items-center">
+        <IonAvatar className="grid justify-self-center mx-auto md:my-20 my-4 md:w-36 w-28">
+          <img alt="Logo" src={Logo} />
+        </IonAvatar>
+        <div className="login-form sm:px-20 md:px-40 lg:px-56 xl:px-96 md:py-10 py-12">
+          <div>
+            <IonLabel position="floating">Username :</IonLabel>
+            <IonItem lines="inset" className="mt-4 roundedInput">
+              <IonInput
+                value={username}
+                onIonChange={(e) => setUsername(e.detail.value!)}
+                placeholder="please insert your username"
 
-              //clearInput
-            ></IonInput>
-          </IonItem>
+                //clearInput
+              ></IonInput>
+            </IonItem>
+          </div>
           <div className="mt-10">
-            <IonLabel position="floating">Password</IonLabel>
+            <IonLabel position="floating">Password :</IonLabel>
             <IonItem lines="inset" className="mt-4 roundedInput">
               <IonInput
                 type="password"
@@ -85,13 +92,13 @@ const Login: React.FC = () => {
           </div>
           <IonButton
             shape="round"
-            className="md:mt-20 py-10 md:py-0 grid justify-items-center w-24 mx-auto"
+            className="md:mt-20 py-10 md:py-0 grid justify-items-center w-24 h-10 mx-auto authButton"
             onClick={handleLogin}
           >
             Log In
           </IonButton>
         </div>
-        <div className="mx-auto justify-items-center grid">
+        <div className="justify-items-center grid -mt-8 md:mt-0">
           <IonText>
             <Link to="/changePassword">Forgot Password</Link>
           </IonText>

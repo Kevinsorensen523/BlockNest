@@ -60,7 +60,7 @@ const SideMenu: React.FC = () => {
             </IonRow>
           </IonGrid>
         </div>
-        <div className="bottom-0 absolute w-full">
+        {/* <div className="bottom-0 absolute w-full">
           <IonGrid>
             <IonRow className="bg-blue-500 text-white text-center">
               <IonCol>
@@ -73,7 +73,7 @@ const SideMenu: React.FC = () => {
               </IonCol>
             </IonRow>
           </IonGrid>
-        </div>
+        </div> */}
       </IonContent>
     </IonMenu>
   );

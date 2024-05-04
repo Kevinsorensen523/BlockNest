@@ -2,6 +2,11 @@
   --border-radius: 30px;
 }
 
+.authButton {
+  --color: white;
+  --background: #48494c;
+}
+
 /* Add this CSS to your stylesheet */
 ion-content {
   --ion-background-color: black; /* Set the background color of ion-content to white */
