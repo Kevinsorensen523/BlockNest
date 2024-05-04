@@ -83,11 +83,7 @@ const PostCard: React.FC<PostProps> = (props) => {
       </IonRow>
       <IonModal isOpen={showModal} onDidDismiss={toggleModal}>
         <IonGrid>
-          <IonRow className="ion-justify-content-end">
-            <IonButton fill="clear" color="dark" onClick={toggleModal}>
-              <IonIcon slot="icon-only" icon={close} />
-            </IonButton>
-          </IonRow>
+          <IonRow className="ion-justify-content-end"></IonRow>
           <IonRow className="ion-justify-content-center">
             <IonImg
               alt="Full Image"
