@@ -10,7 +10,16 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { home, mail, notifications, people, search } from "ionicons/icons";
+import {
+  addCircle,
+  addOutline,
+  home,
+  mail,
+  notifications,
+  people,
+  personOutline,
+  search,
+} from "ionicons/icons";
 
 import Home from "./pages/UserPages/Home/Home";
 import Likes from "./pages/UserPages/Likes/Likes";
@@ -66,9 +75,9 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/search" component={Search} />
-            <Route exact path="/community" component={Community} />
+            {/* <Route exact path="/community" component={Community} /> */}
             <Route exact path="/notification" component={Notification} />
-            <Route exact path="/message" component={Message} />
+            {/* <Route exact path="/message" component={Message} /> */}
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/post" component={Post} />
             <Route path="/post/:postId" component={Comments} />
@@ -81,15 +90,21 @@ const ProtectedRoutes: React.FC = () => {
             <IonTabButton tab="search" href="/search">
               <IonIcon icon={search} />
             </IonTabButton>
-            <IonTabButton tab="community" href="/community">
-              <IonIcon icon={people} />
+            <IonTabButton tab="post" href="/post">
+              <IonIcon icon={addOutline} />
             </IonTabButton>
+            {/* <IonTabButton tab="community" href="/community">
+              <IonIcon icon={people} />
+            </IonTabButton> */}
             <IonTabButton tab="notification" href="/notification">
               <IonIcon icon={notifications} />
             </IonTabButton>
-            <IonTabButton tab="message" href="/message">
-              <IonIcon icon={mail} />
+            <IonTabButton tab="profile" href="/profile">
+              <IonIcon icon={personOutline} />
             </IonTabButton>
+            {/* <IonTabButton tab="message" href="/message">
+              <IonIcon icon={mail} />
+            </IonTabButton> */}
           </IonTabBar>
         </IonTabs>
       ) : (

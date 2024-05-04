@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         <IonButtons slot="start">
           <IonMenuButton menu="first" autoHide={false} />
         </IonButtons>
-        <IonTitle className="ion-text-center">Blocknest</IonTitle>
+        <IonTitle className="ion-text-center">BlockNest</IonTitle>
         <IonButtons slot="end" onClick={handlePopoverOpen}>
           <IonAvatar>
             <img

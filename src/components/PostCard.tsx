@@ -1,55 +1,101 @@
 import {
   IonAvatar,
+  IonButton,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
+  IonModal,
   IonRow,
   IonThumbnail,
 } from "@ionic/react";
-import React from "react";
+import { heartOutline, chatbubblesOutline } from "ionicons/icons";
+import React, { useState } from "react";
+import { PostObj, User } from "./context/AuthContext";
+import { close } from "ionicons/icons";
 
-const PostCard: React.FC = () => {
+interface PostProps {
+  post: PostObj;
+  user: User;
+}
+
+const PostCard: React.FC<PostProps> = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const likeHandler = () => {
+    console.log(props.post.id);
+  };
+
+  const toggleModal = () => setShowModal(!showModal);
   return (
     <>
-      <IonRow>
-        <IonRow>
-          <IonItem style={{ "--background": "transparent" }} className="pt-1">
-            <IonAvatar slot="start">
-              <img
-                alt="Silhouette of a person's head"
-                src="https://ionicframework.com/docs/img/demos/avatar.svg"
-              />
-            </IonAvatar>
-            <IonCol>
-              <IonCardHeader>
-                <IonCardTitle>Raphael Hutapea</IonCardTitle>
-                <IonCardSubtitle>@hutapea</IonCardSubtitle>
-              </IonCardHeader>
-            </IonCol>
-          </IonItem>
-        </IonRow>
-        <IonRow className="ml-24 pr-24">
-          <IonLabel>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            consectetur purus ipsum, in dapibus velit sagittis in. Sed sodales,
-            mi accumsan finibus porttitor, est leo maximus velit, et vestibulum
-            odio augue sed risus. Pellentesque tempus lorem ac ultrices laoreet.
-            Nulla id eleifend mi, sit amet suscipit nisi. Mauris sagittis
-            vehicula libero quis lacinia. Maecenas rutrum tincidunt arcu non
-            tincidunt. Morbi sed elit non elit pulvinar molestie.
-          </IonLabel>
-          <IonThumbnail className="mt-4 w-full max-w-48 h-auto">
-            <img
-              alt="Silhouette of mountains"
-              src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
-            />
-          </IonThumbnail>
+      <IonItem
+        style={{ "--background": "transparent" }}
+        className="pt-1"
+        lines="none"
+      >
+        <IonAvatar slot="start">
+          <img
+            alt="Profile Picture"
+            src={`http://localhost/blocknest/${props.user.profile_pic}`}
+            className="w-10 h-10"
+          />
+        </IonAvatar>
+        <IonCol>
+          <IonCardHeader>
+            <IonCardTitle>{props.user.real_name}</IonCardTitle>
+            <IonCardSubtitle>@{props.user.username}</IonCardSubtitle>
+          </IonCardHeader>
+        </IonCol>
+      </IonItem>
+      <IonRow className="ml-24 pr-24 grid">
+        <IonLabel>{props.post.content}</IonLabel>
+        <IonThumbnail
+          className="mt-4 w-full max-w-48 h-auto"
+          onClick={toggleModal}
+        >
+          <IonImg
+            alt="Post Image"
+            src={`http://localhost/blocknest/${props.post.image}`}
+          />
+        </IonThumbnail>
+        <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
+          <IonButton fill="clear" color="danger" onClick={likeHandler}>
+            <IonIcon slot="start" icon={heartOutline} />
+            <IonLabel style={{ marginLeft: 10 }}>{props.post.likes}</IonLabel>
+          </IonButton>
+
+          <IonButton
+            fill="clear"
+            color="primary"
+            routerLink={`/post/${props.post.id}`}
+          >
+            <IonIcon slot="start" icon={chatbubblesOutline} />
+            <IonLabel style={{ marginLeft: 10 }}>
+              {props.post.comments}
+            </IonLabel>
+          </IonButton>
         </IonRow>
       </IonRow>
+      <IonModal isOpen={showModal} onDidDismiss={toggleModal}>
+        <IonGrid>
+          <IonRow className="ion-justify-content-end">
+            <IonButton fill="clear" color="dark" onClick={toggleModal}>
+              <IonIcon slot="icon-only" icon={close} />
+            </IonButton>
+          </IonRow>
+          <IonRow className="ion-justify-content-center">
+            <IonImg
+              alt="Full Image"
+              src={`http://localhost/blocknest/${props.post.image}`}
+            />
+          </IonRow>
+        </IonGrid>
+      </IonModal>
     </>
   );
 };

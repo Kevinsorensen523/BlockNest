@@ -4,7 +4,6 @@ import PostCard from "../../../components/PostCard";
 import { IonGrid } from "@ionic/react";
 import { PostObj } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
-import PostCard2 from "../../../components/PostCard2";
 
 const ForYou: React.FC = () => {
   const url = "http://localhost/blocknest/home_page_posts.php";
@@ -18,13 +17,13 @@ const ForYou: React.FC = () => {
       setData(res);
       console.log(res.data);
       setPosts(res.data.post);
-    })
-  }
+    });
+  };
   return (
     <>
       <IonGrid>
         {posts.map((post) => (
-          <PostCard2 post={post} user={post.user} />
+          <PostCard post={post} user={post.user} />
         ))}
       </IonGrid>
     </>

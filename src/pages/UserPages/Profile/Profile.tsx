@@ -123,16 +123,18 @@ const Profile: React.FC = () => {
             </IonNavLink>
           </IonToolbar>
           <IonToolbar>
-            <IonItem style={{ "--background": "transparent" }} className="pt-1">
+            <IonItem
+              style={{ "--background": "transparent" }}
+              className="pt-1 "
+            >
               <IonAvatar slot="start">
                 <img
-                  width={100}
-                  height={100}
-                  alt="Silhouette of a person's head"
+                  alt="Profile Picture"
                   src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+                  className="w-full h-20"
                 />
               </IonAvatar>
-              <IonCol>
+              <IonCol className="ml-20">
                 <IonCardHeader>
                   <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
                   <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
@@ -251,7 +253,9 @@ const Profile: React.FC = () => {
             {selectedSegment === "Posted" && (
               <Posted posts={posts} user={miniU} />
             )}
-            {selectedSegment === "Liked" && <Liked />}
+            {selectedSegment === "Liked" && (
+              <Liked posts={posts} user={miniU} />
+            )}
           </IonContent>
         </IonHeader>
       </IonPage>
