@@ -33,15 +33,19 @@ const Register: React.FC = () => {
   const passRef = useRef<HTMLIonInputElement>();
 
   const handleRegister = () => {
-    console.log("Register with:", email, username, password);
-    // Add your registration logic here
-    const formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("username", username);
-    formdata.append("password", password);
-    axios.post(url, formdata).then((res) => {
-      console.log(res);
-    });
+    if(email && username && password) {
+      console.log("Register with:", email, username, password);
+      // Add your registration logic here
+      const formdata = new FormData();
+      formdata.append("email", email);
+      formdata.append("username", username);
+      formdata.append("password", password);
+      axios.post(url, formdata).then((res) => {
+        console.log(res);
+      });
+    } else {
+      console.log("Please fill out all the data!");
+    }
   };
 
   return (
