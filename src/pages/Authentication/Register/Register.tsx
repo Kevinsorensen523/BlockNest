@@ -108,7 +108,12 @@ const Register: React.FC = () => {
           <div className="mt-6">
             <IonLabel position="floating">Verification Code :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
-              <IonInput placeholder="" clearInput className="flex"></IonInput>
+              <IonInput
+                placeholder=""
+                clearInput
+                className="flex"
+                maxlength={6}
+              ></IonInput>
               <IonButton
                 className="roundedInput"
                 // onClick={handleSendVerificationCode}

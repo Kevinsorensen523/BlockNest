@@ -45,6 +45,7 @@ const Search: React.FC = () => {
                   debounce={1}
                   onIonChange={handleSearchChange}
                   autocapitalize="none"
+                  className="roundedBar"
                 ></IonSearchbar>
               </IonCol>
             </IonRow>
@@ -62,7 +63,11 @@ const Search: React.FC = () => {
                         slot="end"
                         src={result.logo}
                         alt={result.name}
-                        style={{ width: "30px", height: "30px", marginLeft: "10px" }}
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          marginLeft: "10px",
+                        }}
                       />
                     </IonItem>
                   ))}

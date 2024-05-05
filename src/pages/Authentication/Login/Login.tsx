@@ -19,20 +19,17 @@ import { Link } from "react-router-dom";
 import "./Login.css";
 import Logo from "./../../../../public/BlockNest-logo.jpg";
 
-//interface User { id: string, email: string, username: string, password: string};
-
 const Login: React.FC = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState<AxiosResponse>();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null); // Initialize user state with null
 
   const url = "http://localhost/blocknest/login_proses.php";
 
   const handleLogin = () => {
     console.log("Login attempted with:", username, password);
-    // Asumsikan login akan diproses di sini
     const formdata = new FormData();
     formdata.append("username", username);
     formdata.append("password", password);
@@ -40,31 +37,31 @@ const Login: React.FC = () => {
       console.log(res.data);
       setData(res);
       setUser(res.data.user[0]);
-      console.log(res.data.user[0]);
-      console.log(
-        "Login attempted with:",
-        res.data.user[0].username,
-        res.data.user[0].password
-      );
-      const e = res.data.user[0].username;
-      const f = res.data.user[0];
-      console.log(e);
-      login(e, f);
+      localStorage.setItem("userData", JSON.stringify(res.data.user[0])); // Store user data in localStorage
+      login(res.data.user[0].username, res.data.user[0]);
     });
-    /*axios.get(url).then((response) => {
-      setData(response);
-      console.log(response);
-      setUser(response.data.user);
-    });*/
-    console.log("Login attempted with:", user?.username, user?.password);
   };
+
+  useEffect(() => {
+    // Check if user is already logged in on component mount
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      const user = JSON.parse(userData);
+      setUser(user);
+      login(user.username, user);
+    }
+  }, [login]); // Include login in dependencies array to avoid the ESLint warning
 
   return (
     <IonContent>
       <div className="md:ion-padding p-10 items-center">
-        <IonAvatar className="grid justify-self-center mx-auto md:my-20 my-4 md:w-36 w-28">
+        <IonAvatar
+          className="grid justify-self-center mx-auto md:my-20 my-4 md:w-36 w-28"
+          style={{ borderRadius: "80%" }}
+        >
           <img alt="Logo" src={Logo} />
         </IonAvatar>
+
         <div className="login-form sm:px-20 md:px-40 lg:px-56 xl:px-96 md:py-10 py-12">
           <div>
             <IonLabel position="floating">Username :</IonLabel>
@@ -73,8 +70,6 @@ const Login: React.FC = () => {
                 value={username}
                 onIonChange={(e) => setUsername(e.detail.value!)}
                 placeholder="please insert your username"
-
-                //clearInput
               ></IonInput>
             </IonItem>
           </div>
@@ -86,7 +81,6 @@ const Login: React.FC = () => {
                 value={password}
                 onIonChange={(e) => setPassword(e.detail.value!)}
                 placeholder="please insert your correct password"
-                //clearInput
               ></IonInput>
             </IonItem>
           </div>
