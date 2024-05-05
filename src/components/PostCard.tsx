@@ -29,6 +29,7 @@ const PostCard: React.FC<PostProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
   const [isLiked, setIsLiked] = useState(0);
+  const [likes, setLikes] = useState(props.post.likes);
 
   const url = "http://localhost/blocknest/like_post.php";
   const authCtx = useContext(AuthContext);
@@ -50,8 +51,10 @@ const PostCard: React.FC<PostProps> = (props) => {
     formdata.append("user_id", props.user.id.toString() as string);
     if (isLiked == 0) {
       formdata.append("type", "like");
+      setLikes(likes + 1);
     } else {
       formdata.append("type", "unlike");
+      setLikes(likes - 1);
     }
     axios.post(url, formdata).then((res) => {
       setIsLiked(res.data.isLiked);
@@ -121,10 +124,7 @@ const PostCard: React.FC<PostProps> = (props) => {
       </IonItem>
       <IonRow className="md:ml-24 md:pr-24 ml-6 pr-6 grid">
         <IonLabel>{renderPostContent(props.post.content)}</IonLabel>
-        <IonThumbnail
-          className="mt-4 w-full max-w-48 h-auto"
-          onClick={toggleModal}
-        >
+        <IonThumbnail className="mt-4 w-full h-auto" onClick={toggleModal}>
           <IonImg
             alt="Post Image"
             src={`http://localhost/blocknest/${props.post.image}`}
@@ -133,7 +133,7 @@ const PostCard: React.FC<PostProps> = (props) => {
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
           <IonButton fill="clear" color="danger" onClick={likeHandler}>
             <IonIcon slot="start" icon={heartOutline} />
-            <IonLabel style={{ marginLeft: 10 }}>{props.post.likes}</IonLabel>
+            <IonLabel style={{ marginLeft: 10 }}>{likes}</IonLabel>
           </IonButton>
           <IonButton
             fill="clear"

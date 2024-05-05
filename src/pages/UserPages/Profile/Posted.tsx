@@ -18,7 +18,7 @@ interface PostProps {
 const Posted: React.FC<PostProps> = (props) => {
   return (
     <>
-      <IonGrid>
+      <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
         {props.posts.map((post) => (
           <PostCard post={post} user={props.user} />
         ))}

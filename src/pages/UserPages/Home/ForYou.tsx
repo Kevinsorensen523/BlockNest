@@ -21,7 +21,7 @@ const ForYou: React.FC = () => {
   };
   return (
     <>
-      <IonGrid>
+      <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
         {posts.map((post) => (
           <PostCard post={post} user={post.user} />
         ))}
