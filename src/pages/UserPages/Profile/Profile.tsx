@@ -11,6 +11,7 @@ import {
   IonCol,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -36,6 +37,8 @@ import {
 } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 import { PostObj } from "../../../components/context/AuthContext";
+import "./Profile.css";
+import { pencilOutline } from "ionicons/icons";
 
 const Profile: React.FC = () => {
   const authCtx = useContext(AuthContext);
@@ -123,116 +126,135 @@ const Profile: React.FC = () => {
             </IonNavLink>
           </IonToolbar>
           <IonToolbar>
-            <IonItem
-              style={{ "--background": "transparent" }}
-              className="pt-1 "
-            >
-              <IonAvatar slot="start">
-                <img
-                  alt="Profile Picture"
-                  src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
-                  className="w-full h-20"
-                />
-              </IonAvatar>
-              <IonCol className="ml-20">
-                <IonCardHeader>
-                  <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
-                  <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
-                  <IonButton
-                    className="max-w-28 oval-button"
-                    onClick={() => setIsEdit(true)}
-                    color="light"
+            <IonAvatar slot="start">
+              <img
+                alt="Profile Picture"
+                src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+                className="w-96 mr-10"
+              />
+            </IonAvatar>
+            <IonCol>
+              <IonCardHeader>
+                <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
+                <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
+                <IonButton
+                  className="max-w-28 oval-button"
+                  onClick={() => setIsEdit(true)}
+                  color="light"
+                >
+                  Edit Profile
+                </IonButton>
+                <IonModal
+                  isOpen={isEdit}
+                  className="full-screen-modal ion-padding"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <IonHeader>
+                    <IonToolbar>
+                      <IonButtons slot="start">
+                        <IonButton onClick={() => setIsEdit(false)}>
+                          BACK
+                        </IonButton>
+                      </IonButtons>
+                    </IonToolbar>
+                  </IonHeader>
+                  <IonContent
+                    className="ion-padding"
+                    style={{ textAlign: "center" }}
                   >
-                    Edit Profile
-                  </IonButton>
-                  <IonModal
-                    isOpen={isEdit}
-                    className="full-screen-modal ion-padding"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <IonHeader>
-                      <IonToolbar>
-                        <IonButtons slot="start">
-                          <IonButton onClick={() => setIsEdit(false)}>
-                            BACK
-                          </IonButton>
-                        </IonButtons>
-                      </IonToolbar>
-                    </IonHeader>
-                    <IonContent
-                      className="ion-padding"
-                      style={{ textAlign: "center" }}
-                    >
-                      <IonAvatar>
-                        <img
-                          alt="Profile Picture"
-                          src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
-                        />
-                      </IonAvatar>
-                      <IonList>
-                        <IonItem>
-                          <IonInput
-                            label="Full Name :"
-                            value={editFName}
-                            onIonChange={(e) => setEditFName(e.detail.value!)}
-                          ></IonInput>
-                        </IonItem>
-
-                        <IonItem>
-                          <IonInput
-                            label="Username :"
-                            value={editUname}
-                            onIonChange={(e) => setEditUname(e.detail.value!)}
-                          ></IonInput>
-                        </IonItem>
-
-                        <IonItem>
-                          <IonInput
-                            label="Email :"
-                            value={authCtx?.user.email}
-                            disabled={true}
-                          ></IonInput>
-                        </IonItem>
-
-                        <IonItem>
-                          <IonInput
-                            label="Password :"
-                            value="*****************"
-                            disabled={true}
-                          ></IonInput>
-                        </IonItem>
-
-                        <IonItem>
-                          <IonInput
-                            label="Bio :"
-                            value={editBio}
-                            onIonChange={(e) => setEditBio(e.detail.value!)}
-                          ></IonInput>
-                        </IonItem>
-
-                        <IonItem>
-                          <IonLabel>Profile Picture:</IonLabel>
-                          <input type="file" onChange={changeProfilePic} />
-                        </IonItem>
-                      </IonList>
+                    <IonAvatar className="grid justify-self-center mx-auto md:my-20 my-4 md:w-36 w-28">
+                      <img
+                        alt="Profile Picture"
+                        src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+                        className="flex"
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={changeProfilePic} // Panggil fungsi changeProfilePic saat gambar dipilih
+                        className="edit-icon z-10" // Terapkan gaya yang sesuai untuk input yang tersembunyi
+                        style={{ opacity: 0, position: "absolute" }} // Sembunyikan input dan posisikan di atas tombol edit
+                      />
                       <IonButton
-                        className="ion-margin-top max-w-28 oval-button"
-                        expand="block"
+                        className="edit-icon z-10"
+                        onClick={() => {
+                          const inputElement =
+                            document.getElementById("profile-pic-input");
+                          if (inputElement) {
+                            inputElement.click(); // Klik input secara otomatis saat tombol edit di dalam avatar diklik
+                          }
+                        }}
                         color="light"
-                        onClick={handleEditProfile}
+                        size="small"
                       >
-                        Confirm
+                        <IonIcon icon={pencilOutline} />
                       </IonButton>
-                    </IonContent>
-                  </IonModal>
-                </IonCardHeader>
-              </IonCol>
-            </IonItem>
+                    </IonAvatar>
+
+                    <IonList>
+                      <IonItem>
+                        <IonInput
+                          label="Full Name :"
+                          value={editFName}
+                          onIonChange={(e) => setEditFName(e.detail.value!)}
+                        ></IonInput>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonInput
+                          label="Username :"
+                          value={editUname}
+                          onIonChange={(e) => setEditUname(e.detail.value!)}
+                        ></IonInput>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonInput
+                          label="Email :"
+                          value={authCtx?.user.email}
+                          disabled={true}
+                        ></IonInput>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonInput
+                          label="Password :"
+                          value="*****************"
+                          disabled={true}
+                        ></IonInput>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonInput
+                          label="Bio :"
+                          value={editBio}
+                          onIonChange={(e) => setEditBio(e.detail.value!)}
+                        ></IonInput>
+                      </IonItem>
+
+                      <IonItem>
+                        <IonLabel>Profile Picture:</IonLabel>
+                        <input type="file" onChange={changeProfilePic} />
+                      </IonItem>
+                    </IonList>
+                    <IonButton
+                      className="ion-margin-top max-w-28 oval-button"
+                      expand="block"
+                      color="light"
+                      onClick={handleEditProfile}
+                    >
+                      Confirm
+                    </IonButton>
+                  </IonContent>
+                </IonModal>
+              </IonCardHeader>
+            </IonCol>
+
             <IonRow className="ml-4 mb-4">
               <IonLabel>{authCtx?.user.bio}</IonLabel>
             </IonRow>

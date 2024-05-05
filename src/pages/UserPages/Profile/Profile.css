@@ -1,0 +1,9 @@
+ion-avatar > img {
+  border-radius: 50%;
+  height: 8rem;
+  width: 12rem;
+}
+
+.edit-icon {
+  color: blue; /* Ganti warna ikon sesuai kebutuhan */
+}

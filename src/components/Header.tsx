@@ -37,7 +37,7 @@ const Header: React.FC = () => {
   };
 
   const handleLogout = () => {
-    setShowLogoutConfirm(true); // Tampilkan konfirmasi ketika logout dipilih
+    setShowLogoutConfirm(true); // Tampilkan konfirmasi logout
   };
 
   return (
@@ -94,7 +94,7 @@ const Header: React.FC = () => {
             text: "Logout",
             handler: () => {
               logout();
-              history.push("/login"); // Mengarahkan kembali ke halaman login setelah logout
+              history.push("/login");
             },
           },
         ]}

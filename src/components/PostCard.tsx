@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   IonAvatar,
   IonButton,
@@ -15,9 +16,8 @@ import {
   IonThumbnail,
 } from "@ionic/react";
 import { heartOutline, chatbubblesOutline } from "ionicons/icons";
-import React, { useState } from "react";
-import { PostObj, User } from "./context/AuthContext";
 import { close } from "ionicons/icons";
+import { PostObj, User } from "./context/AuthContext";
 
 interface PostProps {
   post: PostObj;
@@ -26,11 +26,52 @@ interface PostProps {
 
 const PostCard: React.FC<PostProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
+
   const likeHandler = () => {
     console.log(props.post.id);
   };
 
   const toggleModal = () => setShowModal(!showModal);
+
+  const findTags = (content: string) => {
+    const words = content.split(" ");
+    const tags: string[] = [];
+    words.forEach((word) => {
+      if (word.startsWith("#")) {
+        tags.push(word.substring(1));
+      } else if (word.startsWith("@")) {
+        tags.push(word.substring(1));
+      }
+    });
+    return tags;
+  };
+
+  const renderPostContent = (content: string) => {
+    const tags = findTags(content);
+    return (
+      <div>
+        {content.split(" ").map((word, index) => {
+          if (word.startsWith("#")) {
+            return (
+              <span key={index} style={{ color: "blue" }}>
+                {word}{" "}
+              </span>
+            );
+          } else if (word.startsWith("@")) {
+            return (
+              <span key={index} style={{ color: "blue" }}>
+                {word}{" "}
+              </span>
+            );
+          } else {
+            return word + " ";
+          }
+        })}
+      </div>
+    );
+  };
+
   return (
     <>
       <IonItem
@@ -52,8 +93,8 @@ const PostCard: React.FC<PostProps> = (props) => {
           </IonCardHeader>
         </IonCol>
       </IonItem>
-      <IonRow className="ml-24 pr-24 grid">
-        <IonLabel>{props.post.content}</IonLabel>
+      <IonRow className="md:ml-24 md:pr-24 ml-6 pr-6 grid">
+        <IonLabel>{renderPostContent(props.post.content)}</IonLabel>
         <IonThumbnail
           className="mt-4 w-full max-w-48 h-auto"
           onClick={toggleModal}
@@ -68,7 +109,6 @@ const PostCard: React.FC<PostProps> = (props) => {
             <IonIcon slot="start" icon={heartOutline} />
             <IonLabel style={{ marginLeft: 10 }}>{props.post.likes}</IonLabel>
           </IonButton>
-
           <IonButton
             fill="clear"
             color="primary"
@@ -81,9 +121,13 @@ const PostCard: React.FC<PostProps> = (props) => {
           </IonButton>
         </IonRow>
       </IonRow>
-      <IonModal isOpen={showModal} onDidDismiss={toggleModal}>
+      <IonModal isOpen={showModal}>
         <IonGrid>
-          <IonRow className="ion-justify-content-end"></IonRow>
+          <IonRow className="ion-justify-content-end">
+            <IonButton fill="clear" color="dark" onClick={toggleModal}>
+              <IonIcon slot="icon-only" icon={close} />
+            </IonButton>
+          </IonRow>
           <IonRow className="ion-justify-content-center">
             <IonImg
               alt="Full Image"

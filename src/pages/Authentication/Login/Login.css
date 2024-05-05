@@ -11,3 +11,9 @@
 ion-content {
   --ion-background-color: black; /* Set the background color of ion-content to white */
 }
+
+ion-avatar > img {
+  border-radius: 50%;
+  height: 8rem;
+  width: 12rem;
+}
