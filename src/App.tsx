@@ -83,7 +83,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route path="/post/:postId" component={Comments} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          <IonTabBar slot="bottom" color="tertiary">
             <IonTabButton tab="home" href="/home">
               <IonIcon icon={home} />
             </IonTabButton>

@@ -7,3 +7,14 @@ ion-avatar > img {
 .edit-icon {
   color: blue; /* Ganti warna ikon sesuai kebutuhan */
 }
+
+.separator-line {
+  border: 0;
+  border-top: 1px solid #ccc; /* Atur warna dan gaya garis sesuai kebutuhan */
+  margin: 10px 0; /* Atur jarak di atas dan di bawah garis pemisah */
+}
+
+.center-grid {
+  display: grid;
+  justify-content: center;
+}

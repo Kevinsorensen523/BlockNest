@@ -40,14 +40,13 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    // Check if user is already logged in on component mount
     const userData = localStorage.getItem("userData");
     if (userData) {
       const user = JSON.parse(userData);
       setUser(user);
       login(user.username, user);
     }
-  }, [login]); // Include login in dependencies array to avoid the ESLint warning
+  }, [login]);
 
   return (
     <IonContent>

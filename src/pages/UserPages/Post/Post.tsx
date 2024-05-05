@@ -19,6 +19,7 @@ import {
   IonAvatar,
   IonCardHeader,
   IonCardSubtitle,
+  IonGrid,
 } from "@ionic/react";
 import { camera, images, close } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
@@ -111,13 +112,14 @@ const Post: React.FC = () => {
             <img
               alt="Profile Picture"
               src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+              className="w-10 h-10"
             />
           </IonAvatar>
           <IonCardHeader>
             <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
           </IonCardHeader>
         </IonItem>
-        <IonItem>
+        <IonItem className="mx-20">
           <IonLabel position="stacked">Your post</IonLabel>
           <IonTextarea
             value={text}
@@ -126,25 +128,27 @@ const Post: React.FC = () => {
             rows={6}
           />
         </IonItem>
-        <IonButton
-          className="mt-8 "
-          color="light"
-          expand="block"
-          onClick={() => setShowActionSheet(true)}
-        >
-          <IonIcon icon={camera} slot="start" />
-          Add Photo
-        </IonButton>
-        <input
-          type="file"
-          onChange={fileChangeHandler}
-          ref={inputPhoto}
-          style={{ display: "none" }}
-        />
-        {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
-        <IonButton expand="block" onClick={handleSubmit}>
-          Post
-        </IonButton>
+        <IonGrid>
+          <IonButton
+            className="mt-8 "
+            color="light"
+            expand="block"
+            onClick={() => setShowActionSheet(true)}
+          >
+            <IonIcon icon={camera} slot="start" />
+            Add Photo
+          </IonButton>
+          <input
+            type="file"
+            onChange={fileChangeHandler}
+            ref={inputPhoto}
+            style={{ display: "none" }}
+          />
+          {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
+          <IonButton expand="block" onClick={handleSubmit}>
+            Post
+          </IonButton>
+        </IonGrid>
         <IonActionSheet
           isOpen={showActionSheet}
           onDidDismiss={() => setShowActionSheet(false)}

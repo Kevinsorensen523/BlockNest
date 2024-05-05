@@ -54,13 +54,13 @@ const PostCard: React.FC<PostProps> = (props) => {
         {content.split(" ").map((word, index) => {
           if (word.startsWith("#")) {
             return (
-              <span key={index} style={{ color: "blue" }}>
+              <span key={index} style={{ color: "#7cd3f8" }}>
                 {word}{" "}
               </span>
             );
           } else if (word.startsWith("@")) {
             return (
-              <span key={index} style={{ color: "blue" }}>
+              <span key={index} style={{ color: "#7cd3f8" }}>
                 {word}{" "}
               </span>
             );
