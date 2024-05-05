@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   IonAvatar,
   IonButton,
@@ -17,7 +17,8 @@ import {
 } from "@ionic/react";
 import { heartOutline, chatbubblesOutline } from "ionicons/icons";
 import { close } from "ionicons/icons";
-import { PostObj, User } from "./context/AuthContext";
+import { AuthContext, PostObj, User } from "./context/AuthContext";
+import axios from "axios";
 
 interface PostProps {
   post: PostObj;
@@ -27,9 +28,34 @@ interface PostProps {
 const PostCard: React.FC<PostProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
+  const [isLiked, setIsLiked] = useState(0);
+
+  const url = "http://localhost/blocknest/like_post.php";
+  const authCtx = useContext(AuthContext);
+  
+  useEffect(()=>{
+    const formdata = new FormData();
+    formdata.append("post_id", props.post.id.toString() as string);
+    formdata.append("user_id", authCtx?.user.id.toString() as string);
+    formdata.append("type", "check");
+    axios.post(url, formdata).then((res) => {
+      setIsLiked(res.data.isLiked);
+    });
+  }, []);
 
   const likeHandler = () => {
-    console.log(props.post.id);
+    console.log(isLiked);
+    const formdata = new FormData();
+    formdata.append("post_id", props.post.id.toString() as string);
+    formdata.append("user_id", props.user.id.toString() as string);
+    if(isLiked == 0) {
+      formdata.append("type", "like");
+    } else {
+      formdata.append("type", "unlike");
+    }
+    axios.post(url, formdata).then((res) => {
+      setIsLiked(res.data.isLiked);
+    });
   };
 
   const toggleModal = () => setShowModal(!showModal);
