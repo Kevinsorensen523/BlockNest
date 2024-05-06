@@ -11,6 +11,7 @@ import {
   IonButton,
   IonIcon,
   IonLabel,
+  IonToggle,
 } from "@ionic/react";
 import {
   home,
@@ -60,20 +61,20 @@ const SideMenu: React.FC = () => {
             </IonRow>
           </IonGrid>
         </div>
-        {/* <div className="bottom-0 absolute w-full">
+        <div className="bottom-0 absolute w-full">
           <IonGrid>
             <IonRow className="bg-blue-500 text-white text-center">
               <IonCol>
                 <IonLabel color="light">Untuk Profile</IonLabel>
               </IonCol>
             </IonRow>
-            <IonRow className="bg-green-500 text-white text-center">
+            <IonRow className="bg-slate-500 text-white text-center">
               <IonCol>
-                <IonLabel color="light">Dark Mode</IonLabel>
+                <IonToggle labelPlacement="start">Dark Mode</IonToggle>
               </IonCol>
             </IonRow>
           </IonGrid>
-        </div> */}
+        </div>
       </IonContent>
     </IonMenu>
   );

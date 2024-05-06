@@ -10,13 +10,15 @@ import {
   IonLabel,
   IonTitle,
   IonIcon,
+  IonRouterLink,
 } from "@ionic/react";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
 
 const Search: React.FC = () => {
-  const data = [
+  const initialData = [
     { name: "Bitcoin", logo: "bitcoin-logo.png" },
     { name: "Ethereum", logo: "ethereum-logo.png" },
     { name: "Solana", logo: "solana-logo.png" },
@@ -25,11 +27,27 @@ const Search: React.FC = () => {
     { name: "Ondo", logo: "ondo-logo.png" },
     { name: "Solidity", logo: "solidity-logo.png" },
   ];
-  let [results, setResults] = useState([...data]);
+  const [results, setResults] = useState([...initialData]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const history = useHistory();
 
   const handleSearchChange = (event: CustomEvent) => {
-    const query = event.detail.value!.toLowerCase();
-    setResults(data.filter((d) => d.name.toLowerCase().includes(query)));
+    const query = event.detail.value || "";
+    setSearchQuery(query);
+    const filteredResults = initialData.filter((d) =>
+      d.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setResults(filteredResults);
+  };
+
+  const handleItemClick = (itemName: string) => {
+    history.push(`/search/${itemName}`);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      history.push(`/search/${searchQuery}`);
+    }
   };
 
   return (
@@ -44,6 +62,7 @@ const Search: React.FC = () => {
                 <IonSearchbar
                   debounce={1}
                   onIonChange={handleSearchChange}
+                  onKeyPress={handleKeyPress}
                   autocapitalize="none"
                   className="roundedBar"
                 ></IonSearchbar>
@@ -56,19 +75,13 @@ const Search: React.FC = () => {
                 </IonTitle>
                 <IonList>
                   {results.map((result, index) => (
-                    <IonItem key={index}>
+                    <IonItem
+                      key={index}
+                      button
+                      onClick={() => handleItemClick(result.name)}
+                    >
                       <IonIcon slot="start" icon="search-outline" />
                       <IonLabel>{result.name}</IonLabel>
-                      <img
-                        slot="end"
-                        src={result.logo}
-                        alt={result.name}
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          marginLeft: "10px",
-                        }}
-                      />
                     </IonItem>
                   ))}
                 </IonList>
