@@ -11,11 +11,17 @@ import {
   IonImg,
   IonItem,
   IonLabel,
+  IonList,
   IonModal,
+  IonPopover,
   IonRow,
   IonThumbnail,
 } from "@ionic/react";
-import { heartOutline, chatbubblesOutline } from "ionicons/icons";
+import {
+  heartOutline,
+  chatbubblesOutline,
+  ellipsisVertical,
+} from "ionicons/icons";
 import { close } from "ionicons/icons";
 import { AuthContext, PostObj, User } from "./context/AuthContext";
 import axios from "axios";
@@ -28,6 +34,8 @@ interface PostProps {
 
 const PostCard: React.FC<PostProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
+  const [popoverEvent, setPopoverEvent] = useState<any>(null);
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
   const [isLiked, setIsLiked] = useState(0);
   const [likes, setLikes] = useState(props.post.likes);
@@ -111,10 +119,28 @@ const PostCard: React.FC<PostProps> = (props) => {
     );
   };
 
+  const handleEditClick = () => {
+    // Logika untuk meng-handle klik edit di sini
+    setShowPopover(false);
+  };
+
+  const handleDeleteClick = () => {
+    // Logika untuk meng-handle klik delete di sini
+    setShowPopover(false);
+  };
+
+  const handleShareClick = () => {
+    setShowPopover(false);
+  };
+
+  const handleReportClick = () => {
+    setShowPopover(false);
+  };
+
   return (
     <>
       <IonItem
-        style={{ "--background": "transparent" }}
+        style={{ "--background": "transparent", cursor: "pointer" }}
         className="pt-1"
         lines="none"
       >
@@ -123,13 +149,35 @@ const PostCard: React.FC<PostProps> = (props) => {
             alt="Profile Picture"
             src={`http://localhost/blocknest/${props.user.profile_pic}`}
             className="w-10 h-10"
+            onClick={() => history.push(`/user/${props.user.username}`)}
           />
         </IonAvatar>
         <IonCol>
           <IonCardHeader>
-            <IonCardTitle>{props.user.real_name}</IonCardTitle>
-            <IonCardSubtitle>@{props.user.username}</IonCardSubtitle>
+            <IonCardTitle
+              onClick={() => history.push(`/user/${props.user.username}`)}
+            >
+              {props.user.real_name}
+            </IonCardTitle>
+            <IonCardSubtitle
+              onClick={() => history.push(`/user/${props.user.username}`)}
+            >
+              @{props.user.username}
+            </IonCardSubtitle>
           </IonCardHeader>
+        </IonCol>
+        <IonCol className="ion-text-end mr-16">
+          <IonButton
+            fill="clear"
+            color="dark"
+            onClick={(e: any) => {
+              e.persist();
+              setPopoverEvent(e.nativeEvent);
+              setShowPopover(true);
+            }}
+          >
+            <IonIcon slot="icon-only" icon={ellipsisVertical} />
+          </IonButton>
         </IonCol>
       </IonItem>
       <IonRow className="md:ml-24 md:pr-24 ml-6 pr-6 grid">
@@ -155,6 +203,31 @@ const PostCard: React.FC<PostProps> = (props) => {
               {props.post.comments}
             </IonLabel>
           </IonButton>
+
+          <IonPopover
+            isOpen={showPopover}
+            onDidDismiss={() => setShowPopover(false)}
+            event={popoverEvent}
+          >
+            <IonList>
+              <IonItem button onClick={handleShareClick}>
+                <IonLabel>Share</IonLabel>
+              </IonItem>
+              <IonItem button onClick={handleReportClick}>
+                <IonLabel>Report</IonLabel>
+              </IonItem>
+              {authCtx?.user.id === props.user.id && (
+                <>
+                  <IonItem button onClick={handleEditClick}>
+                    <IonLabel>Edit</IonLabel>
+                  </IonItem>
+                  <IonItem button onClick={handleDeleteClick}>
+                    <IonLabel>Delete</IonLabel>
+                  </IonItem>
+                </>
+              )}
+            </IonList>
+          </IonPopover>
         </IonRow>
       </IonRow>
       <IonModal isOpen={showModal}>

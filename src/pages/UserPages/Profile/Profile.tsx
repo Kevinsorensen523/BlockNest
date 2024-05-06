@@ -230,7 +230,7 @@ const Profile: React.FC = () => {
                               <IonRow>
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
-                                    Username:
+                                    Full Name:
                                   </IonLabel>
                                 </IonCol>
                                 <IonCol>
@@ -238,7 +238,12 @@ const Profile: React.FC = () => {
                                     lines="inset"
                                     className="roundedInput md:w-96 w-64"
                                   >
-                                    <IonInput placeholder="please insert your username"></IonInput>
+                                    <IonInput
+                                      value={editFName}
+                                      onIonChange={(e) =>
+                                        setEditFName(e.detail.value!)
+                                      }
+                                    ></IonInput>
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
@@ -253,14 +258,19 @@ const Profile: React.FC = () => {
                                     lines="inset"
                                     className="roundedInput md:w-96 w-64"
                                   >
-                                    <IonInput placeholder="please insert your username"></IonInput>
+                                    <IonInput
+                                      value={editUname}
+                                      onIonChange={(e) =>
+                                        setEditUname(e.detail.value!)
+                                      }
+                                    ></IonInput>
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
                               <IonRow>
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
-                                    Username:
+                                    Email:
                                   </IonLabel>
                                 </IonCol>
                                 <IonCol>
@@ -268,14 +278,17 @@ const Profile: React.FC = () => {
                                     lines="inset"
                                     className="roundedInput md:w-96 w-64"
                                   >
-                                    <IonInput placeholder="please insert your username"></IonInput>
+                                    <IonInput
+                                      value={authCtx?.user.email}
+                                      disabled={true}
+                                    ></IonInput>
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
                               <IonRow>
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
-                                    Username:
+                                    Password:
                                   </IonLabel>
                                 </IonCol>
                                 <IonCol>
@@ -283,58 +296,32 @@ const Profile: React.FC = () => {
                                     lines="inset"
                                     className="roundedInput md:w-96 w-64"
                                   >
-                                    <IonInput placeholder="please insert your username"></IonInput>
+                                    <IonInput
+                                      value="*****************"
+                                      disabled={true}
+                                    ></IonInput>
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
-
+                              <IonRow>
+                                <IonCol className="mt-4">
+                                  <IonLabel position="floating">Bio:</IonLabel>
+                                </IonCol>
+                                <IonCol>
+                                  <IonItem
+                                    lines="inset"
+                                    className="roundedInput md:w-96 w-64"
+                                  >
+                                    <IonInput
+                                      value={editBio}
+                                      onIonChange={(e) =>
+                                        setEditBio(e.detail.value!)
+                                      }
+                                    ></IonInput>
+                                  </IonItem>
+                                </IonCol>
+                              </IonRow>
                               {/* <IonList lines="none">
-                              <IonItem>
-                                <IonInput
-                                  label="Full Name :"
-                                  value={editFName}
-                                  onIonChange={(e) =>
-                                    setEditFName(e.detail.value!)
-                                  }
-                                ></IonInput>
-                              </IonItem>
-
-                              <IonItem>
-                                <IonInput
-                                  label="Username :"
-                                  value={editUname}
-                                  onIonChange={(e) =>
-                                    setEditUname(e.detail.value!)
-                                  }
-                                ></IonInput>
-                              </IonItem>
-
-                              <IonItem>
-                                <IonInput
-                                  label="Email :"
-                                  value={authCtx?.user.email}
-                                  disabled={true}
-                                ></IonInput>
-                              </IonItem>
-
-                              <IonItem>
-                                <IonInput
-                                  label="Password :"
-                                  value="*****************"
-                                  disabled={true}
-                                ></IonInput>
-                              </IonItem>
-
-                              <IonItem>
-                                <IonInput
-                                  label="Bio :"
-                                  value={editBio}
-                                  onIonChange={(e) =>
-                                    setEditBio(e.detail.value!)
-                                  }
-                                ></IonInput>
-                              </IonItem>
-
                               <IonItem>
                                 <IonLabel>Profile Picture:</IonLabel>
                                 <input
