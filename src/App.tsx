@@ -46,6 +46,7 @@ import ChangePassword from "./pages/Authentication/ChangePassword/ChangePassword
 import Register from "./pages/Authentication/Register/Register";
 import Post from "./pages/UserPages/Post/Post";
 import Comments from "./pages/UserPages/Post/Comments";
+import Hastag from "./pages/UserPages/Hastag/Hastag";
 
 setupIonicReact();
 
@@ -79,6 +80,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/notification" component={Notification} />
             {/* <Route exact path="/message" component={Message} /> */}
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/hastag" component={Hastag} />
             <Route exact path="/post" component={Post} />
             <Route path="/post/:postId" component={Comments} />
             <Redirect exact from="/" to="/home" />

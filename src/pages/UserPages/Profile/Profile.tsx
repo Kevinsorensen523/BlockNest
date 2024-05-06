@@ -39,12 +39,13 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { PostObj } from "../../../components/context/AuthContext";
 import "./Profile.css";
-import { pencilOutline } from "ionicons/icons";
+import { arrowDown, arrowUp, pencilOutline } from "ionicons/icons";
 
 const Profile: React.FC = () => {
   const authCtx = useContext(AuthContext);
   const [selectedSegment, setSelectedSegment] = useState("Posted");
   const [isEdit, setIsEdit] = useState(false);
+  const [isToolbarHidden, setIsToolbarHidden] = useState(false);
 
   const [editUname, setEditUname] = useState<string>(
     authCtx?.user.username as string
@@ -125,8 +126,26 @@ const Profile: React.FC = () => {
                 <IonBackButton defaultHref="/home" />
               </IonButtons>
             </IonNavLink>
+            <IonButton
+              className="max-w-28 roundedButton"
+              onClick={() => setIsToolbarHidden(!isToolbarHidden)}
+              color="primary"
+              size="default"
+              shape="round"
+              style={{
+                position: "fixed",
+                bottom: "5px",
+                right: "20px",
+              }}
+            >
+              {isToolbarHidden ? (
+                <IonIcon icon={arrowDown} />
+              ) : (
+                <IonIcon icon={arrowUp} />
+              )}
+            </IonButton>
           </IonToolbar>
-          <IonToolbar>
+          <IonToolbar style={{ display: isToolbarHidden ? "none" : "flex" }}>
             <IonGrid className="md:ml-20 ml-6">
               <IonRow className="mb-6">
                 <IonCol size="auto">
@@ -345,6 +364,8 @@ const Profile: React.FC = () => {
                 <IonLabel>{authCtx?.user.bio}</IonLabel>
               </IonRow>
             </IonGrid>
+          </IonToolbar>
+          <IonToolbar>
             <hr className="separator-line" />
             <IonSegment
               color="dark"
@@ -359,15 +380,13 @@ const Profile: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
-          <IonContent fullscreen>
-            {selectedSegment === "Posted" && (
-              <Posted posts={posts} user={miniU} />
-            )}
-            {selectedSegment === "Liked" && (
-              <Liked posts={posts} user={miniU} />
-            )}
-          </IonContent>
         </IonHeader>
+        <IonContent>
+          {selectedSegment === "Posted" && (
+            <Posted posts={posts} user={miniU} />
+          )}
+          {selectedSegment === "Liked" && <Liked posts={posts} user={miniU} />}
+        </IonContent>
       </IonPage>
     </>
   );

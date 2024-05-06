@@ -19,6 +19,7 @@ import { heartOutline, chatbubblesOutline } from "ionicons/icons";
 import { close } from "ionicons/icons";
 import { AuthContext, PostObj, User } from "./context/AuthContext";
 import axios from "axios";
+import { useHistory } from "react-router";
 
 interface PostProps {
   post: PostObj;
@@ -33,6 +34,7 @@ const PostCard: React.FC<PostProps> = (props) => {
 
   const url = "http://localhost/blocknest/like_post.php";
   const authCtx = useContext(AuthContext);
+  const history = useHistory();
 
   useEffect(() => {
     const formdata = new FormData();
@@ -83,13 +85,21 @@ const PostCard: React.FC<PostProps> = (props) => {
         {content.split(" ").map((word, index) => {
           if (word.startsWith("#")) {
             return (
-              <span key={index} style={{ color: "#7cd3f8" }}>
+              <span
+                key={index}
+                style={{ color: "#7cd3f8", cursor: "pointer" }}
+                onClick={() => history.push(`/hashtag/${word.substring(1)}`)}
+              >
                 {word}{" "}
               </span>
             );
           } else if (word.startsWith("@")) {
             return (
-              <span key={index} style={{ color: "#7cd3f8" }}>
+              <span
+                key={index}
+                style={{ color: "#7cd3f8", cursor: "pointer" }}
+                onClick={() => history.push(`/user/${word.substring(1)}`)}
+              >
                 {word}{" "}
               </span>
             );
