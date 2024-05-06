@@ -156,6 +156,7 @@ const PostCard: React.FC<PostProps> = (props) => {
           <IonCardHeader>
             <IonCardTitle
               onClick={() => history.push(`/user/${props.user.username}`)}
+              className="w-96"
             >
               {props.user.real_name}
             </IonCardTitle>

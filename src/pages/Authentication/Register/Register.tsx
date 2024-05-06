@@ -33,7 +33,7 @@ const Register: React.FC = () => {
   const passRef = useRef<HTMLIonInputElement>();
 
   const handleRegister = () => {
-    if(email && username && password) {
+    if (email && username && password) {
       console.log("Register with:", email, username, password);
       // Add your registration logic here
       const formdata = new FormData();

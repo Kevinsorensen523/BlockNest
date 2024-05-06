@@ -23,6 +23,7 @@ import Following from "./Following";
 import ForYou from "./ForYou";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
+import RecomendedCard from "../../../components/RecomendedCard";
 
 const Home: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState("ForYou");
@@ -49,8 +50,20 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          {selectedSegment === "ForYou" && <ForYou />}
-          {selectedSegment === "Following" && <Following />}
+          <IonGrid>
+            <IonRow>
+              <IonCol className="hidden xl:flex justify-center">
+                <RecomendedCard />
+              </IonCol>
+              <IonCol size="12" size-md="8" size-xl="6">
+                {selectedSegment === "ForYou" && <ForYou />}
+                {selectedSegment === "Following" && <Following />}
+              </IonCol>
+              <IonCol className="hidden sm:block xl:flex justify-center">
+                <RecomendedCard />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </IonContent>
       </IonPage>
     </>

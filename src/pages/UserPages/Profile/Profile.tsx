@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
           </IonToolbar>
           <IonToolbar style={{ display: isToolbarHidden ? "none" : "flex" }}>
             <IonGrid className="md:ml-20 ml-6">
-              <IonRow className="mb-6">
+              <IonRow>
                 <IonCol size="auto">
                   <img
                     alt="Profile Picture"
