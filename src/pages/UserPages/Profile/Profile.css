@@ -4,10 +4,6 @@ ion-avatar > img {
   width: 12rem;
 }
 
-.edit-icon {
-  color: blue; /* Ganti warna ikon sesuai kebutuhan */
-}
-
 .separator-line {
   border: 0;
   border-top: 1px solid #ccc; /* Atur warna dan gaya garis sesuai kebutuhan */

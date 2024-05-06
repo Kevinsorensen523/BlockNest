@@ -10,7 +10,10 @@ module.exports = {
         128: "32rem",
       },
       fontFamily: {
-        sans: ["ui-sans-serif", "system-ui"],
+        sans: ["YourCustomFont", "sans-serif"],
+        inknut: ["Inknut Antiqua", "serif"],
+        abyssinica: ["Abyssinica SIL", "serif"],
+        inder: ["Inder", "serif"],
       },
       screens: {
         sm: "640px",
@@ -19,7 +22,28 @@ module.exports = {
         xl: "1280px",
         "2xl": "1536px",
       },
+      textShadow: {
+        sm: "1px 1px 2px rgba(0, 0, 0, 0.5)",
+        default: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+        lg: "3px 3px 8px rgba(0, 0, 0, 0.75)",
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".text-shadow-sm": {
+          "text-shadow": "1px 1px 2px rgba(0, 0, 0, 0.5)",
+        },
+        ".text-shadow": {
+          "text-shadow": "2px 2px 4px rgba(0, 0, 0, 0.5)",
+        },
+        ".text-shadow-lg": {
+          "text-shadow": "3px 3px 8px rgba(0, 0, 0, 0.75)",
+        },
+      };
+
+      addUtilities(newUtilities);
+    },
+  ],
 };

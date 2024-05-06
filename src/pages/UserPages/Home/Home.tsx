@@ -39,12 +39,13 @@ const Home: React.FC = () => {
               color="dark"
               value={selectedSegment}
               onIonChange={(e) => setSelectedSegment(e.detail.value as string)}
+              className="font-inknut lowercase text-xs"
             >
               <IonSegmentButton value="ForYou">
-                <IonLabel>For You</IonLabel>
+                <IonLabel className="text-xs">For You</IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="Following">
-                <IonLabel>Following</IonLabel>
+                <IonLabel className="text-xs">Following</IonLabel>
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
@@ -52,7 +53,7 @@ const Home: React.FC = () => {
         <IonContent fullscreen>
           <IonGrid>
             <IonRow>
-              <IonCol className="hidden xl:flex justify-center">
+              <IonCol className="hidden xl:flex justify-center ">
                 <RecomendedCard />
               </IonCol>
               <IonCol size="12" size-md="8" size-xl="6">

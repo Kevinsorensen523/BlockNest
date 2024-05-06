@@ -157,12 +157,19 @@ const Profile: React.FC = () => {
                 </IonCol>
                 <IonCol>
                   <IonCardHeader>
-                    <IonCardTitle>{authCtx?.user.real_name}</IonCardTitle>
-                    <IonCardSubtitle>@{authCtx?.user.username}</IonCardSubtitle>
+                    <IonCardTitle className="font-inknut text-md">
+                      {authCtx?.user.real_name}
+                    </IonCardTitle>
+                    <IonCardSubtitle className="font-inder">
+                      @{authCtx?.user.username}
+                    </IonCardSubtitle>
                     <IonButton
-                      className="max-w-28 roundedButton"
+                      className="mt-2 text-xs"
+                      style={{
+                        maxWidth: "100px",
+                      }}
+                      color="dark"
                       onClick={() => setIsEdit(true)}
-                      color="primary"
                       size="default"
                       shape="round"
                     >
@@ -348,7 +355,9 @@ const Profile: React.FC = () => {
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonLabel>{authCtx?.user.bio}</IonLabel>
+                <IonLabel className="font-abyssinica">
+                  {authCtx?.user.bio}
+                </IonLabel>
               </IonRow>
             </IonGrid>
           </IonToolbar>
@@ -360,10 +369,14 @@ const Profile: React.FC = () => {
               onIonChange={(e) => setSelectedSegment(e.detail.value as string)}
             >
               <IonSegmentButton value="Posted">
-                <IonLabel>Posted</IonLabel>
+                <IonLabel className="font-inder capitalize text-lg">
+                  Posted
+                </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="Liked">
-                <IonLabel>Liked</IonLabel>
+                <IonLabel className="font-inder capitalize text-lg">
+                  Liked
+                </IonLabel>
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>

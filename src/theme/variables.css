@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap");
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
@@ -238,4 +239,25 @@ html {
   /* For more information on dynamic font scaling, visit the documentation: 
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+
+@font-face {
+  font-family: "YourCustomFont";
+  src: url("/assets/fonts/your-custom-font.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Abyssinica SIL";
+  src: url("/assets/fonts/AbyssinicaSIL-R.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inder";
+  src: url("/assets/fonts/Inder.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

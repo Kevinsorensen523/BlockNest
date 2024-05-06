@@ -60,23 +60,35 @@ const Login: React.FC = () => {
 
         <div className="login-form sm:px-20 md:px-40 lg:px-56 xl:px-96 md:py-10 py-12">
           <div>
-            <IonLabel position="floating">Username :</IonLabel>
+            <IonLabel
+              className="font-inder capitalize text-lg"
+              position="floating"
+            >
+              Username :
+            </IonLabel>
             <IonItem lines="inset" className="mt-4 roundedInput">
               <IonInput
                 value={username}
                 onIonChange={(e) => setUsername(e.detail.value!)}
                 placeholder="please insert your username"
+                className="font-inder text-lg"
               ></IonInput>
             </IonItem>
           </div>
           <div className="mt-10">
-            <IonLabel position="floating">Password :</IonLabel>
+            <IonLabel
+              className="font-inder capitalize text-lg"
+              position="floating"
+            >
+              Password :
+            </IonLabel>
             <IonItem lines="inset" className="mt-4 roundedInput">
               <IonInput
                 type="password"
                 value={password}
                 onIonChange={(e) => setPassword(e.detail.value!)}
                 placeholder="please insert your correct password"
+                className="font-inder text-lg"
               ></IonInput>
             </IonItem>
           </div>
@@ -89,10 +101,10 @@ const Login: React.FC = () => {
           </IonButton>
         </div>
         <div className="justify-items-center grid -mt-8 md:mt-0">
-          <IonText>
+          <IonText className="font-inder capitalize text-lg">
             <Link to="/changePassword">Forgot Password</Link>
           </IonText>
-          <IonText className="mt-4">
+          <IonText className="mt-4 font-inder capitalize text-lg">
             Doesn't have an account? <Link to="/register">Register</Link>
           </IonText>
         </div>

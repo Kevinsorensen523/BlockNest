@@ -43,7 +43,7 @@ const ChangePassword: React.FC = () => {
           <IonAvatar className="grid justify-self-center mx-auto md:my-20 md:-mt-2 my-4 md:mb-20 mb-8 md:w-36 w-28">
             <img alt="Logo" src={Logo} />
           </IonAvatar>
-          <div>
+          <div className="font-inder text-lg">
             <IonLabel position="floating">Email :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -54,7 +54,7 @@ const ChangePassword: React.FC = () => {
             </IonItem>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 font-inder text-lg">
             <IonLabel position="floating">New Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -66,7 +66,7 @@ const ChangePassword: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder text-lg">
             <IonLabel position="floating">Confirm Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -78,7 +78,7 @@ const ChangePassword: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder text-lg">
             <IonLabel position="floating">Verification Code :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput placeholder="" clearInput className="flex"></IonInput>

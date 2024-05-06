@@ -148,7 +148,7 @@ const PostCard: React.FC<PostProps> = (props) => {
           <img
             alt="Profile Picture"
             src={`http://localhost/blocknest/${props.user.profile_pic}`}
-            className="w-10 h-10"
+            className="w-10 h-10 ml-4"
             onClick={() => history.push(`/user/${props.user.username}`)}
           />
         </IonAvatar>
@@ -156,12 +156,13 @@ const PostCard: React.FC<PostProps> = (props) => {
           <IonCardHeader>
             <IonCardTitle
               onClick={() => history.push(`/user/${props.user.username}`)}
-              className="w-96"
+              className="w-96 font-inknut text-sm"
             >
               {props.user.real_name}
             </IonCardTitle>
             <IonCardSubtitle
               onClick={() => history.push(`/user/${props.user.username}`)}
+              className="font-inknut"
             >
               @{props.user.username}
             </IonCardSubtitle>
@@ -181,8 +182,10 @@ const PostCard: React.FC<PostProps> = (props) => {
           </IonButton>
         </IonCol>
       </IonItem>
-      <IonRow className="md:ml-24 md:pr-24 ml-6 pr-6 grid">
-        <IonLabel>{renderPostContent(props.post.content)}</IonLabel>
+      <IonRow className="md:ml-24 md:pr-24 ml-6 pr-6 grid font-inknut text-xs">
+        <IonLabel className="leading-6">
+          {renderPostContent(props.post.content)}
+        </IonLabel>
         <IonThumbnail className="mt-4 w-full h-auto" onClick={toggleModal}>
           <IonImg
             alt="Post Image"

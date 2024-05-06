@@ -62,7 +62,7 @@ const Register: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonItem>
-          <div className="mt-4 md:mt-8">
+          <div className="mt-4 md:mt-8 font-inder capitalize text-lg">
             <IonLabel position="floating">Username :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -73,7 +73,7 @@ const Register: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder capitalize text-lg">
             <IonLabel position="floating">Email :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -85,7 +85,7 @@ const Register: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder capitalize text-lg">
             <IonLabel position="floating">Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -97,7 +97,7 @@ const Register: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder capitalize text-lg">
             <IonLabel position="floating">Confirm Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -109,7 +109,7 @@ const Register: React.FC = () => {
               ></IonInput>
             </IonItem>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 font-inder capitalize text-lg">
             <IonLabel position="floating">Verification Code :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
@@ -136,8 +136,8 @@ const Register: React.FC = () => {
           </IonButton>
         </div>
         <div className="justify-items-center grid -mt-10 md:mt-0">
-          <IonText>
-            Alreadt have an account? <Link to="/login">Login</Link>
+          <IonText className="font-inder capitalize text-lg">
+            Already have an account? <Link to="/login">Login</Link>
           </IonText>
         </div>
       </div>
