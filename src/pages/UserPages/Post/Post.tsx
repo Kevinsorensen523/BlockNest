@@ -29,6 +29,7 @@ import { AuthContext } from "../../../components/context/AuthContext";
 import axios from "axios";
 import { useHistory } from "react-router";
 import Home from "../Home/Home";
+import "./Post.css";
 
 const Post: React.FC = () => {
   const authCtx = useContext(AuthContext);
@@ -145,7 +146,13 @@ const Post: React.FC = () => {
             style={{ display: "none" }}
           />
           {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
-          <IonButton expand="block" onClick={handleSubmit}>
+          <IonButton
+            color="light"
+            expand="block"
+            shape="round"
+            className="ion-margin-top max-w-28 mx-auto postButton"
+            onClick={handleSubmit}
+          >
             Post
           </IonButton>
         </IonGrid>

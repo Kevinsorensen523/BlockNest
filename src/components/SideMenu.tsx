@@ -76,14 +76,9 @@ const SideMenu: React.FC = () => {
             </IonRow>
           </IonGrid>
         </div>
-        <div className="bottom-0 absolute w-full">
+        <div className="-bottom-1 -left-1 fixed w-80">
           <IonGrid>
-            <IonRow className="bg-blue-500 text-white text-center">
-              <IonCol>
-                <IonLabel color="light">Untuk Profile</IonLabel>
-              </IonCol>
-            </IonRow>
-            <IonRow className="bg-slate-500 text-white text-center">
+            <IonRow className="bg-[#0A0A0A] text-white text-center h-10 items-center">
               <IonCol>
                 <IonToggle labelPlacement="start">Dark Mode</IonToggle>
               </IonCol>

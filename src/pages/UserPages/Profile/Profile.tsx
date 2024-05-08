@@ -127,9 +127,11 @@ const Profile: React.FC = () => {
               </IonButtons>
             </IonNavLink>
             <IonButton
-              className="max-w-28 roundedButton"
+              className={`max-w-28 roundedButton ${
+                !isToolbarHidden ? "bounce" : ""
+              }`}
               onClick={() => setIsToolbarHidden(!isToolbarHidden)}
-              color="primary"
+              color="light"
               size="default"
               shape="round"
               style={{
@@ -160,17 +162,17 @@ const Profile: React.FC = () => {
                     <IonCardTitle className="font-inknut text-md">
                       {authCtx?.user.real_name}
                     </IonCardTitle>
-                    <IonCardSubtitle className="font-inder">
+                    <IonCardSubtitle className="font-inder text-md">
                       @{authCtx?.user.username}
                     </IonCardSubtitle>
                     <IonButton
                       className="mt-2 text-xs edit-button"
                       style={{
-                        maxWidth: "100px",
+                        maxWidth: "150px",
                       }}
                       // color="light"
                       onClick={() => setIsEdit(true)}
-                      size="default"
+                      size="large"
                       shape="round"
                     >
                       <IonLabel className="text-white"> Edit Profile</IonLabel>

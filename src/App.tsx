@@ -17,6 +17,7 @@ import {
   mail,
   notifications,
   people,
+  person,
   personOutline,
   search,
 } from "ionicons/icons";
@@ -47,6 +48,7 @@ import Register from "./pages/Authentication/Register/Register";
 import Post from "./pages/UserPages/Post/Post";
 import Comments from "./pages/UserPages/Post/Comments";
 import Hastag from "./pages/UserPages/Hastag/Hastag";
+import "./App.css";
 
 setupIonicReact();
 
@@ -85,7 +87,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route path="/post/:postId" component={Comments} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          <IonTabBar slot="bottom" className="main-bar">
             <IonTabButton tab="home" href="/home">
               <IonIcon icon={home} />
             </IonTabButton>
@@ -102,7 +104,7 @@ const ProtectedRoutes: React.FC = () => {
               <IonIcon icon={notifications} />
             </IonTabButton>
             <IonTabButton tab="profile" href="/profile">
-              <IonIcon icon={personOutline} />
+              <IonIcon icon={person} />
             </IonTabButton>
             {/* <IonTabButton tab="message" href="/message">
               <IonIcon icon={mail} />

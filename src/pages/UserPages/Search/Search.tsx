@@ -10,12 +10,14 @@ import {
   IonLabel,
   IonTitle,
   IonIcon,
-  IonRouterLink,
 } from "@ionic/react";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
+import { searchOutline } from "ionicons/icons";
+import "./Search.css";
+import "./../../../Global.css";
 
 const Search: React.FC = () => {
   const initialData = [
@@ -64,24 +66,31 @@ const Search: React.FC = () => {
                   onIonChange={handleSearchChange}
                   onKeyPress={handleKeyPress}
                   autocapitalize="none"
-                  className="roundedBar"
+                  className="rounded-bar"
                 ></IonSearchbar>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol size="12">
-                <IonTitle className="ion-text-center mb-4">
+                <IonTitle className="ion-text-center mt-4 text-md">
                   Hot For You
                 </IonTitle>
-                <IonList>
+                <IonList className="bg-black">
                   {results.map((result, index) => (
                     <IonItem
                       key={index}
                       button
                       onClick={() => handleItemClick(result.name)}
+                      className="mt-0.5"
                     >
-                      <IonIcon slot="start" icon="search-outline" />
-                      <IonLabel>{result.name}</IonLabel>
+                      <IonIcon
+                        slot="end"
+                        icon={searchOutline}
+                        className="text-white"
+                      />
+                      <IonTitle className="font-josefin text-md">
+                        {result.name}
+                      </IonTitle>
                     </IonItem>
                   ))}
                 </IonList>

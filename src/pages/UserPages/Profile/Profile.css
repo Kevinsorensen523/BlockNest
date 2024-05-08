@@ -17,7 +17,26 @@ ion-avatar > img {
 
 .edit-button {
   --background: black !important;
-
   --border-color: white;
   --box-shadow: 0 3px 6px 0 rgb(255, 255, 255, 255);
+}
+
+.bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
 }

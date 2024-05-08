@@ -1,3 +1,8 @@
-.roundedBar {
+.rounded-bar {
   --border-radius: 30px;
+  --background: #858585;
+  --color: white;
+  --icon-color: white;
+  --clear-button-color: #fff;
+  --box-shadow: 0 3px 6px 0 rgb(255, 255, 255, 255);
 }

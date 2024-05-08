@@ -14,6 +14,7 @@ module.exports = {
         inknut: ["Inknut Antiqua", "serif"],
         abyssinica: ["Abyssinica SIL", "serif"],
         inder: ["Inder", "serif"],
+        josefin: ["Josefin", "sans-serif"],
       },
       screens: {
         sm: "640px",

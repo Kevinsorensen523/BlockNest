@@ -1,29 +1,25 @@
+import React, { useState, lazy, Suspense } from "react";
 import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonMenu,
   IonMenuButton,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonSegment,
   IonSegmentButton,
   IonLabel,
-  IonButton,
   IonCol,
   IonGrid,
-  IonIcon,
-  IonMenuToggle,
   IonRow,
+  IonToolbar,
 } from "@ionic/react";
-import React, { useState } from "react";
-import { home, heartOutline } from "ionicons/icons";
-import Following from "./Following";
-import ForYou from "./ForYou";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
 import RecomendedCard from "../../../components/RecomendedCard";
+
+// Lazy load the ForYou and Following components
+const Following = lazy(() => import("./Following"));
+const ForYou = lazy(() => import("./ForYou"));
 
 const Home: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState("ForYou");
@@ -53,12 +49,14 @@ const Home: React.FC = () => {
         <IonContent fullscreen>
           <IonGrid>
             <IonRow>
-              <IonCol className="hidden xl:flex justify-center ">
+              <IonCol className="hidden xl:flex justify-center">
                 <RecomendedCard />
               </IonCol>
               <IonCol size="12" size-md="8" size-xl="6">
-                {selectedSegment === "ForYou" && <ForYou />}
-                {selectedSegment === "Following" && <Following />}
+                <Suspense fallback={<div>Loading...</div>}>
+                  {selectedSegment === "ForYou" && <ForYou />}
+                  {selectedSegment === "Following" && <Following />}
+                </Suspense>
               </IonCol>
               <IonCol className="hidden sm:block xl:flex justify-center">
                 <RecomendedCard />
