@@ -12,16 +12,15 @@ import {
   IonTextarea,
   IonIcon,
   IonImg,
-  IonActionSheet,
-  IonBackButton,
-  IonButtons,
-  IonNavLink,
   IonAvatar,
   IonCardHeader,
   IonCardSubtitle,
   IonGrid,
+  IonBackButton,
+  IonButtons,
+  IonRow,
 } from "@ionic/react";
-import { camera, images, close } from "ionicons/icons";
+import { camera, images } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import { decode } from "base64-arraybuffer";
@@ -38,7 +37,6 @@ const Post: React.FC = () => {
   const [text, setText] = useState("");
   const [photo, setPhoto] = useState<string>();
   const [photoFile, setPhotoFile] = useState<File>();
-  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const handleTextChange = (event: CustomEvent) => {
     setText(event.detail.value);
@@ -49,7 +47,7 @@ const Post: React.FC = () => {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: CameraSource.Camera, // Use CameraSource.Prompt to prompt for source
+      source: CameraSource.Camera, // Use CameraSource.Camera to directly open the camera
     });
 
     setPhoto(image.webPath);
@@ -83,8 +81,6 @@ const Post: React.FC = () => {
   const url = "http://localhost/blocknest/add_new_post.php";
 
   const handleSubmit = () => {
-    //console.log("Submitting Post:", text, photo);
-    // Implement your submit logic here, e.g., form submission or API call
     const formData = new FormData();
     formData.append("content", text as string);
     formData.append("user_id", authCtx?.user.id.toString() as string);
@@ -100,15 +96,18 @@ const Post: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonNavLink routerDirection="forward" component={() => <Home />}>
-            <IonButtons>
-              <IonBackButton defaultHref="/home" />
-            </IonButtons>
-          </IonNavLink>
+          <IonTitle>Create Post</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <IonItem style={{ "--background": "transparent" }} className="pt-1">
+      <IonContent className="">
+        <IonItem
+          style={{ "--background": "transparent" }}
+          className="pt-1"
+          lines="none"
+        >
           <IonAvatar slot="start">
             <img
               alt="Profile Picture"
@@ -120,7 +119,13 @@ const Post: React.FC = () => {
             <IonCardSubtitle>@{authCtx?.uName}</IonCardSubtitle>
           </IonCardHeader>
         </IonItem>
-        <IonItem className="mx-20">
+        {photo && (
+          <IonImg
+            className="max-w-96 mx-auto py-10 md:ml-20 md:mx-0 mx-6"
+            src={photo}
+          />
+        )}
+        <IonItem lines="none" className="md:mx-20 mx-6">
           <IonLabel position="stacked">Your post</IonLabel>
           <IonTextarea
             value={text}
@@ -129,15 +134,16 @@ const Post: React.FC = () => {
             rows={6}
           />
         </IonItem>
-        <IonGrid>
-          <IonButton
-            className="mt-8 "
-            color="light"
-            expand="block"
-            onClick={() => setShowActionSheet(true)}
-          >
+        <IonGrid className="flex ml-4 md:ml-20">
+          <IonButton expand="block" onClick={takePhoto} color="light">
             <IonIcon icon={camera} slot="start" />
-            Add Photo
+          </IonButton>
+          <IonButton
+            expand="block"
+            onClick={choosePhotoFromGallery}
+            color="light"
+          >
+            <IonIcon icon={images} slot="start" />
           </IonButton>
           <input
             type="file"
@@ -145,38 +151,16 @@ const Post: React.FC = () => {
             ref={inputPhoto}
             style={{ display: "none" }}
           />
-          {photo && <IonImg className="max-w-96 mx-auto py-10" src={photo} />}
-          <IonButton
-            color="light"
-            expand="block"
-            shape="round"
-            className="ion-margin-top max-w-28 mx-auto postButton"
-            onClick={handleSubmit}
-          >
-            Post
-          </IonButton>
         </IonGrid>
-        <IonActionSheet
-          isOpen={showActionSheet}
-          onDidDismiss={() => setShowActionSheet(false)}
-          buttons={[
-            {
-              text: "Take Photo",
-              icon: camera,
-              handler: takePhoto,
-            },
-            {
-              text: "Choose from Gallery",
-              icon: images,
-              handler: choosePhotoFromGallery,
-            },
-            {
-              text: "Cancel",
-              icon: close,
-              role: "cancel",
-            },
-          ]}
-        />
+
+        <IonButton
+          expand="block"
+          shape="round"
+          className="ion-margin-top max-w-28 mx-auto postButton"
+          onClick={handleSubmit}
+        >
+          Post
+        </IonButton>
       </IonContent>
     </IonPage>
   );

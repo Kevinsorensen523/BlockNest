@@ -157,9 +157,9 @@ const Profile: React.FC = () => {
                     className="w-28 h-28 rounded-full"
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol className="-ml-4 sm:ml-0">
                   <IonCardHeader>
-                    <IonCardTitle className="font-inknut text-md">
+                    <IonCardTitle className="font-inknut sm:text-md text-sm">
                       {authCtx?.user.real_name}
                     </IonCardTitle>
                     <IonCardSubtitle className="font-inder text-md">
@@ -235,9 +235,9 @@ const Profile: React.FC = () => {
                             </IonAvatar>
                           </IonRow>
                           <IonRow>
-                            <div className="login-form  md:py-10 py-12">
-                              <IonRow>
-                                <IonCol className="mt-4">
+                            <div className="login-form md:py-10 py-12 ">
+                              <IonRow className="grid sm:flex">
+                                <IonCol className="mt-4 text-left sm:text-center">
                                   <IonLabel position="floating">
                                     Full Name:
                                   </IonLabel>
@@ -256,7 +256,7 @@ const Profile: React.FC = () => {
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
-                              <IonRow>
+                              <IonRow className="grid sm:flex text-left sm:text-center">
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
                                     Username:
@@ -276,7 +276,7 @@ const Profile: React.FC = () => {
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
-                              <IonRow>
+                              <IonRow className="grid sm:flex text-left sm:text-center">
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
                                     Email:
@@ -294,7 +294,7 @@ const Profile: React.FC = () => {
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
-                              <IonRow>
+                              <IonRow className="grid sm:flex text-left sm:text-center">
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">
                                     Password:
@@ -312,7 +312,7 @@ const Profile: React.FC = () => {
                                   </IonItem>
                                 </IonCol>
                               </IonRow>
-                              <IonRow>
+                              <IonRow className="grid sm:flex text-left sm:text-center">
                                 <IonCol className="mt-4">
                                   <IonLabel position="floating">Bio:</IonLabel>
                                 </IonCol>
