@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonInput,
   IonItem,
   IonLabel,
   IonButton,
-  IonButtons,
   IonIcon,
   IonAvatar,
+  IonButtons,
   IonToast,
+  IonContent,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { arrowBack, eye, eyeOff } from "ionicons/icons";
@@ -34,21 +30,18 @@ const ChangePassword: React.FC = () => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const handleResetPassword = () => {
-    // Check if any field is empty
     if (!email || !newPassword || !confirmPassword || !verificationCode) {
       setToastMessage("Please fill out all fields!");
       setShowToast(true);
       return;
     }
 
-    // Validate email format
     if (!emailRegex.test(email)) {
       setToastMessage("Invalid email format.");
       setShowToast(true);
       return;
     }
 
-    // Validate password format
     if (!passwordRegex.test(newPassword)) {
       setToastMessage(
         "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one symbol."
@@ -57,17 +50,17 @@ const ChangePassword: React.FC = () => {
       return;
     }
 
-    // Ensure passwords match
     if (newPassword !== confirmPassword) {
       setToastMessage("Passwords do not match.");
       setShowToast(true);
       return;
     }
 
-    // Proceed with your password reset logic
+    // Proceed with password reset logic
     console.log("Password reset for:", email);
   };
 
+  // Countdown timer logic
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
@@ -113,7 +106,7 @@ const ChangePassword: React.FC = () => {
             <img alt="Logo" src={Logo} />
           </IonAvatar>
           <div className="font-inder text-lg">
-            <IonLabel position="floating">Email :</IonLabel>
+            <IonLabel position="floating">Email:</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
                 value={email}
@@ -125,7 +118,7 @@ const ChangePassword: React.FC = () => {
           </div>
 
           <div className="mt-6 font-inder text-lg">
-            <IonLabel position="floating">New Password :</IonLabel>
+            <IonLabel position="floating">New Password:</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
                 type={showPassword ? "text" : "password"}
@@ -147,7 +140,7 @@ const ChangePassword: React.FC = () => {
             </IonItem>
           </div>
           <div className="mt-6 font-inder text-lg">
-            <IonLabel position="floating">Confirm Password :</IonLabel>
+            <IonLabel position="floating">Confirm Password:</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
                 type={showConfirmPassword ? "text" : "password"}
@@ -159,7 +152,7 @@ const ChangePassword: React.FC = () => {
               <IonButton
                 fill="clear"
                 slot="end"
-                onClick={togglePasswordVisibility}
+                onClick={toggleConfirmPasswordVisibility}
               >
                 <IonIcon
                   className="text-white"
@@ -169,17 +162,16 @@ const ChangePassword: React.FC = () => {
             </IonItem>
           </div>
           <div className="mt-6 font-inder capitalize text-lg">
-            <IonLabel position="floating">Verification Code :</IonLabel>
+            <IonLabel position="floating">Verification Code:</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
                 value={verificationCode}
-                onIonChange={(e) => {
-                  // Ensure the input is up to 6 characters and includes only digits
-                  const value = e.detail.value || "";
-                  if (/^\d{0,6}$/.test(value)) {
-                    setVerificationCode(value);
-                  }
-                }}
+                // onIonChange={(e) => {
+                //   const value = e.detail.value || "";
+                //   if (/^\d{0,6}$/.test(value)) {
+                //     setVerificationCode(value);
+                //   }
+                // }}
                 placeholder="Enter verification code"
                 className="flex font-inder"
                 maxlength={6}
@@ -187,7 +179,7 @@ const ChangePassword: React.FC = () => {
               />
               <IonButton
                 className="roundedInput"
-                onClick={handleSendVerificationCode}
+                // onClick={handleSendVerificationCode}
                 disabled={countdown > 0}
               >
                 {countdown > 0 ? `Wait ${countdown}s` : "Send"}

@@ -253,7 +253,7 @@ const Register: React.FC = () => {
               />
               <IonButton
                 className="roundedInput"
-                onClick={handleSendVerificationCode}
+                // onClick={handleSendVerificationCode}
                 disabled={countdown > 0}
               >
                 {countdown > 0 ? `Wait ${countdown}s` : "Send"}
