@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
                 !isToolbarHidden ? "bounce" : ""
               }`}
               onClick={() => setIsToolbarHidden(!isToolbarHidden)}
-              color="light"
+              color="dark"
               size="default"
               shape="round"
               style={{

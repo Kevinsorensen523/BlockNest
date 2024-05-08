@@ -19,13 +19,25 @@ import {
 import axios, { AxiosResponse } from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { AuthContext, PostObj, User } from "../../../components/context/AuthContext";
+import {
+  AuthContext,
+  PostObj,
+  User,
+} from "../../../components/context/AuthContext";
 import Header from "../../../components/Header";
 import PostCard from "../../../components/PostCard";
 import Home from "../Home/Home";
 import Comment from "../../../components/Comment";
 
-interface Comment {id: string, user_id: string, post_id: string, content: string, date_posted: string, likes: number, user: User}
+interface Comment {
+  id: string;
+  user_id: string;
+  post_id: string;
+  content: string;
+  date_posted: string;
+  likes: number;
+  user: User;
+}
 
 const Comments: React.FC = () => {
   const pId = useParams<{ postId: string }>().postId;
@@ -68,7 +80,7 @@ const Comments: React.FC = () => {
       setPost(res.data.post);
     });
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     const formdata = new FormData();
     formdata.append("id", pId as string);
     axios.post(url3, formdata).then((res) => {
@@ -104,11 +116,19 @@ const Comments: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <PostCard post={post} user={post.user} />
-        <IonGrid className="ml-24 pr-24">
-          <IonRow>
-            <IonLabel>Post a comment here...</IonLabel>
-          </IonRow>
+        {/* <PostCard post={post} user={post.user} /> */}
+
+        <IonList>
+          {commentSection.map((comm) => (
+            <Comment
+              user={comm.user}
+              content={comm.content}
+              date={comm.date_posted}
+              likes={comm.likes}
+            />
+          ))}
+        </IonList>
+        <IonGrid className="sticky bottom-0 z-10 bg-black">
           <IonRow>
             <IonItem
               style={{ "--background": "transparent", width: 5000 }}
@@ -122,7 +142,7 @@ const Comments: React.FC = () => {
                 />
               </IonAvatar>
               <IonCol>
-                <IonTextarea 
+                <IonTextarea
                   ref={commentRef}
                   placeholder="Your comment here..."
                 />
@@ -130,14 +150,11 @@ const Comments: React.FC = () => {
             </IonItem>
           </IonRow>
           <IonRow>
-            <IonButton style={{ margin: 10 }} onClick={handleSubmit}>Submit</IonButton>
+            <IonButton className="px-10 mt-4" onClick={handleSubmit}>
+              Submit
+            </IonButton>
           </IonRow>
         </IonGrid>
-        <IonList>
-          {commentSection.map(comm => (
-            <Comment user={comm.user} content={comm.content} date={comm.date_posted} likes={comm.likes} />
-          ))}
-        </IonList>
       </IonContent>
     </IonPage>
   );
