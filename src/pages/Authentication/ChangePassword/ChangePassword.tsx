@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonPage,
   IonHeader,
@@ -12,19 +12,88 @@ import {
   IonButtons,
   IonIcon,
   IonAvatar,
+  IonToast,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { arrowBack } from "ionicons/icons";
+import { arrowBack, eye, eyeOff } from "ionicons/icons";
 import Logo from "./../../../../public/BlockNest-logo.jpg";
 
 const ChangePassword: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [countdown, setCountdown] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const history = useHistory();
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
   const handleResetPassword = () => {
+    // Check if any field is empty
+    if (!email || !newPassword || !confirmPassword || !verificationCode) {
+      setToastMessage("Please fill out all fields!");
+      setShowToast(true);
+      return;
+    }
+
+    // Validate email format
+    if (!emailRegex.test(email)) {
+      setToastMessage("Invalid email format.");
+      setShowToast(true);
+      return;
+    }
+
+    // Validate password format
+    if (!passwordRegex.test(newPassword)) {
+      setToastMessage(
+        "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one symbol."
+      );
+      setShowToast(true);
+      return;
+    }
+
+    // Ensure passwords match
+    if (newPassword !== confirmPassword) {
+      setToastMessage("Passwords do not match.");
+      setShowToast(true);
+      return;
+    }
+
+    // Proceed with your password reset logic
     console.log("Password reset for:", email);
-    // Implement your password reset logic here
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    } else if (timer) {
+      clearInterval(timer);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [countdown]);
+
+  const handleSendVerificationCode = () => {
+    // Set the countdown to 30 seconds
+    setCountdown(30);
+    // Simulate sending a verification code
+    console.log("Verification code sent");
+  };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   return (
     <IonContent>
@@ -49,7 +118,8 @@ const ChangePassword: React.FC = () => {
               <IonInput
                 value={email}
                 onIonChange={(e) => setEmail(e.detail.value!)}
-                clearInput
+                placeholder="Fill Your Email"
+                className="flex font-inder"
               ></IonInput>
             </IonItem>
           </div>
@@ -58,44 +128,88 @@ const ChangePassword: React.FC = () => {
             <IonLabel position="floating">New Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
-                type="password"
-                // value={password}
-                // onIonChange={(e) => setPassword(e.detail.value!)}
-                placeholder=""
-                clearInput
+                type={showPassword ? "text" : "password"}
+                value={newPassword}
+                onIonChange={(e) => setNewPassword(e.detail.value!)}
+                placeholder="Fill Your New Password"
+                className="flex font-inder"
               ></IonInput>
+              <IonButton
+                fill="clear"
+                slot="end"
+                onClick={togglePasswordVisibility}
+              >
+                <IonIcon
+                  className="text-white"
+                  icon={showPassword ? eyeOff : eye}
+                />
+              </IonButton>
             </IonItem>
           </div>
           <div className="mt-6 font-inder text-lg">
             <IonLabel position="floating">Confirm Password :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
               <IonInput
-                type="password"
-                // value={password}
-                // onIonChange={(e) => setPassword(e.detail.value!)}
-                placeholder=""
-                clearInput
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onIonChange={(e) => setConfirmPassword(e.detail.value!)}
+                placeholder="Confirm Your Password"
+                className="flex font-inder"
               ></IonInput>
+              <IonButton
+                fill="clear"
+                slot="end"
+                onClick={togglePasswordVisibility}
+              >
+                <IonIcon
+                  className="text-white"
+                  icon={showConfirmPassword ? eyeOff : eye}
+                />
+              </IonButton>
             </IonItem>
           </div>
-          <div className="mt-6 font-inder text-lg">
+          <div className="mt-6 font-inder capitalize text-lg">
             <IonLabel position="floating">Verification Code :</IonLabel>
             <IonItem lines="inset" className="roundedInput">
-              <IonInput placeholder="" clearInput className="flex"></IonInput>
-              <IonButton className="roundedInput" onClick={handleResetPassword}>
-                Send
+              <IonInput
+                value={verificationCode}
+                onIonChange={(e) => {
+                  // Ensure the input is up to 6 characters and includes only digits
+                  const value = e.detail.value || "";
+                  if (/^\d{0,6}$/.test(value)) {
+                    setVerificationCode(value);
+                  }
+                }}
+                placeholder="Enter verification code"
+                className="flex font-inder"
+                maxlength={6}
+                type="text"
+              />
+              <IonButton
+                className="roundedInput"
+                onClick={handleSendVerificationCode}
+                disabled={countdown > 0}
+              >
+                {countdown > 0 ? `Wait ${countdown}s` : "Send"}
               </IonButton>
             </IonItem>
           </div>
           <IonButton
             shape="round"
             className="md:mt-20 py-10 md:py-0 grid justify-items-center w-24 h-10 mx-auto authButton"
-            // onClick={handleResetPassword}
+            onClick={handleResetPassword}
           >
             Confirm
           </IonButton>
         </div>
       </div>
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={3000}
+        color={toastMessage.includes("successful") ? "success" : "danger"}
+      />
     </IonContent>
   );
 };

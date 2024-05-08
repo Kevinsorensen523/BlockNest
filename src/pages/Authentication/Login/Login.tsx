@@ -12,10 +12,12 @@ import {
   IonList,
   IonText,
   IonAvatar,
+  IonToast,
+  IonProgressBar,
 } from "@ionic/react";
 import { User, useAuth } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Login.css";
 import Logo from "./../../../../public/BlockNest-logo.jpg";
 
@@ -23,8 +25,12 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<AxiosResponse>();
-  const [user, setUser] = useState<User | null>(null); // Initialize user state with null
+  const [user, setUser] = useState<User | null>(null);
+  const history = useHistory();
 
   const url = "http://localhost/blocknest/login_proses.php";
 
@@ -33,10 +39,28 @@ const Login: React.FC = () => {
     const formdata = new FormData();
     formdata.append("username", username);
     formdata.append("password", password);
-    axios.post(url, formdata).then((res) => {
-      console.log(res.data);
-      login(res.data.user[0].username, res.data.user[0]);
-    });
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        if (res.data.success) {
+          setLoading(true);
+          login(res.data.user[0].username, res.data.user[0]);
+          // Delay 2 seconds, then navigate to the home page
+          setTimeout(() => {
+            setLoading(false);
+            history.push("/home");
+          }, 2000);
+        } else {
+          // Display toast message if login fails
+          setToastMessage("Invalid username or password.");
+          setShowToast(true);
+        }
+      })
+      .catch(() => {
+        // Handle errors
+        setToastMessage("Error connecting to the server. Please try again.");
+        setShowToast(true);
+      });
   };
 
   useEffect(() => {
@@ -109,6 +133,17 @@ const Login: React.FC = () => {
           </IonText>
         </div>
       </div>
+      {loading && (
+        <IonProgressBar type="indeterminate" color="primary" className="my-4" />
+      )}
+
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={3000}
+        color="danger"
+      />
     </IonContent>
   );
 };

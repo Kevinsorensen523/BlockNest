@@ -9,9 +9,14 @@
 
 /* Add this CSS to your stylesheet */
 ion-content {
-  --ion-background-color: black; /* Set the background color of ion-content to white */
+  --ion-background-color: white;
 }
 
+@media (prefers-color-scheme: dark) {
+  ion-content {
+    --ion-background-color: black;
+  }
+}
 ion-avatar > img {
   border-radius: 50%;
   height: 8rem;

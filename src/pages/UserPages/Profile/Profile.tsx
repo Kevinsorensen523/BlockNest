@@ -164,16 +164,16 @@ const Profile: React.FC = () => {
                       @{authCtx?.user.username}
                     </IonCardSubtitle>
                     <IonButton
-                      className="mt-2 text-xs"
+                      className="mt-2 text-xs edit-button"
                       style={{
                         maxWidth: "100px",
                       }}
-                      color="dark"
+                      // color="light"
                       onClick={() => setIsEdit(true)}
                       size="default"
                       shape="round"
                     >
-                      Edit Profile
+                      <IonLabel className="text-white"> Edit Profile</IonLabel>
                     </IonButton>
 
                     <IonModal

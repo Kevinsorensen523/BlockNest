@@ -14,3 +14,10 @@ ion-avatar > img {
   display: grid;
   justify-content: center;
 }
+
+.edit-button {
+  --background: black !important;
+
+  --border-color: white;
+  --box-shadow: 0 3px 6px 0 rgb(255, 255, 255, 255);
+}
