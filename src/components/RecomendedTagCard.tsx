@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 const RecomendedTagCard: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
 
-  // Fungsi untuk mengambil data tag dari server Python
   const fetchTags = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/top-tags");
@@ -26,7 +25,6 @@ const RecomendedTagCard: React.FC = () => {
     }
   };
 
-  // Ambil tag saat komponen dimount
   useEffect(() => {
     fetchTags();
   }, []);

@@ -11,39 +11,62 @@ import {
   IonTitle,
   IonIcon,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
 import { searchOutline } from "ionicons/icons";
 import "./Search.css";
 import "./../../../Global.css";
+import PostCard from "../../../components/PostCard";
+import { User } from "../../../components/context/AuthContext";
+import { PostObj } from "../../../components/context/AuthContext";
 
-const Search: React.FC = () => {
-  const initialData = [
-    { name: "Bitcoin", logo: "bitcoin-logo.png" },
-    { name: "Ethereum", logo: "ethereum-logo.png" },
-    { name: "Solana", logo: "solana-logo.png" },
-    { name: "Doge", logo: "doge-logo.png" },
-    { name: "Manta", logo: "manta-logo.png" },
-    { name: "Ondo", logo: "ondo-logo.png" },
-    { name: "Solidity", logo: "solidity-logo.png" },
-  ];
-  const [results, setResults] = useState([...initialData]);
+interface SearchResult {
+  top_sentence: string;
+  sentence_count: number;
+}
+
+interface MiniUser {
+  username: string;
+  full_name: string;
+}
+
+interface PostProps {
+  posts: Array<PostObj>;
+  user: User;
+}
+
+const Search: React.FC<PostProps> = (props) => {
+  const [search, setSearch] = useState<SearchResult[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const history = useHistory();
+  const url = "http://localhost:8000/home_page_posts.php";
+
+  const fetchTopSearch = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/top-search");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSearch(data);
+    } catch (error) {
+      console.error("Error fetching top search:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopSearch();
+  }, []);
 
   const handleSearchChange = (event: CustomEvent) => {
     const query = event.detail.value || "";
     setSearchQuery(query);
-    const filteredResults = initialData.filter((d) =>
-      d.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setResults(filteredResults);
   };
 
-  const handleItemClick = (itemName: string) => {
-    history.push(`/search/${itemName}`);
+  const handleItemClick = (topSentence: string) => {
+    history.push(`/search/${encodeURIComponent(topSentence)}`); // Ubah URL sesuai dengan hasil pencarian yang dipilih
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -64,7 +87,7 @@ const Search: React.FC = () => {
                 <IonSearchbar
                   debounce={1}
                   onIonChange={handleSearchChange}
-                  onKeyPress={handleKeyPress}
+                  value={searchQuery}
                   autocapitalize="none"
                   className="rounded-bar"
                 ></IonSearchbar>
@@ -76,11 +99,11 @@ const Search: React.FC = () => {
                   Hot For You
                 </IonTitle>
                 <IonList className="bg-black">
-                  {results.map((result, index) => (
+                  {search.map((result, index) => (
                     <IonItem
                       key={index}
                       button
-                      onClick={() => handleItemClick(result.name)}
+                      onClick={() => handleItemClick(result.top_sentence)}
                       className="mt-0.5"
                     >
                       <IonIcon
@@ -88,9 +111,9 @@ const Search: React.FC = () => {
                         icon={searchOutline}
                         className="text-white"
                       />
-                      <IonTitle className="font-josefin text-md">
-                        {result.name}
-                      </IonTitle>
+                      <IonLabel className="font-josefin text-md md:text-lg">
+                        {result.top_sentence}
+                      </IonLabel>
                     </IonItem>
                   ))}
                 </IonList>

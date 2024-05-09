@@ -59,6 +59,7 @@ const RecomendedUserCard: React.FC = () => {
           {users.map((user, index) => (
             <IonItem
               key={index}
+              lines="inset"
               button
               onClick={() => handleUserClick(user.username)}
             >
@@ -69,7 +70,7 @@ const RecomendedUserCard: React.FC = () => {
                   className="w-10 h-10 rounded-full"
                 />
               </IonThumbnail>
-              <IonLabel className="-mt-2">@{user.username}</IonLabel>
+              <IonLabel className="-mt-2 font-inder">@{user.username}</IonLabel>
             </IonItem>
           ))}
         </IonList>
