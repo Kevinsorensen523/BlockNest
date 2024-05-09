@@ -15,7 +15,8 @@ import {
 } from "@ionic/react";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
-import RecomendedCard from "../../../components/RecomendedCard";
+import RecomendedUserCard from "../../../components/RecomendedUserCard";
+import RecomendedTagCard from "../../../components/RecomendedTagCard";
 
 // Lazy load the ForYou and Following components
 const Following = lazy(() => import("./Following"));
@@ -50,7 +51,7 @@ const Home: React.FC = () => {
           <IonGrid>
             <IonRow>
               <IonCol className="hidden xl:flex justify-center">
-                <RecomendedCard />
+                <RecomendedUserCard />
               </IonCol>
               <IonCol size="12" size-md="8" size-xl="6">
                 <Suspense fallback={<div>Loading...</div>}>
@@ -59,7 +60,7 @@ const Home: React.FC = () => {
                 </Suspense>
               </IonCol>
               <IonCol className="hidden sm:block xl:flex justify-center">
-                <RecomendedCard />
+                <RecomendedTagCard />
               </IonCol>
             </IonRow>
           </IonGrid>
