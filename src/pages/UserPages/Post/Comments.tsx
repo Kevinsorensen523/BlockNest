@@ -41,9 +41,9 @@ interface Comment {
 
 const Comments: React.FC = () => {
   const pId = useParams<{ postId: string }>().postId;
-  const url = "http://localhost/blocknest/select_post.php";
-  const url2 = "http://localhost/blocknest/add_new_comment.php";
-  const url3 = "http://localhost/blocknest/select_post_comments.php";
+  const url = "http://localhost:8000/elect_post.php";
+  const url2 = "http://localhost:8000/add_new_comment.php";
+  const url3 = "http://localhost:8000/select_post_comments.php";
   const [data, setData] = useState<AxiosResponse>();
   const [post, setPost] = useState<PostObj>({
     id: 0,
@@ -136,7 +136,7 @@ const Comments: React.FC = () => {
             >
               <IonAvatar slot="start">
                 <img
-                  src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+                  src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
                   alt="Profile Picture"
                   className="w-10 h-10"
                 />

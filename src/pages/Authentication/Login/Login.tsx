@@ -32,7 +32,7 @@ const Login: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const history = useHistory();
 
-  const url = "http://localhost/blocknest/login_proses.php";
+  const url = "http://localhost:8000/login_proses.php";
 
   const handleLogin = () => {
     console.log("Login attempted with:", username, password);

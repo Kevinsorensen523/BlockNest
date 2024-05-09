@@ -40,7 +40,7 @@ const PostCard: React.FC<PostProps> = (props) => {
   const [isLiked, setIsLiked] = useState(0);
   const [likes, setLikes] = useState(props.post.likes);
 
-  const url = "http://localhost/blocknest/like_post.php";
+  const url = "http://localhost:8000/like_post.php";
   const authCtx = useContext(AuthContext);
   const history = useHistory();
 
@@ -147,7 +147,7 @@ const PostCard: React.FC<PostProps> = (props) => {
         <IonAvatar slot="start">
           <img
             alt="Profile Picture"
-            src={`http://localhost/blocknest/${props.user.profile_pic}`}
+            src={`http://localhost:8000/${props.user.profile_pic}`}
             className="w-10 h-10 ml-4"
             onClick={() => history.push(`/user/${props.user.username}`)}
           />
@@ -189,7 +189,7 @@ const PostCard: React.FC<PostProps> = (props) => {
         <IonThumbnail className="mt-4 w-full h-auto" onClick={toggleModal}>
           <IonImg
             alt="Post Image"
-            src={`http://localhost/blocknest/${props.post.image}`}
+            src={`http://localhost:8000/${props.post.image}`}
           />
         </IonThumbnail>
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
@@ -244,7 +244,7 @@ const PostCard: React.FC<PostProps> = (props) => {
           <IonRow className="ion-justify-content-center">
             <IonImg
               alt="Full Image"
-              src={`http://localhost/blocknest/${props.post.image}`}
+              src={`http://localhost:8000/${props.post.image}`}
             />
           </IonRow>
         </IonGrid>

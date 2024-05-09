@@ -7,7 +7,7 @@ import axios, { AxiosResponse } from "axios";
 const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const ForYou: React.FC = () => {
-  const url = "http://localhost/blocknest/home_page_posts.php";
+  const url = "http://localhost:8000/home_page_posts.php";
   const [data, setData] = useState<AxiosResponse>();
   const [posts, setPosts] = useState<Array<PostObj>>([]);
 

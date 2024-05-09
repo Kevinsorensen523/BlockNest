@@ -52,7 +52,7 @@ const Header: React.FC = () => {
         <IonButtons slot="end" onClick={handlePopoverOpen}>
           <IonAvatar>
             <img
-              src={`http://localhost/blocknest/${authCtx?.user.profile_pic}`}
+              src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
               alt="Profile"
               className="w-12 h-12 mt-2"
             />
