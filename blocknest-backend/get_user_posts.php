@@ -37,7 +37,7 @@ if(isset($_POST['user_id'])) {
     }
 
     $isSucc2 = false;
-    $query2 =  "SELECT * FROM post where user_id = ?";
+    $query2 =  "SELECT * FROM post where user_id = ? ORDER BY post_id DESC";
     $stmt2 = $db->prepare($query2);
     $stmt2->bind_param('s', $user_id);
     $stmt2->execute();

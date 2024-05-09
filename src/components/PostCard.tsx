@@ -16,6 +16,7 @@ import {
   IonPopover,
   IonRow,
   IonThumbnail,
+  IonToast,
 } from "@ionic/react";
 import {
   heartOutline,
@@ -30,6 +31,7 @@ import { useHistory } from "react-router";
 interface PostProps {
   post: PostObj;
   user: User;
+  onDelete?: (postId: number) => void;
 }
 
 const PostCard: React.FC<PostProps> = (props) => {
@@ -39,10 +41,12 @@ const PostCard: React.FC<PostProps> = (props) => {
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
   const [isLiked, setIsLiked] = useState(0);
   const [likes, setLikes] = useState(props.post.likes);
-
-  const url = "http://localhost:8000/like_post.php";
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const authCtx = useContext(AuthContext);
   const history = useHistory();
+
+  const url = "http://localhost:8000/like_post.php";
 
   useEffect(() => {
     const formdata = new FormData();
@@ -106,7 +110,7 @@ const PostCard: React.FC<PostProps> = (props) => {
               <span
                 key={index}
                 style={{ color: "#7cd3f8", cursor: "pointer" }}
-                onClick={() => history.push(`/user/${word.substring(1)}`)}
+                onClick={() => history.push(`/people/${word.substring(1)}`)}
               >
                 {word}{" "}
               </span>
@@ -124,8 +128,26 @@ const PostCard: React.FC<PostProps> = (props) => {
     setShowPopover(false);
   };
 
-  const handleDeleteClick = () => {
-    // Logika untuk meng-handle klik delete di sini
+  const handleDeleteClick = async () => {
+    const deleteUrl = "http://localhost:8000/delete_post.php";
+    const formData = new FormData();
+    formData.append("post_id", props.post.id.toString());
+
+    try {
+      const response = await axios.post(deleteUrl, formData);
+      if (response.data.success) {
+        setToastMessage("Post deleted successfully.");
+        // Call the optional `onDelete` callback if it exists
+        props.onDelete?.(props.post.id);
+      } else {
+        setToastMessage(response.data.message || "Unable to delete the post.");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      setToastMessage("Error deleting post. Try again later.");
+    }
+
+    setShowToast(true);
     setShowPopover(false);
   };
 
@@ -149,19 +171,19 @@ const PostCard: React.FC<PostProps> = (props) => {
             alt="Profile Picture"
             src={`http://localhost:8000/${props.user.profile_pic}`}
             className="w-10 h-10 ml-4"
-            onClick={() => history.push(`/user/${props.user.username}`)}
+            onClick={() => history.push(`/people/${props.user.username}`)}
           />
         </IonAvatar>
         <IonCol>
           <IonCardHeader>
             <IonCardTitle
-              onClick={() => history.push(`/user/${props.user.username}`)}
+              onClick={() => history.push(`/people/${props.user.username}`)}
               className="w-96 font-inknut text-sm"
             >
               {props.user.real_name}
             </IonCardTitle>
             <IonCardSubtitle
-              onClick={() => history.push(`/user/${props.user.username}`)}
+              onClick={() => history.push(`/people/${props.user.username}`)}
               className="font-inknut"
             >
               @{props.user.username}
@@ -249,6 +271,13 @@ const PostCard: React.FC<PostProps> = (props) => {
           </IonRow>
         </IonGrid>
       </IonModal>
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={3000}
+        color={toastMessage.includes("successfully") ? "success" : "danger"}
+      />
     </>
   );
 };

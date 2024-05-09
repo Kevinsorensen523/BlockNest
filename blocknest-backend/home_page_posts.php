@@ -19,7 +19,7 @@ $response = array();
     die(mysqli_connect_error());
 
     $isSucc = false;
-    $query =  "SELECT * FROM post ORDER BY (likes * 0.7 + comment_no * 0.3) DESC";
+    $query =  "SELECT * FROM post ORDER BY post_id DESC ,date_posted DESC, (likes * 0.7 + comment_no * 0.3) DESC";
     $stmt = $db->prepare($query);
     //$stmt->bind_param('s', $user_id);
     $stmt->execute();
