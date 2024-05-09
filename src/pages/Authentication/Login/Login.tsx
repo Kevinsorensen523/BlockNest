@@ -129,7 +129,7 @@ const Login: React.FC = () => {
             <Link to="/changePassword">Forgot Password</Link>
           </IonText>
           <IonText className="mt-4 font-inder capitalize text-lg">
-            Doesn't have an account? <Link to="/register">Register</Link>
+            Don't have an account? <Link to="/register">Register</Link>
           </IonText>
         </div>
       </div>

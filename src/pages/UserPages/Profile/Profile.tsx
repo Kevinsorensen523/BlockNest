@@ -66,6 +66,8 @@ const Profile: React.FC = () => {
     bio: null,
     profile_pic: null,
     posts: 0,
+    followers: 0,
+    following: 0
   });
 
   const url = "http://localhost:8000/update_user.php";

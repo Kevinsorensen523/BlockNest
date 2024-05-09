@@ -33,6 +33,9 @@ if(isset($_POST['user_id'])) {
             $user["username"] = $row_usr["username"];
             $user["real_name"] = $row_usr["full_name"];
             $user["profile_pic"] = $row_usr["profile_pic"];
+            $user["bio"] = $row_usr["bio"];
+            $user["followers"] = $row_usr["followers"];
+            $user["following"] = $row_usr["following"];
             array_push($response["user_mini"], $user);
     }
 
