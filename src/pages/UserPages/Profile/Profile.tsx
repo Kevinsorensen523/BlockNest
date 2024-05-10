@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
     profile_pic: null,
     posts: 0,
     followers: 0,
-    following: 0
+    following: 0,
   });
 
   const url = "http://localhost:8000/update_user.php";
@@ -165,7 +165,8 @@ const Profile: React.FC = () => {
                       {authCtx?.user.real_name}
                     </IonCardTitle>
                     <IonCardSubtitle className="font-inder text-md">
-                      @{authCtx?.user.username}
+                      @{authCtx?.user.username} - {miniU.followers} followers -{" "}
+                      {miniU.following} following
                     </IonCardSubtitle>
                     <IonButton
                       className="mt-2 text-xs edit-button"
