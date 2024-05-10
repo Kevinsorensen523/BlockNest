@@ -37,6 +37,7 @@ import axios, { AxiosResponse } from "axios";
 import { PostObj } from "../../../components/context/AuthContext";
 import { arrowDown, arrowUp, pencilOutline } from "ionicons/icons";
 import Posted from "../Profile/Posted";
+import { useParams } from "react-router";
 
 const People: React.FC = () => {
   const authCtx = useContext(AuthContext);
@@ -44,13 +45,7 @@ const People: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isToolbarHidden, setIsToolbarHidden] = useState(false);
 
-  const [editUname, setEditUname] = useState<string>(
-    authCtx?.user.username as string
-  );
-  const [editFName, setEditFName] = useState<string>(
-    authCtx?.user.real_name as string
-  );
-  const [editBio, setEditBio] = useState<string>(authCtx?.user.bio as string);
+  const uId = useParams<{ userId: string }>().userId;
 
   const [pData, setPData] = useState<AxiosResponse>();
   const [posts, setPost] = useState<Array<PostObj>>([]);
@@ -63,23 +58,28 @@ const People: React.FC = () => {
     bio: null,
     profile_pic: null,
     posts: 0,
+    followers: 0,
+    following: 0
   });
 
-  const url = "http://localhost:8000/update_user.php";
+  const [isFollowed, setIsFollowed] = useState(0);
+
+  const url = "http://localhost:8000/follow_user.php";
   const url2 = "http://localhost:8000/get_user_posts.php";
 
   useEffect(() => {
     getData();
-    console.log(authCtx?.user.profile_pic);
+    checkFollow();
   }, []);
 
   useIonViewWillEnter(() => {
     getData();
+    checkFollow();
   });
 
   const getData = () => {
     const formdata = new FormData();
-    const bla = authCtx?.user.id.toString();
+    const bla = uId.toString();
     formdata.append("user_id", bla as string);
     axios.post(url2, formdata).then((res) => {
       console.log(res.data);
@@ -90,27 +90,49 @@ const People: React.FC = () => {
     });
   };
 
-  const [profPic, setProfPic] = useState<File>();
-  const changeProfilePic = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProfPic(event.target!.files![0]);
-  };
-  const handleEditProfile = () => {
-    const formData = new FormData();
-    formData.append("user_id", authCtx?.user.id.toString() as string);
-    formData.append("username", editUname);
-    formData.append("full_name", editFName);
-    formData.append("bio", editBio);
-    formData.append("foto", profPic as File);
-    axios.post(url, formData).then((res) => {
-      console.log(res);
+  const checkFollow = () => {
+    const formdata = new FormData();
+    formdata.append("following_id", uId as string);
+    formdata.append("follower_id", authCtx?.user.id.toString() as string);
+    formdata.append("type", "check");
+    axios.post(url, formdata).then((res) => {
+      console.log(res.data.isFollowed);
+      const iF = res.data.isFollowed;
+      console.log("iF: " + iF);
+      changeFollowStatus(iF);
     });
-    authCtx?.updateUser(
-      editUname,
-      editFName,
-      editBio,
-      "uploads/profile_pics/" + profPic?.name!
-    );
-    setIsEdit(false);
+    console.log("isFollowed: " + isFollowed);
+  };
+
+  const changeFollowStatus = (iF: number) => {
+    setIsFollowed(iF);
+  }
+
+  const handleFollow = () => {
+    console.log(uId, authCtx?.user.id);
+    if(uId !== authCtx?.user.id.toString()) {
+      if(isFollowed == 0) {
+        const formdata = new FormData();
+        formdata.append("following_id", uId as string);
+        formdata.append("follower_id", authCtx?.user.id.toString() as string);
+        formdata.append("type", "follow");
+        axios.post(url, formdata).then((res) => {
+          setIsFollowed(res.data.isFollowed);
+        });
+        console.log(isFollowed);
+      } else {
+        const formdata = new FormData();
+        formdata.append("following_id", uId as string);
+        formdata.append("follower_id", authCtx?.user.id.toString() as string);
+        formdata.append("type", "unfollow");
+        axios.post(url, formdata).then((res) => {
+          setIsFollowed(res.data.isFollowed);
+        });
+        console.log(isFollowed);
+      }
+    } else {
+      console.log("You cannot follow yourself!");
+    }
   };
 
   return (
@@ -150,17 +172,17 @@ const People: React.FC = () => {
                 <IonCol size="auto">
                   <img
                     alt="Profile Picture"
-                    src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
+                    src={`http://localhost:8000/${miniU.profile_pic}`}
                     className="w-28 h-28 rounded-full"
                   />
                 </IonCol>
                 <IonCol className="-ml-4 sm:ml-0">
                   <IonCardHeader>
                     <IonCardTitle className="font-inknut sm:text-md text-sm">
-                      {authCtx?.user.real_name}
+                      {miniU.real_name}
                     </IonCardTitle>
                     <IonCardSubtitle className="font-inder text-md">
-                      @{authCtx?.user.username}
+                      @{miniU.username} - {miniU.followers} followers - {miniU.following} following
                     </IonCardSubtitle>
                     <IonButton
                       className="mt-2 text-xs edit-button"
@@ -168,7 +190,7 @@ const People: React.FC = () => {
                         maxWidth: "150px",
                       }}
                       // color="light"
-                      onClick={() => setIsEdit(true)}
+                      onClick={() => handleFollow()}
                       size="large"
                       shape="round"
                     >
@@ -179,7 +201,7 @@ const People: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonLabel className="font-abyssinica">
-                  {authCtx?.user.bio}
+                  {miniU.bio}
                 </IonLabel>
               </IonRow>
             </IonGrid>

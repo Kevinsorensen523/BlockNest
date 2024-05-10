@@ -16,6 +16,8 @@ export interface User {
   bio: string | null;
   profile_pic: string | null;
   posts: number;
+  followers: number;
+  following: number;
 }
 
 export interface PostObj {
@@ -68,6 +70,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     bio: null,
     profile_pic: null,
     posts: 0,
+    followers: 0,
+    following: 0
   });
   const history = useHistory();
 
@@ -92,6 +96,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       bio: null,
       profile_pic: null,
       posts: 0,
+      followers: 0,
+    following: 0
     });
     localStorage.removeItem("userData");
     history.push("/login");

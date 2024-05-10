@@ -177,13 +177,13 @@ const PostCard: React.FC<PostProps> = (props) => {
         <IonCol>
           <IonCardHeader>
             <IonCardTitle
-              onClick={() => history.push(`/people/${props.user.username}`)}
+              onClick={() => history.push(`/people/${props.user.id}`)}
               className="w-96 font-inknut text-sm"
             >
               {props.user.real_name}
             </IonCardTitle>
             <IonCardSubtitle
-              onClick={() => history.push(`/people/${props.user.username}`)}
+              onClick={() => history.push(`/people/${props.user.id}`)}
               className="font-inknut"
             >
               @{props.user.username}
@@ -214,6 +214,11 @@ const PostCard: React.FC<PostProps> = (props) => {
             src={`http://localhost:8000/${props.post.image}`}
           />
         </IonThumbnail>
+        <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
+          <IonLabel>
+            Posted on {props.post.date_posted}
+          </IonLabel>
+        </IonRow>
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
           <IonButton fill="clear" color="danger" onClick={likeHandler}>
             <IonIcon slot="start" icon={heartOutline} />

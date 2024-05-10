@@ -41,7 +41,7 @@ interface Comment {
 
 const Comments: React.FC = () => {
   const pId = useParams<{ postId: string }>().postId;
-  const url = "http://localhost:8000/elect_post.php";
+  const url = "http://localhost:8000/select_post.php";
   const url2 = "http://localhost:8000/add_new_comment.php";
   const url3 = "http://localhost:8000/select_post_comments.php";
   const [data, setData] = useState<AxiosResponse>();
@@ -63,6 +63,8 @@ const Comments: React.FC = () => {
       bio: null,
       profile_pic: null,
       posts: 0,
+      followers: 0,
+      following: 0
     },
   });
   const [comment, setComment] = useState<string>();
