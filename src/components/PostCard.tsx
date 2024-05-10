@@ -48,6 +48,38 @@ const PostCard: React.FC<PostProps> = (props) => {
 
   const url = "http://localhost:8000/like_post.php";
 
+  const fetchUserIdByUsername = async (username: string) => {
+    try {
+      const formData = new FormData();
+      formData.append("username", username);
+      const response = await axios.post(
+        "http://localhost:8000/get_user_id.php",
+        formData
+      );
+
+      if (response.data.success) {
+        return response.data.user_id;
+      } else {
+        console.warn(`Unable to find user ID for username: ${username}`);
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error fetching user ID: ${error}`);
+      return null;
+    }
+  };
+
+  const handleMentionClick = async (username: string) => {
+    const userId = await fetchUserIdByUsername(username);
+    if (userId !== null) {
+      if (authCtx?.user.username === username) {
+        history.push("/profile");
+      } else {
+        history.push(`/people/${username}`);
+      }
+    }
+  };
+
   useEffect(() => {
     const formdata = new FormData();
     formdata.append("post_id", props.post.id.toString() as string);
@@ -77,21 +109,15 @@ const PostCard: React.FC<PostProps> = (props) => {
 
   const toggleModal = () => setShowModal(!showModal);
 
-  const findTags = (content: string) => {
-    const words = content.split(" ");
-    const tags: string[] = [];
-    words.forEach((word) => {
-      if (word.startsWith("#")) {
-        tags.push(word.substring(1));
-      } else if (word.startsWith("@")) {
-        tags.push(word.substring(1));
-      }
-    });
-    return tags;
+  const navigateToUserProfileByUsername = (username: string) => {
+    if (authCtx?.user.username === username) {
+      history.push("/profile");
+    } else {
+      history.push(`/people/${username}`);
+    }
   };
 
   const renderPostContent = (content: string) => {
-    const tags = findTags(content);
     return (
       <div>
         {content.split(" ").map((word, index) => {
@@ -100,17 +126,18 @@ const PostCard: React.FC<PostProps> = (props) => {
               <span
                 key={index}
                 style={{ color: "#7cd3f8", cursor: "pointer" }}
-                onClick={() => history.push(`/hashtag/${word.substring(1)}`)}
+                onClick={() => history.push(`/hastag/${word.substring(1)}`)}
               >
                 {word}{" "}
               </span>
             );
           } else if (word.startsWith("@")) {
+            const username = word.substring(1);
             return (
               <span
                 key={index}
                 style={{ color: "#7cd3f8", cursor: "pointer" }}
-                onClick={() => history.push(`/people/${word.substring(1)}`)}
+                onClick={() => handleMentionClick(username)}
               >
                 {word}{" "}
               </span>
@@ -137,7 +164,6 @@ const PostCard: React.FC<PostProps> = (props) => {
       const response = await axios.post(deleteUrl, formData);
       if (response.data.success) {
         setToastMessage("Post deleted successfully.");
-        // Call the optional `onDelete` callback if it exists
         props.onDelete?.(props.post.id);
       } else {
         setToastMessage(response.data.message || "Unable to delete the post.");
@@ -171,19 +197,23 @@ const PostCard: React.FC<PostProps> = (props) => {
             alt="Profile Picture"
             src={`http://localhost:8000/${props.user.profile_pic}`}
             className="w-10 h-10 ml-4"
-            onClick={() => history.push(`/people/${props.user.username}`)}
+            onClick={() => navigateToUserProfileByUsername(props.user.username)}
           />
         </IonAvatar>
         <IonCol>
           <IonCardHeader>
             <IonCardTitle
-              onClick={() => history.push(`/people/${props.user.id}`)}
+              onClick={() =>
+                navigateToUserProfileByUsername(props.user.username)
+              }
               className="w-96 font-inknut text-sm"
             >
               {props.user.real_name}
             </IonCardTitle>
             <IonCardSubtitle
-              onClick={() => history.push(`/people/${props.user.id}`)}
+              onClick={() =>
+                navigateToUserProfileByUsername(props.user.username)
+              }
               className="font-inknut"
             >
               @{props.user.username}
@@ -215,9 +245,7 @@ const PostCard: React.FC<PostProps> = (props) => {
           />
         </IonThumbnail>
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
-          <IonLabel>
-            Posted on {props.post.date_posted}
-          </IonLabel>
+          <IonLabel>Posted on {props.post.date_posted}</IonLabel>
         </IonRow>
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
           <IonButton fill="clear" color="danger" onClick={likeHandler}>
