@@ -40,6 +40,7 @@ interface PostProps {
 const Search: React.FC<PostProps> = (props) => {
   const [search, setSearch] = useState<SearchResult[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchDone, setSearchDone] = useState(false); // Tambahkan variabel state untuk menandai apakah pencarian telah dilakukan
   const history = useHistory();
   const url = "http://localhost:8000/home_page_posts.php";
 
@@ -51,6 +52,7 @@ const Search: React.FC<PostProps> = (props) => {
       }
       const data = await response.json();
       setSearch(data);
+      setSearchDone(true); // Tandai bahwa pencarian telah dilakukan
     } catch (error) {
       console.error("Error fetching top search:", error);
     }
@@ -66,7 +68,7 @@ const Search: React.FC<PostProps> = (props) => {
   };
 
   const handleItemClick = (topSentence: string) => {
-    history.push(`/search/${encodeURIComponent(topSentence)}`); // Ubah URL sesuai dengan hasil pencarian yang dipilih
+    history.push(`/search/${encodeURIComponent(topSentence)}`);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -93,32 +95,49 @@ const Search: React.FC<PostProps> = (props) => {
                 ></IonSearchbar>
               </IonCol>
             </IonRow>
-            <IonRow>
-              <IonCol size="12">
-                <IonTitle className="ion-text-center mt-4 text-md">
-                  Hot For You
-                </IonTitle>
-                <IonList className="bg-black">
-                  {search.map((result, index) => (
-                    <IonItem
-                      key={index}
-                      button
-                      onClick={() => handleItemClick(result.top_sentence)}
-                      className="mt-0.5"
-                    >
-                      <IonIcon
-                        slot="end"
-                        icon={searchOutline}
-                        className="text-white"
-                      />
-                      <IonLabel className="font-josefin text-md md:text-lg">
-                        {result.top_sentence}
-                      </IonLabel>
-                    </IonItem>
-                  ))}
-                </IonList>
-              </IonCol>
-            </IonRow>
+            {searchDone ? ( // Tampilkan hasil pencarian jika pencarian telah dilakukan
+              <IonRow>
+                <IonCol size="12">
+                  <IonTitle className="ion-text-center mt-4 text-md">
+                    Hot For You
+                  </IonTitle>
+                </IonCol>
+                <IonCol size="12">
+                  <IonList className="bg-black">
+                    {search.map((result, index) => (
+                      <IonItem
+                        key={index}
+                        button
+                        onClick={() => handleItemClick(result.top_sentence)}
+                        className="mt-0.5"
+                      >
+                        <IonIcon
+                          slot="end"
+                          icon={searchOutline}
+                          className="text-white"
+                        />
+                        <IonLabel className="font-josefin text-md md:text-lg">
+                          {result.top_sentence}
+                        </IonLabel>
+                      </IonItem>
+                    ))}
+                  </IonList>
+                </IonCol>
+              </IonRow>
+            ) : (
+              <IonRow>
+                {" "}
+                {/* Tampilkan konten "Hot For You" jika pencarian belum dilakukan */}
+                <IonCol size="12">
+                  <IonTitle className="ion-text-center mt-4 text-md">
+                    Hot For You
+                  </IonTitle>
+                  <IonList className="bg-black">
+                    {/* Render konten "Hot For You" di sini */}
+                  </IonList>
+                </IonCol>
+              </IonRow>
+            )}
           </IonGrid>
         </IonContent>
       </IonPage>

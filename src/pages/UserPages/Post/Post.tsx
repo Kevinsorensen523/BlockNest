@@ -121,7 +121,7 @@ const Post: React.FC = () => {
         </IonItem>
         {photo && (
           <IonImg
-            className="max-w-96 mx-auto py-10 md:ml-20 md:mx-0 mx-6"
+            className="max-w-96 mx-auto py-10 md:ml-20 md:mx-0"
             src={photo}
           />
         )}
