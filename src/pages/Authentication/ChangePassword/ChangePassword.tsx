@@ -30,7 +30,7 @@ const ChangePassword: React.FC = () => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   const handleResetPassword = () => {
-    if (!email || !newPassword || !confirmPassword || !verificationCode) {
+    if (!email || !newPassword || !confirmPassword) {
       setToastMessage("Please fill out all fields!");
       setShowToast(true);
       return;
@@ -127,7 +127,7 @@ const ChangePassword: React.FC = () => {
                 placeholder="Fill Your New Password"
                 className="flex font-inder"
               ></IonInput>
-              <IonButton
+              {/* <IonButton
                 fill="clear"
                 slot="end"
                 onClick={togglePasswordVisibility}
@@ -136,7 +136,7 @@ const ChangePassword: React.FC = () => {
                   className="text-white"
                   icon={showPassword ? eyeOff : eye}
                 />
-              </IonButton>
+              </IonButton> */}
             </IonItem>
           </div>
           <div className="mt-6 font-inder text-lg">
@@ -149,7 +149,7 @@ const ChangePassword: React.FC = () => {
                 placeholder="Confirm Your Password"
                 className="flex font-inder"
               ></IonInput>
-              <IonButton
+              {/* <IonButton
                 fill="clear"
                 slot="end"
                 onClick={toggleConfirmPasswordVisibility}
@@ -158,7 +158,7 @@ const ChangePassword: React.FC = () => {
                   className="text-white"
                   icon={showConfirmPassword ? eyeOff : eye}
                 />
-              </IonButton>
+              </IonButton> */}
             </IonItem>
           </div>
           <div className="mt-6 font-inder capitalize text-lg">

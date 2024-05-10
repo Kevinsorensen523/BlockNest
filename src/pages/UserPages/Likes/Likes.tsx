@@ -1,43 +1,42 @@
-// Likes.tsx
-import React from "react";
-import {
-  IonContent,
-  IonPage,
-  IonRow,
-  IonCol,
-  IonGrid,
-  IonIcon,
-} from "@ionic/react";
-import { heart } from "ionicons/icons";
-import SideMenu from "../../../components/SideMenu";
-import Header from "../../../components/Header";
-import { PostObj, User } from "../../../components/context/AuthContext";
-import PostCard from "../../../components/PostCard";
+import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
+import { IonGrid } from "@ionic/react";
+import { AuthContext, PostObj } from "../../../components/context/AuthContext";
+import axios from "axios";
 
-interface MiniUser {
-  username: string;
-  full_name: string;
-}
+const PostCard = lazy(() => import("../../../components/PostCard"));
 
-interface PostProps {
-  posts: Array<PostObj>;
-  user: User;
-}
+const Likes: React.FC = () => {
+  const authCtx = useContext(AuthContext);
+  const url = "http://localhost:8000/liked_posts.php";
+  const [posts, setPosts] = useState<Array<PostObj>>([]);
 
-const Likes: React.FC<PostProps> = (props) => {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    const formdata = new FormData();
+    formdata.append("user_id", authCtx?.user.id.toString() as string);
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        console.log(res.data);
+        setPosts(res.data.post);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  };
+
   return (
     <>
-      <SideMenu />
-      <IonPage id="main-content">
-        <Header />
-        {/* <IonContent fullscreen>
-          <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
-            {props.posts.map((post) => (
-              <PostCard post={post} user={props.user} />
-            ))}
-          </IonGrid>
-        </IonContent> */}
-      </IonPage>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <IonGrid>
+          {posts.map((post, index) => (
+            <PostCard key={index} post={post} user={post.user} />
+          ))}
+        </IonGrid>
+      </Suspense>
     </>
   );
 };

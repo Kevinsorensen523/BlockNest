@@ -17,6 +17,7 @@ import {
   IonRow,
   IonThumbnail,
   IonToast,
+  IonAlert,
 } from "@ionic/react";
 import {
   heartOutline,
@@ -38,7 +39,7 @@ const PostCard: React.FC<PostProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const [popoverEvent, setPopoverEvent] = useState<any>(null);
-  const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [isLiked, setIsLiked] = useState(0);
   const [likes, setLikes] = useState(props.post.likes);
   const [showToast, setShowToast] = useState(false);
@@ -47,6 +48,7 @@ const PostCard: React.FC<PostProps> = (props) => {
   const history = useHistory();
 
   const url = "http://localhost:8000/like_post.php";
+  const deleteUrl = "http://localhost:8000/delete_post.php";
 
   const fetchUserIdByUsername = async (username: string) => {
     try {
@@ -91,11 +93,10 @@ const PostCard: React.FC<PostProps> = (props) => {
   }, []);
 
   const likeHandler = () => {
-    console.log(isLiked);
     const formdata = new FormData();
-    formdata.append("post_id", props.post.id.toString() as string);
-    formdata.append("user_id", props.user.id.toString() as string);
-    if (isLiked == 0) {
+    formdata.append("post_id", props.post.id.toString());
+    formdata.append("user_id", props.user.id.toString());
+    if (isLiked === 0) {
       formdata.append("type", "like");
       setLikes(likes + 1);
     } else {
@@ -151,12 +152,10 @@ const PostCard: React.FC<PostProps> = (props) => {
   };
 
   const handleEditClick = () => {
-    // Logika untuk meng-handle klik edit di sini
     setShowPopover(false);
   };
 
-  const handleDeleteClick = async () => {
-    const deleteUrl = "http://localhost:8000/delete_post.php";
+  const confirmDeletePost = async () => {
     const formData = new FormData();
     formData.append("post_id", props.post.id.toString());
 
@@ -165,6 +164,7 @@ const PostCard: React.FC<PostProps> = (props) => {
       if (response.data.success) {
         setToastMessage("Post deleted successfully.");
         props.onDelete?.(props.post.id);
+        window.location.reload(); // Reload seluruh halaman
       } else {
         setToastMessage(response.data.message || "Unable to delete the post.");
       }
@@ -174,6 +174,10 @@ const PostCard: React.FC<PostProps> = (props) => {
     }
 
     setShowToast(true);
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteAlert(true);
     setShowPopover(false);
   };
 
@@ -304,6 +308,26 @@ const PostCard: React.FC<PostProps> = (props) => {
           </IonRow>
         </IonGrid>
       </IonModal>
+
+      {/* Alert Konfirmasi Hapus */}
+      <IonAlert
+        isOpen={showDeleteAlert}
+        onDidDismiss={() => setShowDeleteAlert(false)}
+        header={"Confirm Delete"}
+        message={"Are you sure you want to delete this post?"}
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+            handler: () => setShowDeleteAlert(false),
+          },
+          {
+            text: "Delete",
+            handler: confirmDeletePost,
+          },
+        ]}
+      />
+
       <IonToast
         isOpen={showToast}
         onDidDismiss={() => setShowToast(false)}
