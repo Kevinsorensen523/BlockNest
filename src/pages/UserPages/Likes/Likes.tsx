@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
-import { IonGrid } from "@ionic/react";
+import { IonGrid, IonHeader, IonLabel, IonToolbar } from "@ionic/react";
 import { AuthContext, PostObj } from "../../../components/context/AuthContext";
 import axios from "axios";
 
@@ -30,6 +30,11 @@ const Likes: React.FC = () => {
 
   return (
     <>
+      <IonHeader>
+        <IonToolbar>
+          <IonLabel>Test</IonLabel>
+        </IonToolbar>
+      </IonHeader>
       <Suspense fallback={<div>Loading posts...</div>}>
         <IonGrid>
           {posts.map((post, index) => (

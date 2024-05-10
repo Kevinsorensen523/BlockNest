@@ -1,35 +1,50 @@
-import {
-  IonAvatar,
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonNavLink,
-  IonPage,
-  IonRow,
-  IonTextarea,
-  IonToolbar,
-} from "@ionic/react";
-import axios, { AxiosResponse } from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
-import {
-  AuthContext,
-  PostObj,
-  User,
-} from "../../../components/context/AuthContext";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import { IonGrid, IonHeader, IonLabel, IonToolbar } from "@ionic/react";
+import { PostObj } from "../../../components/context/AuthContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+// Lazy load the PostCard component
+const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const Hastag: React.FC = () => {
+  const { hashtag } = useParams<{ hashtag: string }>(); // Ambil hashtag dari URL
+  const url = "http://localhost:8000/hastag_posts.php";
+  const [posts, setPosts] = useState<Array<PostObj>>([]);
+
+  useEffect(() => {
+    getData();
+  }, [hashtag]);
+
+  const getData = () => {
+    const formdata = new FormData();
+    formdata.append("hashtag", `#${hashtag}`);
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        console.log(res.data);
+        setPosts(res.data.post);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  };
+
   return (
-    <IonPage>
-      <IonLabel>Ini Hastag ngab</IonLabel>
-    </IonPage>
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonLabel>Posts with #{hashtag}</IonLabel>
+        </IonToolbar>
+      </IonHeader>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <IonGrid>
+          {posts.map((post, index) => (
+            <PostCard key={index} post={post} user={post.user} />
+          ))}
+        </IonGrid>
+      </Suspense>
+    </>
   );
 };
 

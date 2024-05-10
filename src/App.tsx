@@ -83,7 +83,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/notification" component={Notification} />
             {/* <Route exact path="/message" component={Message} /> */}
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/hastag" component={Hastag} />
+            <Route exact path="/hastag/:tag" component={Hastag} />
             <Route exact path="/people/:username" component={People} />
             <Route exact path="/post" component={Post} />
             <Route path="/post/:postId" component={Comments} />
