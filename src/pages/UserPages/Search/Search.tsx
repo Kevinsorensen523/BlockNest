@@ -59,7 +59,12 @@ const Search: React.FC<PostProps> = (props) => {
 
   useEffect(() => {
     getData();
+    // getData2();
   }, [currentTitle]);
+
+  // useEffect(() => {
+  //   getData2();
+  // }, [currentTitle]);
 
   const getData = () => {
     const formdata = new FormData();
@@ -75,17 +80,46 @@ const Search: React.FC<PostProps> = (props) => {
       });
   };
 
+  const getData2 = () => {
+    const url2 = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
+      currentTitle
+    )}`;
+    fetch(url2)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setPosts(data); // Assuming data is the array of posts you expect
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  };
+
   useEffect(() => {
     fetchTopSearch();
   }, []);
 
   const handleSearchChange = (event: CustomEvent) => {
     setSearchQuery(event.detail.value);
+    setSearchDone(true);
+    const currentTitle = event.detail.value;
+    setCurrentTitle2("Result For " + currentTitle);
+    const formdata = new FormData();
+    formdata.append("currentTitle", `${currentTitle}`);
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        console.log(res.data);
+        setPosts(res.data.post);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
   };
 
   const handleItemClick = async (topSentence: string) => {
     setCurrentTitle(topSentence);
-    setCurrentTitle2("Result For " + topSentence);
+    setCurrentTitle2("Search Result For " + topSentence);
     setSearchQuery(topSentence);
     setSearchDone(true);
   };
