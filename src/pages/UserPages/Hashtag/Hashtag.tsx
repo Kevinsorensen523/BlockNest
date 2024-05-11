@@ -1,8 +1,24 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { IonGrid, IonHeader, IonLabel, IonToolbar } from "@ionic/react";
+import {
+  IonBackButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonLabel,
+  IonNavLink,
+  IonPage,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import { PostObj } from "../../../components/context/AuthContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Home from "../Home/Home";
+import RecomendedTagCard from "../../../components/RecomendedTagCard";
+import RecomendedUserCard from "../../../components/RecomendedUserCard";
 
 const PostCard = lazy(() => import("../../../components/PostCard"));
 
@@ -30,20 +46,35 @@ const Hashtag: React.FC = () => {
   };
 
   return (
-    <>
+    <IonPage id="main-content">
       <IonHeader>
         <IonToolbar>
-          <IonLabel>Posts with #{hashtag}</IonLabel>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
+          <IonTitle className="font-bold font-inknut ion-text-center">
+            Posts with #{hashtag}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <Suspense fallback={<div>Loading posts...</div>}>
+      <IonContent fullscreen>
         <IonGrid>
-          {posts.map((post, index) => (
-            <PostCard key={index} post={post} user={post.user} />
-          ))}
+          <IonRow>
+            <IonCol className="hidden xl:flex justify-center"></IonCol>
+            <IonCol size="12" size-md="8" size-xl="6">
+              <Suspense fallback={<div>Loading posts...</div>}>
+                <IonGrid>
+                  {posts.map((post, index) => (
+                    <PostCard key={index} post={post} user={post.user} />
+                  ))}
+                </IonGrid>
+              </Suspense>
+            </IonCol>
+            <IonCol className="hidden sm:block xl:flex justify-center"></IonCol>
+          </IonRow>
         </IonGrid>
-      </Suspense>
-    </>
+      </IonContent>
+    </IonPage>
   );
 };
 
