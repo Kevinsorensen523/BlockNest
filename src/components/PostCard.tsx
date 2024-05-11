@@ -23,6 +23,7 @@ import {
   heartOutline,
   chatbubblesOutline,
   ellipsisVertical,
+  heart,
 } from "ionicons/icons";
 import { close } from "ionicons/icons";
 import { AuthContext, PostObj, User } from "./context/AuthContext";
@@ -40,7 +41,7 @@ const PostCard: React.FC<PostProps> = (props) => {
   const [showPopover, setShowPopover] = useState(false);
   const [popoverEvent, setPopoverEvent] = useState<any>(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [isLiked, setIsLiked] = useState(0);
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
   const [likes, setLikes] = useState(props.post.likes);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -88,23 +89,20 @@ const PostCard: React.FC<PostProps> = (props) => {
     formdata.append("user_id", authCtx?.user.id.toString() as string);
     formdata.append("type", "check");
     axios.post(url, formdata).then((res) => {
-      setIsLiked(res.data.isLiked);
+      setIsLiked(res.data.isLiked === 1);
     });
-  }, []);
+  }, [props.post.id, authCtx?.user.id, url]);
 
   const likeHandler = () => {
     const formdata = new FormData();
-    formdata.append("post_id", props.post.id.toString());
-    formdata.append("user_id", props.user.id.toString());
-    if (isLiked === 0) {
-      formdata.append("type", "like");
-      setLikes(likes + 1);
-    } else {
-      formdata.append("type", "unlike");
-      setLikes(likes - 1);
-    }
+    formdata.append("post_id", props.post.id.toString() as string);
+    formdata.append("user_id", authCtx?.user.id.toString() as string);
+    formdata.append("type", isLiked ? "unlike" : "like");
     axios.post(url, formdata).then((res) => {
-      setIsLiked(res.data.isLiked);
+      if (res.data.success) {
+        setIsLiked(res.data.isLiked === 1);
+        setLikes((prevLikes) => prevLikes + (res.data.isLiked === 1 ? 1 : -1));
+      }
     });
   };
 
@@ -253,7 +251,7 @@ const PostCard: React.FC<PostProps> = (props) => {
         </IonRow>
         <IonRow className="ion-align-items-start ion-justify-content-start mt-4">
           <IonButton fill="clear" color="danger" onClick={likeHandler}>
-            <IonIcon slot="start" icon={heartOutline} />
+            <IonIcon slot="start" icon={isLiked ? heart : heartOutline} />
             <IonLabel style={{ marginLeft: 10 }}>{likes}</IonLabel>
           </IonButton>
           <IonButton
