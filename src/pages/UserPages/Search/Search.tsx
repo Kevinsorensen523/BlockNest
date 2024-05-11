@@ -10,26 +10,23 @@ import {
   IonLabel,
   IonTitle,
   IonIcon,
+  IonButton,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
-import { searchOutline } from "ionicons/icons";
+import { arrowBackOutline, searchOutline } from "ionicons/icons";
 import "./Search.css";
 import "./../../../Global.css";
-import PostCard from "../../../components/PostCard";
-import { User } from "../../../components/context/AuthContext";
-import { PostObj } from "../../../components/context/AuthContext";
+import { User, PostObj } from "../../../components/context/AuthContext";
+import axios from "axios";
+
+const PostCard = lazy(() => import("../../../components/PostCard"));
 
 interface SearchResult {
   top_sentence: string;
   sentence_count: number;
-}
-
-interface MiniUser {
-  username: string;
-  full_name: string;
 }
 
 interface PostProps {
@@ -38,11 +35,14 @@ interface PostProps {
 }
 
 const Search: React.FC<PostProps> = (props) => {
-  const [search, setSearch] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchDone, setSearchDone] = useState(false); // Tambahkan variabel state untuk menandai apakah pencarian telah dilakukan
+  const [currentTitle, setCurrentTitle] = useState("Hot For You");
+  const [currentTitle2, setCurrentTitle2] = useState("Hot For You");
+  const [searchDone, setSearchDone] = useState(false);
+  const [posts, setPosts] = useState<Array<PostObj>>([]);
   const history = useHistory();
-  const url = "http://localhost:8000/home_page_posts.php";
+  const url = "http://localhost:8000/search_posts.php";
 
   const fetchTopSearch = async () => {
     try {
@@ -51,11 +51,28 @@ const Search: React.FC<PostProps> = (props) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setSearch(data);
-      setSearchDone(true); // Tandai bahwa pencarian telah dilakukan
+      setSearchResults(data);
     } catch (error) {
       console.error("Error fetching top search:", error);
     }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [currentTitle]);
+
+  const getData = () => {
+    const formdata = new FormData();
+    formdata.append("currentTitle", `${currentTitle}`);
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        console.log(res.data);
+        setPosts(res.data.post);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
   };
 
   useEffect(() => {
@@ -63,18 +80,21 @@ const Search: React.FC<PostProps> = (props) => {
   }, []);
 
   const handleSearchChange = (event: CustomEvent) => {
-    const query = event.detail.value || "";
-    setSearchQuery(query);
+    setSearchQuery(event.detail.value);
   };
 
-  const handleItemClick = (topSentence: string) => {
-    history.push(`/search/${encodeURIComponent(topSentence)}`);
+  const handleItemClick = async (topSentence: string) => {
+    setCurrentTitle(topSentence);
+    setCurrentTitle2("Result For " + topSentence);
+    setSearchQuery(topSentence);
+    setSearchDone(true);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      history.push(`/search/${searchQuery}`);
-    }
+  const handleSearchReset = () => {
+    setSearchQuery("");
+    setSearchDone(false);
+    setCurrentTitle("Hot For You");
+    setPosts([]);
   };
 
   return (
@@ -82,29 +102,46 @@ const Search: React.FC<PostProps> = (props) => {
       <SideMenu />
       <IonPage id="main-content">
         <Header />
+        <IonRow>
+          <IonCol size="12">
+            <IonSearchbar
+              debounce={1}
+              onIonChange={handleSearchChange}
+              value={searchQuery}
+              autocapitalize="none"
+              className="rounded-bar"
+            ></IonSearchbar>
+          </IonCol>
+          <IonCol size="12" className="flex mb-4">
+            {searchDone ? (
+              <IonButton color="dark" fill="clear" onClick={handleSearchReset}>
+                <IonIcon icon={arrowBackOutline} />
+              </IonButton>
+            ) : (
+              <></>
+            )}
+            <IonTitle className="ion-text-center mt-4 text-md">
+              {currentTitle2}
+            </IonTitle>
+          </IonCol>
+        </IonRow>
         <IonContent>
           <IonGrid>
             <IonRow>
-              <IonCol size="12">
-                <IonSearchbar
-                  debounce={1}
-                  onIonChange={handleSearchChange}
-                  value={searchQuery}
-                  autocapitalize="none"
-                  className="rounded-bar"
-                ></IonSearchbar>
-              </IonCol>
-            </IonRow>
-            {searchDone ? ( // Tampilkan hasil pencarian jika pencarian telah dilakukan
-              <IonRow>
-                <IonCol size="12">
-                  <IonTitle className="ion-text-center mt-4 text-md">
-                    Hot For You
-                  </IonTitle>
-                </IonCol>
+              {searchDone ? (
+                <>
+                  <Suspense fallback={<div>Loading posts...</div>}>
+                    <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
+                      {posts.map((post, index) => (
+                        <PostCard key={index} post={post} user={post.user} />
+                      ))}
+                    </IonGrid>
+                  </Suspense>
+                </>
+              ) : (
                 <IonCol size="12">
                   <IonList className="bg-black">
-                    {search.map((result, index) => (
+                    {searchResults.map((result, index) => (
                       <IonItem
                         key={index}
                         button
@@ -123,21 +160,8 @@ const Search: React.FC<PostProps> = (props) => {
                     ))}
                   </IonList>
                 </IonCol>
-              </IonRow>
-            ) : (
-              <IonRow>
-                {" "}
-                {/* Tampilkan konten "Hot For You" jika pencarian belum dilakukan */}
-                <IonCol size="12">
-                  <IonTitle className="ion-text-center mt-4 text-md">
-                    Hot For You
-                  </IonTitle>
-                  <IonList className="bg-black">
-                    {/* Render konten "Hot For You" di sini */}
-                  </IonList>
-                </IonCol>
-              </IonRow>
-            )}
+              )}
+            </IonRow>
           </IonGrid>
         </IonContent>
       </IonPage>

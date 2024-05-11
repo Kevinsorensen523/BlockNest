@@ -8,18 +8,17 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 $response = array();
 $response['post'] = [];
 
-if (isset($_POST['hashtag'])) {
-    $hashtag = $_POST['hashtag'];
-    error_log("Received hashtag: " . $hashtag);
+if (isset($_POST['currentTitle'])) {
+    $searchTerm = $_POST['currentTitle'];
+    error_log("Received term: " . $searchTerm);
 
     require_once __DIR__ . '/dbconfig.php';
-
-    $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or die(mysqli_connect_error());
+    $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or die("Connection failed: " . mysqli_connect_error());
 
     $query = "SELECT * FROM post WHERE content LIKE ? ORDER BY post_id DESC ,date_posted DESC, (likes * 0.7 + comment_no * 0.3) DESC";
     $stmt = $db->prepare($query);
-    $searchTerm = '%' . $hashtag . '%';
-    $stmt->bind_param('s', $searchTerm);
+    $likeTerm = '%' . $searchTerm . '%';
+    $stmt->bind_param('s', $likeTerm);
     $stmt->execute();
     $row_post = $stmt->get_result();
 
@@ -35,7 +34,7 @@ if (isset($_POST['hashtag'])) {
 
         $query2 =  "SELECT * FROM user WHERE user_id = ?";
         $stmt2 = $db->prepare($query2);
-        $stmt2->bind_param('i', $post["user_id"]);
+        $stmt2->bind_param('i', $post["user_id"]); // Ensure the binding parameter matches the expected data type
         $stmt2->execute();
         $row_usr = $stmt2->get_result()->fetch_assoc();
 
@@ -48,12 +47,12 @@ if (isset($_POST['hashtag'])) {
 
         array_push($response["post"], $post);
     }
-
+    
     $response['success'] = 1;
-    $response['message'] = "Posts containing hashtag '{$hashtag}' retrieved successfully.";
+    $response['message'] = "Posts containing search '{$searchTerm}' retrieved successfully.";
 } else {
     $response['success'] = 0;
-    $response['message'] = "No hashtag provided.";
+    $response['message'] = "No search '{$searchTerm}' term provided.";
 }
 
 echo json_encode($response);

@@ -222,7 +222,7 @@ const PostCard: React.FC<PostProps> = (props) => {
             </IonCardSubtitle>
           </IonCardHeader>
         </IonCol>
-        <IonCol className="ion-text-end mr-16">
+        <IonCol className="ion-text-end md:mr-16">
           <IonButton
             fill="clear"
             color="dark"

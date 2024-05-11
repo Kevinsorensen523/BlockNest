@@ -79,6 +79,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/search" component={Search} />
+            <Route exact path="/search/:search" component={Search} />
             {/* <Route exact path="/community" component={Community} /> */}
             <Route exact path="/notification" component={Notification} />
             {/* <Route exact path="/message" component={Message} /> */}

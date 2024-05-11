@@ -10,7 +10,7 @@ def get_top_search():
     )
 
     query = """
-    SELECT SUBSTRING_INDEX(REPLACE(content, '#', ''), ' ', 5) AS top_sentence, COUNT(*) AS sentence_count
+    SELECT SUBSTRING_INDEX(REPLACE(content, '#', '#'), ' ', 5) AS top_sentence, COUNT(*) AS sentence_count
     FROM post
     GROUP BY top_sentence
     ORDER BY sentence_count DESC
