@@ -114,15 +114,25 @@ const Search: React.FC<PostProps> = (props) => {
           </IonCol>
           <IonCol size="12" className="flex mb-4">
             {searchDone ? (
-              <IonButton color="dark" fill="clear" onClick={handleSearchReset}>
-                <IonIcon icon={arrowBackOutline} />
-              </IonButton>
+              <>
+                <IonButton
+                  color="dark"
+                  fill="clear"
+                  onClick={handleSearchReset}
+                >
+                  <IonIcon icon={arrowBackOutline} />
+                </IonButton>
+                <IonTitle className="ion-text-center mt-4 text-md">
+                  {currentTitle2}
+                </IonTitle>
+              </>
             ) : (
-              <></>
+              <>
+                <IonTitle className="ion-text-center mt-4 text-md">
+                  Hot For You
+                </IonTitle>
+              </>
             )}
-            <IonTitle className="ion-text-center mt-4 text-md">
-              {currentTitle2}
-            </IonTitle>
           </IonCol>
         </IonRow>
         <IonContent>
