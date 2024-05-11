@@ -1,7 +1,11 @@
 import { IonGrid, IonPage } from "@ionic/react";
-import React from "react";
-import PostCard from "../../../components/PostCard";
-import { PostObj, User } from "../../../components/context/AuthContext";
+import React, { lazy, Suspense, useContext, useEffect, useState } from "react";
+import {
+  AuthContext,
+  PostObj,
+  User,
+} from "../../../components/context/AuthContext";
+import axios from "axios";
 
 interface MiniUser {
   username: string;
@@ -13,14 +17,40 @@ interface PostProps {
   user: User;
 }
 
+const PostCard = lazy(() => import("../../../components/PostCard"));
+
 const Liked: React.FC<PostProps> = (props) => {
+  const authCtx = useContext(AuthContext);
+  const url = "http://localhost:8000/liked_posts.php";
+  const [posts, setPosts] = useState<Array<PostObj>>([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    const formdata = new FormData();
+    formdata.append("user_id", authCtx?.user.id.toString() as string);
+    axios
+      .post(url, formdata)
+      .then((res) => {
+        console.log(res.data);
+        setPosts(res.data.post);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  };
+
   return (
     <>
-      <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
-        {props.posts.map((post) => (
-          <PostCard post={post} user={props.user} />
-        ))}
-      </IonGrid>
+      <Suspense fallback={<div>Loading posts...</div>}>
+        <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
+          {posts.map((post, index) => (
+            <PostCard key={index} post={post} user={post.user} />
+          ))}
+        </IonGrid>
+      </Suspense>
     </>
   );
 };
