@@ -47,7 +47,7 @@ import ChangePassword from "./pages/Authentication/ChangePassword/ChangePassword
 import Register from "./pages/Authentication/Register/Register";
 import Post from "./pages/UserPages/Post/Post";
 import Comments from "./pages/UserPages/Post/Comments";
-import Hastag from "./pages/UserPages/Hastag/Hastag";
+import Hashtag from "./pages/UserPages/Hashtag/Hashtag";
 import People from "./pages/UserPages/People/People";
 import "./App.css";
 
@@ -83,7 +83,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/notification" component={Notification} />
             {/* <Route exact path="/message" component={Message} /> */}
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/hastag/:tag" component={Hastag} />
+            <Route exact path="/hashtag/:hashtag" component={Hashtag} />
             <Route exact path="/people/:username" component={People} />
             <Route exact path="/post" component={Post} />
             <Route path="/post/:postId" component={Comments} />

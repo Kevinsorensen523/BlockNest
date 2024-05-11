@@ -125,7 +125,7 @@ const PostCard: React.FC<PostProps> = (props) => {
               <span
                 key={index}
                 style={{ color: "#7cd3f8", cursor: "pointer" }}
-                onClick={() => history.push(`/hastag/${word.substring(1)}`)}
+                onClick={() => history.push(`/hashtag/${word.substring(1)}`)}
               >
                 {word}{" "}
               </span>
