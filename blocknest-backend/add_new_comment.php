@@ -1,46 +1,67 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+if(isset($_SERVER['HTTP_ORIGIN'])) {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+}
 
-// Array for JSON response
+//array for JSON response
 $response = array();
 
-// Check for required fields
-if(isset($_POST['content'], $_POST['post_id'], $_POST['user_id'])) {
+//check for required fields
+if(isset($_POST['content']) && isset($_POST['post_id']) && isset($_POST['user_id'])) {
     $user_id = (int) $_POST['user_id'];
     $post_id = (int) $_POST['post_id'];
     $content = $_POST['content'];
     $date_posted = date("Y-m-d");
+    //$foto = $_FILES['foto'];
 
     require_once __DIR__ . '/dbconfig.php';
 
-    // Connecting to db
-    $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or die(mysqli_connect_error());
+    //connecting to db
+    $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or
+    die(mysqli_connect_error());
 
-    // MySQL inserting a new row
-    $insertCommentQuery = "INSERT INTO comment(post_id, user_id, content, date_posted) VALUES (?, ?, ?, ?)";
-    $stmtComment = $db->prepare($insertCommentQuery);
-    $stmtComment->bind_param('iiss', $post_id, $user_id, $content, $date_posted);
-    if ($stmtComment->execute()) {  
-        $insertInteractionQuery = "INSERT INTO user_interactions(post_id, user_id, action_type) VALUES (?, ?, 'comment')";
-        $stmtInteraction = $db->prepare($insertInteractionQuery);
-        $stmtInteraction->bind_param('ii', $post_id, $user_id);
-        if ($stmtInteraction->execute()) {
-            $response["success"] = 1;
-            $response["message"] = "Data user berhasil dimasukkan";
-        } else {
-            $response["success"] = 0;
-            $response["message"] = "Failed to insert user interaction";
-        }
+    $ownerQuery = "SELECT user_id FROM post WHERE post_id = ?";
+    $ownerStmt = $db->prepare($ownerQuery);
+    $ownerStmt->bind_param('i', $post_id);
+    $ownerStmt->execute();
+    $ownerStmt->bind_result($target_user_id);
+    $ownerStmt->fetch();
+    $ownerStmt->close();
+
+    //save uploaded image
+    //$en_pass = password_hash($password, PASSWORD_BCRYPT);
+    /*$source = $image['tmp_name'];
+    $destination = 'uploads/post_img/' . $image['name'];
+    move_uploaded_file($source, $destination);*/
+
+    //mysql inserting a new row
+    $result = mysqli_query($db, "INSERT INTO comment(post_id, user_id, content, date_posted)
+            VALUES('$post_id', '$user_id', '$content', '$date_posted')");
+    
+    $query =  "UPDATE post SET comment_no = comment_no + 1 WHERE post_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $post_id);
+    $stmt->execute();
+
+    $interactionQuery = "INSERT INTO user_interactions(post_id, user_id, target_user_id, action_type, isOpen) VALUES (?, ?, ?, 'comment', FALSE)";
+    $interactionStmt = $db->prepare($interactionQuery);
+    $interactionStmt->bind_param('iii', $post_id, $user_id, $target_user_id);
+    $interactionStmt->execute();
+    
+    //check if row is inserted or not
+    if ($result) {
+        $response["success"] = 1;
+        $response["message"] = "Data user berhasil dimasukkan";
     } else {
         $response["success"] = 0;
-        $response["message"] = "Failed to insert comment";
+        $response["message"] = "Terdapat kesalahan";
     }
+    echo json_encode($response);
 } else {
     $response["success"] = 0;
     $response["message"] = "Data tidak lengkap";
+    echo json_encode($response);
 }
-
-echo json_encode($response);
 ?>

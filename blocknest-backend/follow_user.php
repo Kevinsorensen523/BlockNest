@@ -35,6 +35,8 @@ if(isset($_POST['follower_id']) && isset($_POST['following_id']) && isset($_POST
             $isSucc = true;
             $response["isFollowed"] = 0;
         }
+
+        
     }
     else if ($type == "follow") {
         $query = "INSERT INTO follow(follower_user_id, following_user_id) VALUES('$follower_id', '$following_id')";
@@ -55,6 +57,11 @@ if(isset($_POST['follower_id']) && isset($_POST['following_id']) && isset($_POST
 
         $response["isFollowed"] = 1;
         $isSucc = true;
+
+        $interactionQuery = "INSERT INTO user_interactions(user_id, target_user_id, action_type, isOpen) VALUES (?, ?, 'follow', FALSE)";
+        $interactionStmt = $db->prepare($interactionQuery);
+        $interactionStmt->bind_param('ii', $follower_id, $following_id);
+        $interactionStmt->execute();
     }
     else if($type == "unfollow") {
         $query = "DELETE FROM follow WHERE follower_user_id = ? AND following_user_id = ?";
@@ -76,6 +83,11 @@ if(isset($_POST['follower_id']) && isset($_POST['following_id']) && isset($_POST
 
         $response["isFollowed"] = 0;
         $isSucc = true;
+
+        $interactionQuery = "DELETE FROM user_interactions WHERE user_id = ? AND target_user_id = ? AND action_type = 'follow'";
+        $interactionStmt = $db->prepare($interactionQuery);
+        $interactionStmt->bind_param('ii', $follower_id, $following_id);
+        $interactionStmt->execute();
     }
 
     //check if row is inserted or not
