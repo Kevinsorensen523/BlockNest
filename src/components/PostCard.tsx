@@ -279,7 +279,7 @@ const PostCard: React.FC<PostProps> = (props) => {
               </IonItem>
               {authCtx?.user.id === props.user.id && (
                 <>
-                  <IonItem button onClick={handleEditClick}>
+                  <IonItem button routerLink={`/edit/${props.post.id}`} onClick={handleEditClick}>
                     <IonLabel>Edit</IonLabel>
                   </IonItem>
                   <IonItem button onClick={handleDeleteClick}>

@@ -1,4 +1,4 @@
-import { IonGrid, IonPage } from "@ionic/react";
+import { IonGrid, IonPage, useIonViewWillEnter } from "@ionic/react";
 import React, { lazy, Suspense, useContext, useEffect, useState } from "react";
 import {
   AuthContext,
@@ -27,6 +27,10 @@ const Liked: React.FC<PostProps> = (props) => {
   useEffect(() => {
     getData();
   }, []);
+
+  useIonViewWillEnter(() => {
+    getData();
+  });
 
   const getData = () => {
     const formdata = new FormData();

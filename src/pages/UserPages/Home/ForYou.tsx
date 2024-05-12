@@ -1,5 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { IonGrid } from "@ionic/react";
+import { IonGrid, useIonViewWillEnter } from "@ionic/react";
 import { PostObj } from "../../../components/context/AuthContext";
 import axios, { AxiosResponse } from "axios";
 
@@ -14,6 +14,10 @@ const ForYou: React.FC = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  useIonViewWillEnter(() => {
+    getData();
+  });
 
   const getData = () => {
     axios.get(url).then((res) => {
