@@ -53,14 +53,11 @@ const NotificationCard: React.FC<PostProps> = (props) => {
         </IonAvatar>
         <IonCol>
           <IonCardHeader>
-            <IonCardTitle
+            <IonCardSubtitle
               onClick={() => history.push(`/people/${props.user.username}`)}
               className="font-inknut text-white"
             >
-              {props.user.username}
-            </IonCardTitle>
-            <IonCardSubtitle className="font-inknut text-white">
-              Liked Your Post
+              @{props.user.username} Liked Your Post
             </IonCardSubtitle>
           </IonCardHeader>
         </IonCol>

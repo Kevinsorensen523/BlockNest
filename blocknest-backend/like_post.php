@@ -9,7 +9,7 @@ $response = array();
 
 if(isset($_POST['post_id']) && isset($_POST['user_id']) && isset($_POST['type'])) {
     $post_id = (int)$_POST['post_id'];
-    $user_id = (int)$_POST['user_id']; // User yang sedang login dan melakukan aksi
+    $user_id = (int)$_POST['user_id'];
     $type = $_POST['type'];
 
     require_once __DIR__ . '/dbconfig.php';
