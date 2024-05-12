@@ -34,7 +34,7 @@ if (isset($_POST['currentTitle'])) {
 
         $query2 =  "SELECT * FROM user WHERE user_id = ?";
         $stmt2 = $db->prepare($query2);
-        $stmt2->bind_param('i', $post["user_id"]); // Ensure the binding parameter matches the expected data type
+        $stmt2->bind_param('i', $post["user_id"]);
         $stmt2->execute();
         $row_usr = $stmt2->get_result()->fetch_assoc();
 
