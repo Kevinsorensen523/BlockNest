@@ -11,9 +11,12 @@ import {
   IonTitle,
   IonIcon,
   IonButton,
+  IonAvatar,
+  IonCard,
+  IonCardContent,
 } from "@ionic/react";
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SideMenu from "../../../components/SideMenu";
 import Header from "../../../components/Header";
 import { arrowBackOutline, searchOutline } from "ionicons/icons";
@@ -29,6 +32,12 @@ interface SearchResult {
   sentence_count: number;
 }
 
+interface UserDetail {
+  username: string;
+  profile_pic: string;
+  followers: number;
+}
+
 interface PostProps {
   posts: Array<PostObj>;
   user: User;
@@ -40,9 +49,14 @@ const Search: React.FC<PostProps> = (props) => {
   const [currentTitle, setCurrentTitle] = useState("Hot For You");
   const [currentTitle2, setCurrentTitle2] = useState("Hot For You");
   const [searchDone, setSearchDone] = useState(false);
+  const [userDetails, setUserDetails] = useState<UserDetail[]>([]);
   const [posts, setPosts] = useState<Array<PostObj>>([]);
   const history = useHistory();
   const url = "http://localhost:8000/search_posts.php";
+  const url2 = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
+    currentTitle
+  )}`;
+  const basePath = "./../blocknest-backend/";
 
   const fetchTopSearch = async () => {
     try {
@@ -59,12 +73,8 @@ const Search: React.FC<PostProps> = (props) => {
 
   useEffect(() => {
     getData();
-    // getData2();
+    getData2();
   }, [currentTitle]);
-
-  // useEffect(() => {
-  //   getData2();
-  // }, [currentTitle]);
 
   const getData = () => {
     const formdata = new FormData();
@@ -81,14 +91,11 @@ const Search: React.FC<PostProps> = (props) => {
   };
 
   const getData2 = () => {
-    const url2 = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
-      currentTitle
-    )}`;
     fetch(url2)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setPosts(data); // Assuming data is the array of posts you expect
+        setUserDetails(data);
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
@@ -114,6 +121,21 @@ const Search: React.FC<PostProps> = (props) => {
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
+      });
+
+    const urlForUserDetails = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
+      currentTitle
+    )}`;
+
+    // Fetching user details
+    fetch(urlForUserDetails)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUserDetails(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user details:", error);
       });
   };
 
@@ -174,13 +196,46 @@ const Search: React.FC<PostProps> = (props) => {
             <IonRow>
               {searchDone ? (
                 <>
-                  <Suspense fallback={<div>Loading posts...</div>}>
-                    <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
-                      {posts.map((post, index) => (
-                        <PostCard key={index} post={post} user={post.user} />
-                      ))}
-                    </IonGrid>
-                  </Suspense>
+                  <IonCol size="12">
+                    <IonCard>
+                      <IonCardContent>
+                        <IonList>
+                          {userDetails.map((user, index) => (
+                            <Link
+                              to={`/people/${user.username}`}
+                              key={index}
+                              style={{ textDecoration: "none" }}
+                            >
+                              <IonItem
+                                className="hover: bg-slate-500"
+                                lines="inset"
+                              >
+                                <IonAvatar slot="start">
+                                  <img
+                                    src={`${basePath}${user.profile_pic}`}
+                                    alt="User Profile"
+                                    className="w-10 h-10"
+                                  />
+                                </IonAvatar>
+                                <IonLabel className="font-inder">
+                                  @{user.username} - Followers: {user.followers}
+                                </IonLabel>
+                              </IonItem>
+                            </Link>
+                          ))}
+                        </IonList>
+                      </IonCardContent>
+                    </IonCard>
+                  </IonCol>
+                  <IonCol>
+                    <Suspense fallback={<div>Loading posts...</div>}>
+                      <IonGrid className="2xl:px-40 2xl:mx-80 xl:px-16 xl:mx-80 lg:mx-72">
+                        {posts.map((post, index) => (
+                          <PostCard key={index} post={post} user={post.user} />
+                        ))}
+                      </IonGrid>
+                    </Suspense>
+                  </IonCol>
                 </>
               ) : (
                 <IonCol size="12">
