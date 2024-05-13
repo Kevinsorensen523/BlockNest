@@ -15,6 +15,7 @@ def fetch_user_interactions(target_user_id):
         LEFT JOIN post ON post.post_id = ui.post_id
         JOIN user ON user.user_id = ui.user_id
         WHERE target_user_id = %s
+        ORDER BY created_at DESC
     """
     cursor.execute(query, (target_user_id,))
     interactions = cursor.fetchall()

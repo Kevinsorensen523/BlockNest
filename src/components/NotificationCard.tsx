@@ -15,6 +15,7 @@ interface Interaction {
   username: string;
   profile_pic: string;
   action_type: "like" | "comment" | "follow";
+  created_at: string;
 }
 
 const NotificationCard: React.FC<Interaction> = ({
@@ -22,6 +23,7 @@ const NotificationCard: React.FC<Interaction> = ({
   username,
   profile_pic,
   action_type,
+  created_at,
 }) => {
   const history = useHistory();
 
@@ -49,6 +51,7 @@ const NotificationCard: React.FC<Interaction> = ({
           <IonCardSubtitle onClick={() => history.push(`/people/${username}`)}>
             <strong>@{username}</strong> {actionLabel}
           </IonCardSubtitle>
+          <IonCardSubtitle>{created_at}</IonCardSubtitle>
         </IonCardHeader>
       </IonCol>
       {post_image && action_type !== "follow" && (
