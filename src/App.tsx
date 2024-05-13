@@ -51,6 +51,7 @@ import Hashtag from "./pages/UserPages/Hashtag/Hashtag";
 import People from "./pages/UserPages/People/People";
 import "./App.css";
 import EditPost from "./pages/UserPages/Post/EditPost";
+import ViewPost from "./pages/UserPages/Post/ViewPost";
 
 setupIonicReact();
 
@@ -90,6 +91,7 @@ const ProtectedRoutes: React.FC = () => {
             <Route exact path="/post" component={Post} />
             <Route path="/post/:postId" component={Comments} />
             <Route path="/edit/:postId" component={EditPost} />
+            <Route path="/viewpost/:notification" component={ViewPost} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
           <IonTabBar slot="bottom" className="main-bar">

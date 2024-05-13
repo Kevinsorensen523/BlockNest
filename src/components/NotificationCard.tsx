@@ -16,6 +16,7 @@ interface Interaction {
   profile_pic: string;
   action_type: "like" | "comment" | "follow";
   created_at: string;
+  post_id: number | null;
 }
 
 const NotificationCard: React.FC<Interaction> = ({
@@ -24,6 +25,7 @@ const NotificationCard: React.FC<Interaction> = ({
   profile_pic,
   action_type,
   created_at,
+  post_id,
 }) => {
   const history = useHistory();
 
@@ -32,7 +34,9 @@ const NotificationCard: React.FC<Interaction> = ({
       ? "liked your post"
       : action_type === "comment"
       ? "commented on your post"
-      : "followed you";
+      : action_type === "follow"
+      ? "followed you"
+      : "mention";
 
   const basePath = "./../blocknest-backend/";
 
@@ -56,7 +60,11 @@ const NotificationCard: React.FC<Interaction> = ({
       </IonCol>
       {post_image && action_type !== "follow" && (
         <IonThumbnail>
-          <IonImg alt="Post Image" src={`${basePath}${post_image}`} />
+          <IonImg
+            onClick={() => history.push(`/viewpost/${post_id}`)}
+            alt="Post Image"
+            src={`${basePath}${post_image}`}
+          />
         </IonThumbnail>
       )}
     </IonItem>
