@@ -4,6 +4,7 @@ from database.tags import get_top_tags
 from database.users import get_top_users
 from database.search import get_top_search
 from database.search_user import get_search_user
+from database.fetch_user_interaction import fetch_user_interactions
 
 app = Flask(__name__)
 CORS(app)
@@ -28,6 +29,10 @@ def search_user():
     current_title = request.args.get('currentTitle', '')
     search_user = get_search_user(current_title)
     return jsonify(search_user)
+
+@app.route('/api/user-interactions/<int:target_user_id>', methods=['GET'])
+def user_interactions(target_user_id):
+    return jsonify(fetch_user_interactions(target_user_id))
 
 if __name__ == '__main__':
     app.run(debug=True)

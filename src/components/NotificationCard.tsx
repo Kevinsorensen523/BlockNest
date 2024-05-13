@@ -1,74 +1,62 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import {
   IonAvatar,
-  IonButton,
+  IonItem,
+  IonCol,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonModal,
-  IonPopover,
-  IonRow,
   IonThumbnail,
-  IonToast,
+  IonImg,
 } from "@ionic/react";
-import {
-  heartOutline,
-  chatbubblesOutline,
-  ellipsisVertical,
-} from "ionicons/icons";
-import { close } from "ionicons/icons";
-import { AuthContext, PostObj, User } from "./context/AuthContext";
-import axios from "axios";
 import { useHistory } from "react-router";
 
-interface PostProps {
-  post: PostObj;
-  user: User;
-  onDelete?: (postId: number) => void;
+interface Interaction {
+  post_image?: string;
+  username: string;
+  profile_pic: string;
+  action_type: "like" | "comment" | "follow";
 }
 
-const NotificationCard: React.FC<PostProps> = (props) => {
+const NotificationCard: React.FC<Interaction> = ({
+  post_image,
+  username,
+  profile_pic,
+  action_type,
+}) => {
   const history = useHistory();
 
+  const actionLabel =
+    action_type === "like"
+      ? "liked your post"
+      : action_type === "comment"
+      ? "commented on your post"
+      : "followed you";
+
+  const basePath = "./../blocknest-backend/";
+
   return (
-    <>
-      <IonItem
-        style={{ "--background": "transparent", cursor: "pointer" }}
-        className="pt-1"
-      >
-        <IonAvatar slot="start">
-          <img
-            alt="Profile Picture"
-            src={`http://localhost:8000/${props.user.profile_pic}`}
-            className="w-10 h-10 ml-4"
-            onClick={() => history.push(`/people/${props.user.username}`)}
-          />
-        </IonAvatar>
-        <IonCol>
-          <IonCardHeader>
-            <IonCardSubtitle
-              onClick={() => history.push(`/people/${props.user.username}`)}
-              className="font-inknut text-white"
-            >
-              @{props.user.username} Liked Your Post
-            </IonCardSubtitle>
-          </IonCardHeader>
-        </IonCol>
+    <IonItem style={{ "--background": "transparent", cursor: "pointer" }}>
+      <IonAvatar slot="start">
+        <img
+          alt="Profile Picture"
+          src={`${basePath}${profile_pic}`}
+          className="w-10 h-10 ml-4"
+          onClick={() => history.push(`/people/${username}`)}
+        />
+      </IonAvatar>
+      <IonCol>
+        <IonCardHeader>
+          <IonCardSubtitle onClick={() => history.push(`/people/${username}`)}>
+            <strong>@{username}</strong> {actionLabel}
+          </IonCardSubtitle>
+        </IonCardHeader>
+      </IonCol>
+      {post_image && action_type !== "follow" && (
         <IonThumbnail>
-          <IonImg
-            alt="Post Image"
-            src={`http://localhost:8000/${props.post.image}`}
-          />
+          <IonImg alt="Post Image" src={`${basePath}${post_image}`} />
         </IonThumbnail>
-      </IonItem>
-    </>
+      )}
+    </IonItem>
   );
 };
 
