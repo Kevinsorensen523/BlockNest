@@ -16,6 +16,7 @@ interface UserInteraction {
   username: string;
   profile_pic: string;
   isOpen: boolean;
+  comment: string | null;
 }
 
 const NotificationCard = lazy(
@@ -28,6 +29,7 @@ const Notification: React.FC = () => {
   const [seenInteractions, setSeenInteractions] = useState<UserInteraction[]>(
     []
   );
+  const [interactions, setInteractions] = useState<UserInteraction[]>([]);
 
   useEffect(() => {
     if (user && user.id) {
@@ -44,10 +46,33 @@ const Notification: React.FC = () => {
           );
           setNewInteractions(newInt);
           setSeenInteractions(seenInt);
+          markNotificationsAsOpened(response.data);
         })
         .catch((err) => console.error("Failed to fetch interactions", err));
     }
   }, [user]);
+
+  const markNotificationsAsOpened = (interactions: UserInteraction[]) => {
+    const interactionIds = interactions
+      .filter((i) => !i.isOpen)
+      .map((i) => i.id);
+    if (interactionIds.length > 0) {
+      axios
+        .post("http://localhost:5000/api/mark-interactions-opened", {
+          ids: interactionIds,
+        })
+        .then(() => {
+          const updatedInteractions = interactions.map((int) => ({
+            ...int,
+            isOpen: true,
+          }));
+          setInteractions(updatedInteractions);
+        })
+        .catch((err) =>
+          console.error("Failed to mark interactions as opened", err)
+        );
+    }
+  };
 
   return (
     <IonPage id="main-content">

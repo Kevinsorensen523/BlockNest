@@ -45,9 +45,9 @@ if(isset($_POST['content']) && isset($_POST['post_id']) && isset($_POST['user_id
     $stmt->bind_param('s', $post_id);
     $stmt->execute();
 
-    $interactionQuery = "INSERT INTO user_interactions(post_id, user_id, target_user_id, action_type, isOpen) VALUES (?, ?, ?, 'comment', FALSE)";
+    $interactionQuery = "INSERT INTO user_interactions(post_id, user_id, target_user_id, action_type, isOpen, comment) VALUES (?, ?, ?, 'comment', FALSE, ?)";
     $interactionStmt = $db->prepare($interactionQuery);
-    $interactionStmt->bind_param('iii', $post_id, $user_id, $target_user_id);
+    $interactionStmt->bind_param('iiis', $post_id, $user_id, $target_user_id, $content);
     $interactionStmt->execute();
     
     //check if row is inserted or not

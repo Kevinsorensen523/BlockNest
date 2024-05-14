@@ -17,6 +17,7 @@ interface Interaction {
   action_type: "like" | "comment" | "follow";
   created_at: string;
   post_id: number | null;
+  comment: string | null;
 }
 
 const NotificationCard: React.FC<Interaction> = ({
@@ -26,6 +27,7 @@ const NotificationCard: React.FC<Interaction> = ({
   action_type,
   created_at,
   post_id,
+  comment,
 }) => {
   const history = useHistory();
 
@@ -33,7 +35,7 @@ const NotificationCard: React.FC<Interaction> = ({
     action_type === "like"
       ? "liked your post"
       : action_type === "comment"
-      ? "commented on your post"
+      ? "commented on your post '" + comment + "'"
       : action_type === "follow"
       ? "followed you"
       : "mention";

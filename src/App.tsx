@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
   IonApp,
@@ -30,7 +30,11 @@ import Notification from "./pages/UserPages/Notification/Notification";
 import Message from "./pages/UserPages/Message/Message";
 import Profile from "./pages/UserPages/Profile/Profile";
 import Login from "./pages/Authentication/Login/Login";
-import { AuthProvider, useAuth } from "./components/context/AuthContext";
+import {
+  AuthContext,
+  AuthProvider,
+  useAuth,
+} from "./components/context/AuthContext";
 
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
@@ -52,6 +56,7 @@ import People from "./pages/UserPages/People/People";
 import "./App.css";
 import EditPost from "./pages/UserPages/Post/EditPost";
 import ViewPost from "./pages/UserPages/Post/ViewPost";
+import axios from "axios";
 
 setupIonicReact();
 
@@ -69,6 +74,21 @@ const App: React.FC = () => {
 
 const ProtectedRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  React.useEffect(() => {
+    if (user && user.id) {
+      axios
+        .get(`http://localhost:5000/api/notifications/count?user_id=${user.id}`)
+        .then((response) => {
+          setNotificationCount(response.data.count);
+        })
+        .catch((error) => {
+          console.error("Error fetching notification count", error);
+        });
+    }
+  }, [user]);
 
   return (
     <Switch>
@@ -109,6 +129,9 @@ const ProtectedRoutes: React.FC = () => {
             </IonTabButton> */}
             <IonTabButton tab="notification" href="/notification">
               <IonIcon icon={notifications} />
+              {notificationCount > 0 && (
+                <div className="absolute top-0 right-0 mt-1 mr-2 rounded-full bg-red-500 w-2 h-2"></div>
+              )}
             </IonTabButton>
             <IonTabButton tab="profile" href="/profile">
               <IonIcon icon={person} />
