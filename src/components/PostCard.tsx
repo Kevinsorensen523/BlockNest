@@ -198,7 +198,7 @@ const PostCard: React.FC<PostProps> = (props) => {
           <img
             alt="Profile Picture"
             src={`http://localhost:8000/${props.user.profile_pic}`}
-            className="w-10 h-10 ml-4"
+            className="w-10 h-10 ml-2"
             onClick={() => navigateToUserProfileByUsername(props.user.username)}
           />
         </IonAvatar>
@@ -208,7 +208,7 @@ const PostCard: React.FC<PostProps> = (props) => {
               onClick={() =>
                 navigateToUserProfileByUsername(props.user.username)
               }
-              className="w-96 font-inknut text-sm"
+              className="w-96 font-inknut md:text-sm text-xs"
             >
               {props.user.real_name}
             </IonCardTitle>
@@ -222,7 +222,7 @@ const PostCard: React.FC<PostProps> = (props) => {
             </IonCardSubtitle>
           </IonCardHeader>
         </IonCol>
-        <IonCol className="ion-text-end md:mr-16">
+        <IonCol className="ion-text-end md:mr-16 md:text-sm text-xs -ml-10 md:ml-0">
           <IonButton
             fill="clear"
             color="dark"
@@ -279,7 +279,11 @@ const PostCard: React.FC<PostProps> = (props) => {
               </IonItem>
               {authCtx?.user.id === props.user.id && (
                 <>
-                  <IonItem button routerLink={`/edit/${props.post.id}`} onClick={handleEditClick}>
+                  <IonItem
+                    button
+                    routerLink={`/edit/${props.post.id}`}
+                    onClick={handleEditClick}
+                  >
                     <IonLabel>Edit</IonLabel>
                   </IonItem>
                   <IonItem button onClick={handleDeleteClick}>

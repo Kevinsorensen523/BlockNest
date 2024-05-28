@@ -80,7 +80,7 @@ const SideMenu: React.FC = () => {
           <IonGrid>
             <IonRow className="bg-[#0A0A0A] text-white text-center h-10 items-center">
               <IonCol>
-                <IonToggle labelPlacement="start">Dark Mode</IonToggle>
+                {/* <IonToggle labelPlacement="start">Dark Mode</IonToggle> */}
               </IonCol>
             </IonRow>
           </IonGrid>

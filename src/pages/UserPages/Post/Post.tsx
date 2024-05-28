@@ -47,7 +47,7 @@ const Post: React.FC = () => {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: CameraSource.Camera, // Use CameraSource.Camera to directly open the camera
+      source: CameraSource.Camera,
     });
 
     setPhoto(image.webPath);
