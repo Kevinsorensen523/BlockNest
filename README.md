@@ -80,7 +80,6 @@ The following steps may help you to host this project locally.
    ```
 6. Open New Terminal and Run PHP Server on port 8000 (because flask default Port is already on 5000)
    ```bash
-   cd blocknest-backend
    php -S localhost:8000 -t blocknest-backend
    ```
 7. Open New Terminal again and run :
