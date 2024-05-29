@@ -126,3 +126,8 @@ We have these geek guys to develop, maintain, and improve this project:
 - Add Notification
 - Add Profile Page
 - Add Authentication Page
+
+### Version 1.0.1
+🌟 Main Changes:
+- Add Mention Notification
+- Add Donate With Ethereum
