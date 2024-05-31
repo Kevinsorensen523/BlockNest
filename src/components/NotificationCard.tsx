@@ -38,7 +38,7 @@ const NotificationCard: React.FC<Interaction> = ({
       ? "commented on your post '" + comment + "'"
       : action_type === "follow"
       ? "followed you"
-      : "mention";
+      : "mentioned you in a post";
 
   const basePath = "./../blocknest-backend/";
 

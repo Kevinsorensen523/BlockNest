@@ -12,17 +12,24 @@ import {
   IonLabel,
   IonAvatar,
   IonAlert,
+  IonButton,
 } from "@ionic/react";
-import { personCircleOutline, logOutOutline } from "ionicons/icons";
+import {
+  personCircleOutline,
+  logOutOutline,
+  logoBitcoin,
+} from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { AuthContext, useAuth } from "../components/context/AuthContext"; // Sesuaikan path jika perlu
+import { AuthContext, useAuth } from "../components/context/AuthContext";
+// @ts-ignore
+import { connectToMetaMask, donateEther } from "./../utils/ethereum";
 
 const Header: React.FC = () => {
   const [showPopover, setShowPopover] = useState(false);
   const [popoverEvent, setPopoverEvent] = useState<Event>();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); // State untuk konfirmasi logout
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const history = useHistory();
-  const { logout } = useAuth(); // Pastikan fungsi ini tersedia dalam useAuth
+  const { logout } = useAuth();
   const authCtx = useContext(AuthContext);
 
   const handlePopoverOpen = (event: React.MouseEvent) => {
@@ -38,6 +45,17 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     setShowLogoutConfirm(true); // Tampilkan konfirmasi logout
+  };
+
+  const handleDonate = async () => {
+    const web3 = await connectToMetaMask();
+    if (web3) {
+      await donateEther(
+        web3,
+        "0xbCd8579A6b81e3260Ad9CF1f62B47Fba8934572f",
+        "0.1"
+      );
+    }
   };
 
   return (
@@ -73,6 +91,10 @@ const Header: React.FC = () => {
           <IonItem button onClick={handleLogout}>
             <IonIcon icon={logOutOutline} slot="start" />
             <IonLabel>Logout</IonLabel>
+          </IonItem>
+          <IonItem button onClick={handleDonate}>
+            <IonIcon icon={logoBitcoin} slot="start" />
+            <IonLabel>Donate to Developer</IonLabel>
           </IonItem>
         </IonList>
       </IonPopover>
