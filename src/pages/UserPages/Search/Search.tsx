@@ -52,15 +52,17 @@ const Search: React.FC<PostProps> = (props) => {
   const [userDetails, setUserDetails] = useState<UserDetail[]>([]);
   const [posts, setPosts] = useState<Array<PostObj>>([]);
   const history = useHistory();
-  const url = "http://localhost:8000/search_posts.php";
-  const url2 = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
+  const url = "http://blocknest.great-site.net/search_posts.php";
+  const url2 = `http://blocknest.great-site.net/api/search_user?currentTitle=${encodeURIComponent(
     currentTitle
   )}`;
   const basePath = "./../blocknest-backend/";
 
   const fetchTopSearch = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/top-search");
+      const response = await fetch(
+        "http://blocknest.great-site.net/api/top-search"
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -123,7 +125,7 @@ const Search: React.FC<PostProps> = (props) => {
         console.error("Error fetching posts:", error);
       });
 
-    const urlForUserDetails = `http://localhost:5000/api/search_user?currentTitle=${encodeURIComponent(
+    const urlForUserDetails = `http://blocknest.great-site.net/api/search_user?currentTitle=${encodeURIComponent(
       currentTitle
     )}`;
 

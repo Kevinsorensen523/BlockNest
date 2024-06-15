@@ -78,7 +78,7 @@ const Post: React.FC = () => {
     inputPhoto.current?.click();
   };
 
-  const url = "http://localhost:8000/add_new_post.php";
+  const url = "http://blocknest.great-site.net/add_new_post.php";
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -111,7 +111,7 @@ const Post: React.FC = () => {
           <IonAvatar slot="start">
             <img
               alt="Profile Picture"
-              src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
+              src={`http://blocknest.great-site.net/${authCtx?.user.profile_pic}`}
               className="w-10 h-10"
             />
           </IonAvatar>

@@ -70,8 +70,8 @@ const Profile: React.FC = () => {
     following: 0,
   });
 
-  const url = "http://localhost:8000/update_user.php";
-  const url2 = "http://localhost:8000/get_user_posts.php";
+  const url = "http://blocknest.great-site.net/update_user.php";
+  const url2 = "http://blocknest.great-site.net/get_user_posts.php";
 
   useEffect(() => {
     getData();
@@ -155,7 +155,7 @@ const Profile: React.FC = () => {
                 <IonCol size="auto">
                   <img
                     alt="Profile Picture"
-                    src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
+                    src={`http://blocknest.great-site.net/${authCtx?.user.profile_pic}`}
                     className="w-28 h-28 rounded-full"
                   />
                 </IonCol>
@@ -209,7 +209,7 @@ const Profile: React.FC = () => {
                             <IonAvatar className="mb-28 mt-4 w-36 mx-auto">
                               <img
                                 alt="Profile Picture"
-                                src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
+                                src={`http://blocknest.great-site.net/${authCtx?.user.profile_pic}`}
                                 className="flex"
                               />
                               <input

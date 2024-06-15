@@ -48,15 +48,15 @@ const PostCard: React.FC<PostProps> = (props) => {
   const authCtx = useContext(AuthContext);
   const history = useHistory();
 
-  const url = "http://localhost:8000/like_post.php";
-  const deleteUrl = "http://localhost:8000/delete_post.php";
+  const url = "http://blocknest.great-site.net/like_post.php";
+  const deleteUrl = "http://blocknest.great-site.net/delete_post.php";
 
   const fetchUserIdByUsername = async (username: string) => {
     try {
       const formData = new FormData();
       formData.append("username", username);
       const response = await axios.post(
-        "http://localhost:8000/get_user_id.php",
+        "http://blocknest.great-site.net/get_user_id.php",
         formData
       );
 

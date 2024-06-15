@@ -21,7 +21,7 @@ const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const Liked: React.FC<PostProps> = (props) => {
   const authCtx = useContext(AuthContext);
-  const url = "http://localhost:8000/liked_posts.php";
+  const url = "http://blocknest.great-site.net/liked_posts.php";
   const [posts, setPosts] = useState<Array<PostObj>>([]);
 
   useEffect(() => {

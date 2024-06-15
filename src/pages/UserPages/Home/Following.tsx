@@ -7,7 +7,7 @@ const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const Following: React.FC = () => {
   const authCtx = useContext(AuthContext);
-  const url = "http://localhost:8000/following_posts.php";
+  const url = "http://blocknest.great-site.net/following_posts.php";
   const [posts, setPosts] = useState<Array<PostObj>>([]);
 
   useEffect(() => {

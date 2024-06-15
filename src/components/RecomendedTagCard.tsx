@@ -14,7 +14,9 @@ const RecomendedTagCard: React.FC = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/top-tags");
+      const response = await fetch(
+        "http://blocknest.great-site.net/api/top-tags"
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

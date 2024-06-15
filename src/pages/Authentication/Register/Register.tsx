@@ -35,7 +35,7 @@ const Register: React.FC = () => {
   const [countdown, setCountdown] = useState(0);
   const history = useHistory();
 
-  const url = "http://localhost:8000/add_new_user.php";
+  const url = "http://blocknest.great-site.net/add_new_user.php";
   const emailRef = useRef<HTMLIonInputElement>();
   const unameRef = useRef<HTMLIonInputElement>();
   const passRef = useRef<HTMLIonInputElement>();

@@ -41,9 +41,9 @@ interface Comment {
 
 const Comments: React.FC = () => {
   const pId = useParams<{ postId: string }>().postId;
-  const url = "http://localhost:8000/select_post.php";
-  const url2 = "http://localhost:8000/add_new_comment.php";
-  const url3 = "http://localhost:8000/select_post_comments.php";
+  const url = "http://blocknest.great-site.net/select_post.php";
+  const url2 = "http://blocknest.great-site.net/add_new_comment.php";
+  const url3 = "http://blocknest.great-site.net/select_post_comments.php";
   const [data, setData] = useState<AxiosResponse>();
   const [post, setPost] = useState<PostObj>({
     id: 0,
@@ -64,7 +64,7 @@ const Comments: React.FC = () => {
       profile_pic: null,
       posts: 0,
       followers: 0,
-      following: 0
+      following: 0,
     },
   });
   const [comment, setComment] = useState<string>();
@@ -138,7 +138,7 @@ const Comments: React.FC = () => {
             >
               <IonAvatar slot="start">
                 <img
-                  src={`http://localhost:8000/${authCtx?.user.profile_pic}`}
+                  src={`http://blocknest.great-site.net/${authCtx?.user.profile_pic}`}
                   alt="Profile Picture"
                   className="w-10 h-10"
                 />

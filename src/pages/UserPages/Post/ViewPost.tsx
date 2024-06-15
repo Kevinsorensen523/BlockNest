@@ -21,7 +21,7 @@ const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const ViewPost: React.FC = () => {
   const { notification } = useParams<{ notification: string }>();
-  const url = "http://localhost:8000/view_posts.php";
+  const url = "http://blocknest.great-site.net/view_posts.php";
   const [posts, setPosts] = useState<Array<PostObj>>([]);
 
   useEffect(() => {

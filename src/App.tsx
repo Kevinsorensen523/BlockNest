@@ -80,7 +80,9 @@ const ProtectedRoutes: React.FC = () => {
   React.useEffect(() => {
     if (user && user.id) {
       axios
-        .get(`http://localhost:5000/api/notifications/count?user_id=${user.id}`)
+        .get(
+          `http://blocknest.great-site.net/api/notifications/count?user_id=${user.id}`
+        )
         .then((response) => {
           setNotificationCount(response.data.count);
         })

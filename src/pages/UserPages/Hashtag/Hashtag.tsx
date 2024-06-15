@@ -24,7 +24,7 @@ const PostCard = lazy(() => import("../../../components/PostCard"));
 
 const Hashtag: React.FC = () => {
   const { hashtag } = useParams<{ hashtag: string }>();
-  const url = "http://localhost:8000/hashtag_posts.php";
+  const url = "http://blocknest.great-site.net/hashtag_posts.php";
   const [posts, setPosts] = useState<Array<PostObj>>([]);
 
   useEffect(() => {

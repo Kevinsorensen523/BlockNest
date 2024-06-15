@@ -48,8 +48,8 @@ const People: React.FC = () => {
   const [isFollowed, setIsFollowed] = useState(0);
   const [isToolbarHidden, setIsToolbarHidden] = useState(false);
 
-  const followUrl = "http://localhost:8000/follow_user.php";
-  const userPostsUrl = "http://localhost:8000/get_user_posts.php";
+  const followUrl = "http://blocknest.great-site.net/follow_user.php";
+  const userPostsUrl = "http://blocknest.great-site.net/get_user_posts.php";
 
   const fetchUserIdByUsername = async (
     username: string
@@ -58,7 +58,7 @@ const People: React.FC = () => {
       const formData = new FormData();
       formData.append("username", username);
       const response = await axios.post(
-        "http://localhost:8000/get_user_id.php",
+        "http://blocknest.great-site.net/get_user_id.php",
         formData
       );
       if (response.data.success) {
@@ -165,7 +165,7 @@ const People: React.FC = () => {
               <IonCol size="auto">
                 <img
                   alt="Profile Picture"
-                  src={`http://localhost:8000/${miniU.profile_pic}`}
+                  src={`http://blocknest.great-site.net/${miniU.profile_pic}`}
                   className="w-28 h-28 rounded-full"
                 />
               </IonCol>

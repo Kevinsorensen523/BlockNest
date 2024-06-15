@@ -26,7 +26,9 @@ const RecomendedUserCard: React.FC = () => {
   // Fungsi untuk mengambil data pengguna dari server Python
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/top-users");
+      const response = await fetch(
+        "http://blocknest.great-site.net/api/top-users"
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
